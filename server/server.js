@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+"use strict";
 const PCOL="http";
 const HOST="centivize.co";
 const PORT=80;
@@ -64,14 +65,23 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
     });
 });
 
+/*
+ * Returns a canonical key for uid's list of taskids.
+ */
 function userTasksKey(uid) {
    return "user:" + uid + ":taskids";
 }
 
+/*
+ * Returns a canonical key for the hash for taskid.
+ */
 function taskKey(taskid) {
    return "tasks:" + taskid;
 }
 
+/*
+ * Performs callback on the list of tasks belonging to uid.
+ */
 function getTasks(uid, callback) {
    redis.smembers(userTasksKey(uid), function(err, res) {
         if (err) {
@@ -91,6 +101,10 @@ function getTasks(uid, callback) {
     });
 }
 
+/*
+ * Adds task to the list of tasks owned by uid. Also adds a new hash for task.
+ * Returns the id generated for the task or -1 if there was an error.
+ */
 function addTask(uid, task, callback) {
    var taskid = guid();
    var taskkey = taskKey(task);
@@ -98,7 +112,7 @@ function addTask(uid, task, callback) {
    multi.sadd(userTasksKey(uid), taskid, function(err, res) {
          if (err) {
             callback(undefined);
-            return;
+            return -1;
          }
       });
    for (var field in task) {
@@ -106,10 +120,36 @@ function addTask(uid, task, callback) {
                  function(err, res) {
                     if (err) {
                        callback(undefined);
-                       return;
+                       return -1;
                     }
       });
    }
+   multi.exec(function(err, res) {
+         if (err) {
+            callback(undefined);
+            return -1 ;
+         }
+      });
+   return taskid;
+}
+
+/*
+ * Removes taskid from uid's task list and removes the hash for taskid.
+ */
+function removeTask(uid, taskid, callback) {
+   var multi = redis.multi();
+   multi.srem(userTasksKey(uid), taskid, function(err, res) {
+         if (err) {
+            callback(undefined);
+            return;
+         }
+      });
+   multi.del(taskKey(taskid), function(err, res) {
+         if (err) {
+            callback(undefined);
+            return;
+         }
+      });
    multi.exec(function(err, res) {
          if (err) {
             callback(undefined);
