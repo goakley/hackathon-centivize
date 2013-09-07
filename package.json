@@ -17,6 +17,7 @@
         }
     ],
     "dependencies": {
+        "dwolla": "*",
 	"express": "3.x",
         "express-persona": "*",
         "redis": "*",
