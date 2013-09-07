@@ -66,11 +66,13 @@ app.use(express.logger())
     .use(function(req, res, next) {
         var pathname = url.parse(req.url).pathname;
         if (req.session.email) {
+            console.log("I AM LOGGED IN AS " + req.session.email);
             if (pathname === '/' || pathname === '') {
                 res.redirect(302, '/app.html');
                 return;
             }
         } else {
+            console.log("I AM NOT LOGGED IN");
             if (pathname === '/app.html') {
                 res.redirect(302, '/');
                 return;
