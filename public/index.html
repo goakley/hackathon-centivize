@@ -28,8 +28,10 @@
 
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
 
-	<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
-	<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
+	<div id="filters"> 
+		<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
+		<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
+	</div>
 
 	<ul>
 		<li ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">

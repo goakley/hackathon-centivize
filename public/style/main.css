@@ -57,6 +57,14 @@ nav a:hover, nav a:active {
 	opacity: 1;
 }
 
+div#tasks {
+	padding-top: 40px;
+}
+
+div#filters {
+	padding-bottom: 10px;
+}
+
 @media screen and (min-width: 601px) {
 	nav a#logo {
 		padding-top: 20px;
@@ -143,9 +151,9 @@ nav a:hover, nav a:active {
 	font-size: 14px;
 	text-transform: uppercase;
 	display: inline-block;
-	margin-right: 40px;
+	margin-right: 20px;
 	letter-spacing: 2px;
-	color: black;
+	color: #3e4447;
 	opacity: .2;
 }
 
@@ -157,16 +165,21 @@ nav a:hover, nav a:active {
 article {
 	max-width: 920px;
 	margin: auto;
-	padding: 0 12px;
+	padding: 0 0px;
 }
+
+/*div#tasks ul li{
+	padding-left: 10px;
+}*/
 
 #tasks li {
 	background-color: white;
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
-	padding: 8px;
+	padding: 14px;
 	list-style-type: none;
-	text-indent: 0;
+	text-indent: 4px;
 	margin-bottom: 10px;
+	font-size: 18px
 }
 
 #tasks ul {
