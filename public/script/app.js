@@ -13,13 +13,14 @@ function TasksController($scope) {
 			amount: 1.00,
 			coach: 'Greg',
 			dueDate: new Date(2013, 9, 10),
-			completed: false
+			completed: false,
+			description: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus.'
 		},
 		{
 			title: 'Finish the hack',
 			amount: 1.00,
 			coach: 'Viraj',
-			dueDate: new Date(2013, 9, 10),
+			dueDate: new Date(2013, 9, 14),
 			completed: false
 		},
 		{

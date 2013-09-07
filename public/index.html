@@ -39,14 +39,19 @@
 		<span class="title">{{task.title}}</span>
 		&nbsp;
 
-		<span class="amount">{{task.amount | currency}}</span>
+		<span class="right-aligned-li">
+			<span class="amount">{{task.amount | currency}}</span>
 
-		<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
+			<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
+		</span>
 
-		<a href="" class="toggle" ng-click="toggleExpanded()">{{ isExpanded ? '&#9660;' : '&#9650;'}}</a>
+		<div class="expanded-show" ng-show="task.title=='Do big thing'">
+			
+			<div class="expanded-title">Coach</div>
+			<div class="expanded-body">{{task.coach}}</div>
+			<div class="expanded-title">Description</div>
+			<div class="expanded-body">{{task.description}}</div>
 
-		<div ng-show="isExpanded">
-			<span class="coach">{{task.coach}}</span>
 		</div>
 
 		</li>

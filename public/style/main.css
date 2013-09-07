@@ -58,74 +58,13 @@ nav a:hover, nav a:active {
 }
 
 div#tasks {
-	padding-top: 40px;
+	padding-top: 28px;
+	margin: 10px;
 }
 
 div#filters {
+	padding-left: 24px;
 	padding-bottom: 10px;
-}
-
-@media screen and (min-width: 601px) {
-	nav a#logo {
-		padding-top: 20px;
-		padding-left: 40px;
-		float: left;
-	}
-	nav a#menu {
-		display: none;
-	}
-	nav ul {
-		padding-right: 20px;
-	}
-}
-
-@media screen and (max-width: 600px) {
-	nav {
-		height: 60px;
-	}
-	nav ul {
-		display: none;
-		height: auto;
-	}
-	nav a#menu {
-		display: none;
-	}
-
-	nav a#logo {
-		padding-top: 9px;
-	}
-
-	nav a img#resize {
-		width: 160px;
-		height: auto;
-	}
-
-	nav a#menu {
-		display: block;
-		width: 32px;
-		height: 32px;
-		margin-top: 16px;
-		margin-left: 20px;
-		position: absolute;
-	}
-
-	/*nav a#logo:after {
-		content: "";
-		width: 30px;
-		height: 30px;
-		display: inline-block;
-		position: absolute;
-		right: 15px;
-		top: 10px;
-	}*/
-}
-
-@media only screen and (max-width : 320px) {
-	nav li {
-		display: block;
-		float: none;
-		width: 100%;
-	}
 }
 
 .nav-link {
@@ -178,14 +117,13 @@ article {
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
 	padding: 14px;
 	list-style-type: none;
-	text-indent: 4px;
 	margin-bottom: 10px;
-	font-size: 18px
 }
-
+.title {
+	padding-left: 10px;
+}
 .task .title {
 	display: inline-block;
-	width: 50%;
 	font-size: 18px;
 }
 
@@ -194,25 +132,128 @@ article {
 }
 
 .task .amount {
+	padding-top: 2px;
 	font-weight: 600;
 	display: inline-block;
-	width: 3.5em;
+	width: 2em;
+	padding-right: 10px;
+}
+
+.right-aligned-li {
+	float: right;
+	padding-right: 12px;
 }
 
 .task .due-date {
 	display: inline-block;
 	white-space: nowrap;
-	width: 25%;
+	width: 12em;
 	color: #999;
 	overflow: hidden;
 	text-overflow: ellipsis;
+	text-align: right;
 }
 
-.task .toggle {
+/*.task .toggle {
+	padding-left: 14px;
+	padding-right: 14px;
 	float: right;
-	font-weight: 600;
-	color: #999;
-}
+	width: 8px;
+	height: 12px;
+}*/
 
 .task .coach {
+}
+
+.expanded-show {
+	margin-top: 20px;
+	background-color: #fbfbfb;
+}
+
+.expanded-title {
+	padding-left: 12px;
+	padding-top: 12px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 700;
+}
+.expanded-body {
+	width: 70%;
+	padding-left: 12px;
+	padding-top: 12px;
+}
+
+@media screen and (min-width: 601px) {
+	nav a#logo {
+		padding-top: 20px;
+		padding-left: 40px;
+		float: left;
+	}
+	nav a#menu {
+		display: none;
+	}
+	nav ul {
+		padding-right: 20px;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	nav {
+		height: 60px;
+	}
+	nav ul {
+		display: none;
+		height: auto;
+	}
+	nav a#menu {
+		display: none;
+	}
+
+	nav a#logo {
+		padding-top: 9px;
+	}
+
+	nav a img#resize {
+		width: 160px;
+		height: auto;
+	}
+
+	nav a#menu {
+		display: block;
+		width: 32px;
+		height: 32px;
+		margin-top: 16px;
+		margin-left: 20px;
+		position: absolute;
+	}
+	div#tasks {
+		padding-top: 8px;
+	}
+	div#filters {
+		padding-bottom: 16px;
+	}
+	
+	.task .amount {
+		display: none;
+	}
+	.task .due-date {
+		display: none;
+	}
+
+	/*nav a#logo:after {
+		content: "";
+		width: 30px;
+		height: 30px;
+		display: inline-block;
+		position: absolute;
+		right: 15px;
+		top: 10px;
+	}*/
+}
+
+@media only screen and (max-width : 320px) {
+	nav li {
+		display: block;
+		float: none;
+		width: 100%;
+	}
 }
