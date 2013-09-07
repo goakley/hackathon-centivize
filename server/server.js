@@ -2,20 +2,6 @@
 
 "use strict";
 
-var dwolla = require('dwolla'),
-    express = require('express'),
-    fs = require('fs'),
-    https = require('https'),
-    redis = require('redis').createClient(),
-    restler = require('restler'),
-    url = require('url');
-
-var app = express();
-
-var PCOL="https";
-var HOST="centivize.co";
-var PORT=80;
-
 var SECRET = require("./secret.json");
 var CONFIG = {
     DWOLLA: {
@@ -31,6 +17,21 @@ var CONFIG = {
 };
 CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
 CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
+
+var dwolla = require('dwolla'),
+    express = require('express'),
+    fs = require('fs'),
+    https = require('https'),
+    redis = require('redis').createClient(),
+    restler = require('restler'),
+    sendgrid = require('sendgrid')(CONFIG.SENDGRID.USER, CONFIG.SENDGRID.KEY),
+    url = require('url');
+
+var app = express();
+
+var PCOL="https";
+var HOST="centivize.co";
+var PORT=80;
 
 function guid() {
     function s4() {
@@ -136,12 +137,26 @@ function payTask(taskid, pin, callback) {
 }
 
 /*
+ * Sends the coach for uid's task taskid an email asking them to confirm if
+ *  uid was successful/unsuccessful in their attempt to accomplish taskid.
+ */
+function sendCoachEmail(uid, taskid, successful, callback) {
+    redis.get(taskKey(taskid), function(err, task) {
+	if (err) {
+	    callback(undefined);
+	    return;
+	}
+	
+    });
+}
+
+/*
  * Performs callback on the list of tasks belonging to uid.
  */
 function getTasks(uid, callback) {
     redis.smembers(userTasksKey(uid), function(err, res) {
         if (err) {
-            callback(undefiend);
+            callback(undefined);
             return;
         }
         var tasks = [];
@@ -172,7 +187,6 @@ function addTask(uid, task, callback) {
         }
     });
     multi.hmset(taskkey,
-                'uid', uid,
                 'name', task['name'],
                 'time', task['time'],
                 'value', task['value'],
@@ -199,9 +213,9 @@ function addTask(uid, task, callback) {
 /*
  * Removes taskid from uid's task list and removes the hash for taskid.
  */
-function removeTask(uid, taskid, callback) {
+function removeTask(taskid, callback) {
     var multi = redis.multi();
-    multi.srem(userTasksKey(uid), taskid, function(err, res) {
+    multi.srem(userTasksKey(taskid['uid']), taskid, function(err, res) {
         if (err) {
             callback(undefined);
             return;
@@ -222,3 +236,18 @@ function removeTask(uid, taskid, callback) {
     });
     return;
 }
+
+function printRes(res) {
+   console.log(res);
+}
+
+var uid = CONFIG.DWOLLA.ID;
+var groceries = addTask(uid, {name: "Groceries", time: "Monday", value: 10, 
+			      currency: "USD", coach: "Glen",
+			      description: "Milk and eggs"}, printRes);
+var victory = addTask(uid, {name: "Win PennApps", time: "Sunday", value: 1000, 
+			    currency: "USD", coach: "Glen",
+			    description: "centivize kicks ass"}, printRes);
+getTasks(uid, printRes);
+removeTask(groceries, printRes);
+getTasks(uid, printRes);
