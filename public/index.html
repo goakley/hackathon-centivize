@@ -3,6 +3,7 @@
 	<head>
 		<title>centivize</title>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 		<link rel="stylesheet" href="style/normalize.css">
 		<link rel="stylesheet" href="style/main.css">
@@ -13,14 +14,27 @@
 	</head>
 	<body ng-app>
 
-<nav class="{{active}}" ng-click="$event.preventDefault()">
+<!-- nav class="{{active}}" ng-click="$event.preventDefault()">
+	<ul class="{{active}}">
+		<li><h1 id="logo"><img src="img/centivize_logo.svg"></h1></li>
 
-	<h1 id="logo"><img src="img/centivize_logo.svg"></h1>
+		<li><a href="#" class="nav-link" ng-click="active='tasks'">Tasks</a></li>
+		<li><a href="#" class="nav-link unselected" ng-click="active='settings'">Settings</a></li>
+		<li><a href="#" class="nav-link unselected" ng-click="active='about'">About</a></li>
 
-	<a href="#" class="nav-link" ng-click="active='tasks'">Tasks</a>
-	<a href="#" class="nav-link unselected" ng-click="active='settings'">Settings</a>
-	<a href="#" class="nav-link unselected" ng-click="active='about'">About</a>
+	</ul>
+	<a href="#" id="pull">Menu</a>
+</nav> -->
+
+<nav class="clearfix">
+	<ul class="clearfix">
+		<li><a href="#">Tasks</a></li>
+		<li><a href="#">Settings</a></li>
+		<li><a href="#">About</a></li>
+	</ul>
+	<a href="#" id="pull"><img src="img/centivize_logo.svg"></a>
 </nav>
+
 
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
 
