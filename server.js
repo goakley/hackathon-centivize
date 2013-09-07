@@ -40,6 +40,7 @@ var dwolla = require('dwolla'),
     url = require('url');
 
 var app = express();
+var timeout = undefined;
 
 /*****************************************************************************/
 
@@ -294,8 +295,9 @@ function addTask(uid, task, pin, callback) {
             } else {
                 callback(200, tid);
             }
-        });
+        });	
     });
+    updateTimeout(task.time - new Date().getTime());
 }
 
 /* Successfully complete a task */
@@ -309,6 +311,7 @@ function finishTask(tid, callback) {
         multi.srem(key_user_tids(tid['uid']), tid);
         multi.del(key_task(tid));
 	multi.zrem("taskqueue", tid);
+	mutli.zrem("pendingqueue", tid);
         multi.exec(function(err, res) {
             if (err) {
                 callback(500, err);
