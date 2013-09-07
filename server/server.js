@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-"use strict";
-const PCOL="http";
+const PCOL="https";
 const HOST="centivize.co";
 const PORT=80;
 
@@ -10,8 +9,9 @@ var CONFIG = {
     DWOLLA: {
         ID: "NCmLk7qYgDeu+wxCbjmt7178/upeGgzeD/HNPWIiLX2CH4zI9+",
         SCOPE: "Balance|Send",
-        AUTH_CALLBACK: "http://centivize.co/dwolla/auth/callback",
-        PAY_CALLBACK: "http://centivize.co/dwolla/payment/callback"
+        AUTH_CALLBACK: "https://centivize.co/dwolla/auth/callback",
+        PAY_CALLBACK: "https://centivize.co/dwolla/payment/callback",
+        RECV_ACCOUNT: "000-000-0000"
     }
 };
 CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
@@ -30,9 +30,15 @@ function guid() {
 var express = require('express'),
     app = express(),
     dwolla = require('dwolla'),
+    fs = require('fs'),
+    https = require('https'),
     redis = require('redis').createClient(),
     restler = require('restler'),
     url = require('url');
+
+https.createServer({key: fs.readFileSync('./sslcert/server.key', 'utf8'),
+                    cert:fs.readFileSync('./sslcert/server.crt', 'utf8')},
+                   app);
 
 app.use(express.bodyParser())
     .use(express.cookieParser())
@@ -77,6 +83,40 @@ function userTasksKey(uid) {
  */
 function taskKey(taskid) {
    return "tasks:" + taskid;
+}
+
+app.get("/api/pay", function(req, res) {
+    var urlinfo = url.parse(req.url, true).query;
+    dwollaPay(req.session.email, query.pin, query.amount, function(status) {
+        // ???
+    });
+});
+
+app.get("/api/tasklist", function(req, res) {
+    var urlinfo = url.parse(req.url, true).query;
+    getTasks(req.session.email, function(tasks) {
+        // ???
+    });
+});
+
+app.post("/api/addtask", function(req, res) {
+    console.log(req.body);
+});
+
+function dwollaPay(uid, pin, amount, callback) {
+    redis.get("user:" + uid + ":dwollatoken", function(err, res) {
+        if (err) {
+            callback(undefined);
+            return;
+        }
+        dwolla.send(res, pin, CONFIG.DWOLLA.RECV_ACCOUNT, amount, function(err, data) {
+            if (err) {
+                callback(undefined);
+                return;
+            }
+            callback(true);
+        });
+    });
 }
 
 /*
