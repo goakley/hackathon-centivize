@@ -27,12 +27,15 @@ nav {
 }
 
 nav ul {
-	opacity: 0.2;
 	padding: 0;
 	margin: 0 auto;
 	width: 300px;
 	height: 100px;
 	float: right;
+}
+
+nav ul a {
+	opacity: 0.2;
 }
 
 nav li {
@@ -72,40 +75,66 @@ nav li:last-child a {
 }
 
 nav a:hover, nav a:active {
-	opacity: 0.1;
-}
-
-nav a#pull {
-	display none;
-	padding-top: 24px;
+	opacity: 1;
 }
 
 @media screen and (min-width: 601px) {
-	nav a#pull {
+	nav a#logo {
+		padding-top: 20px;
+		padding-left: 40px;
+	}
+	nav a#menu {
 		display: none;
+	}
+	nav ul {
+		padding-right: 20px;
 	}
 }
 
 @media screen and (max-width: 600px) {
+	nav {
+		height: 60px;
+	}
 	nav ul {
 		display: none;
 		height: auto;
 	}
-	nav a#pull {
+	nav a#menu {
+		display: none;
+	}
+
+	nav a#logo {
+		line-height: 60px;
 		display: block;
 		width: 100%;
+		height: auto;
 		position: relative;
+		padding-top: 9px;
 	}
-	nav a#pull:after {
+
+	nav a img#resize {
+		width: 160px;
+		height: auto;
+	}
+
+	nav a#menu {
+		display:block;
+		width: 32px;
+		height: 32px;
+		margin-top: -6px;
+		margin-left: 20px;
+		position: absolute;
+	}
+
+	/*nav a#logo:after {
 		content: "";
-		background: url('nav-icon.png') no-repeat;
 		width: 30px;
 		height: 30px;
 		display: inline-block;
 		position: absolute;
 		right: 15px;
 		top: 10px;
-	}
+	}*/
 }
 
 @media only screen and (max-width : 320px) {
