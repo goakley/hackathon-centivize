@@ -64,17 +64,23 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
     });
 });
 
+function userTasksKey(uid) {
+   return "user:" + uid + ":taskids";
+}
 
+function taskKey(taskid) {
+   return "tasks:" + taskid;
+}
 
 function getTasks(uid, callback) {
-    redis.smembers("user:" + uid + ":taskids", function(err, res) {
+   redis.smembers(userTasksKey(uid), function(err, res) {
         if (err) {
             callback(undefiend);
             return;
         }
         var tasks = [];
         for (var i = 0; i < res.length; i++) {
-            redis.hgetall("tasks:" + res[i], function(err, task) {
+           redis.hgetall(taskKey(res[i]), function(err, task) {
                 tasks.push(err ? undefined : task);
                 if (tasks.length === res.length) {
                    callback(tasks);
@@ -86,20 +92,22 @@ function getTasks(uid, callback) {
 }
 
 function addTask(uid, task, callback) {
-   taskid = guid();
+   var taskid = guid();
+   var taskkey = taskKey(task);
    var multi = redis.multi();
-   multi.sadd("user:" + uid + ":taskids", taskid, function(err, res) {
+   multi.sadd(userTasksKey(uid), taskid, function(err, res) {
          if (err) {
             callback(undefined);
             return;
          }
       });
    for (var field in task) {
-      multi.hset("tasks:" + taskid, task[field]['key'], task[field]['value'], function(err, res) {
-            if (err) {
-               callback(undefined);
-               return;
-            }
+      multi.hset(taskkey, task[field]['key'], task[field]['value'],
+                 function(err, res) {
+                    if (err) {
+                       callback(undefined);
+                       return;
+                    }
       });
    }
    multi.exec(function(err, res) {
