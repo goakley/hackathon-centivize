@@ -139,12 +139,15 @@ article {
 	padding: 14px;
 	list-style-type: none;
 	margin-bottom: 10px;
+	cursor: pointer;
 }
 
 .task:hover {
-	background-color: #f7f7f7;
+	background-color: #fbfbfb;
 }
-
+.task:active {
+	background-color: #f6f6f6;
+}
 
 .title {
 	padding-left: 10px;
@@ -199,19 +202,16 @@ article {
 	height: 12px;
 }*/
 
-.task .coach {
-}
-
 .expanded-show {
-	margin-top: 20px;
-	background-color: #f7f7f7;
+	margin-top: 8px;
+	/*background-color: #f7f7f7;*/
 }
 
 .coach {
 	padding-top: 12px;
 }
 .coach-title {
-	padding-left: 14px;
+	padding-left: 12px;
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 700;
 }
@@ -222,7 +222,7 @@ article {
 }
 
 .description-title {
-	padding-left: 14px;
+	padding-left: 12px;
 	padding-top: 12px;
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 700;
@@ -230,17 +230,17 @@ article {
 }
 
 .description {
-	padding-left: 14px;
-	padding-right: 14px;
+	padding-left: 12px;
+	padding-right: 12px;
 	padding-top: 4px;
 	font-family: 'Open Sans', sans-serif;
 	padding-bottom: 12px;
 }
 .buttons {
 	float: right;
-	padding-right: 14px;
-	padding-left: 14px;
-	padding-bottom: 12px;
+	padding-right: 12px;
+	padding-left: 12px;
+	padding-bottom: 8px;
 	padding-top: 12px;
 }
 .blue {
@@ -257,7 +257,7 @@ article {
 
 }
 .gray {
-	margin-right: 8px;
+	margin-right: 24px;
 	background: #3e4447;
 	opacity: 0.2;
 	border: 0px;

@@ -31,10 +31,12 @@
 	<div id="filters"> 
 		<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
 		<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
+		<a href="" ng-class="{'task-filter': true, selected: showComplete}" onclick="navigator.id.logout()" ng-click="showComplete = true">Log the fuck out</a>
+
 	</div>
 
 	<ul>
-		<li class="task" href="#" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
+		<li class="task" href="#" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
 
 		<span class="title">{{task.title}}</span>
 		&nbsp;
@@ -45,7 +47,7 @@
 			<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
 		</span>
 
-		<div class="expanded-show clearfix" ng-show="task.title=='Do big thing'">
+		<div class="expanded-show clearfix" ng-show="task.isExpanded">
 		
 			<span class="amount-alt">{{task.amount | currency}}</span>
 			<span class="due-date-alt">{{task.dueDate | date:'EEEE @ h a'}}</span>
@@ -55,11 +57,13 @@
 				<span class="coach-body">{{task.coach}}</span>
 			</div>
 			
-			<div class="description-title">Description</div>
-			<div class="description">{{task.description}}</div>
+			<span class="descriptions" ng-show="task.description!=''">
+				<div class="description-title">Description</div>
+				<div class="description">{{task.description}}</div>
+			</span>
 
 			<div class="buttons">
-				<button type="button" class="gray">Edit Details</button>
+				<button type="button" class="gray">Delete Task</button>
 				<button type="button" class="blue">Task Completed</button>
 			</div>
 		</div>			
