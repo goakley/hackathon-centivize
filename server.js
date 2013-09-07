@@ -113,34 +113,93 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
 /*****************************************************************************/
 /* WEB API */
 
+/**
+ * 200 - Located all the user tasks which are provided
+ * 500 - No idea what happened wrong
+ */
 app.get("/api/tasks", function(req, res) {
     getTasks(req.session.email, function(status, tasks) {
         if (status !== 200) {
-            res.json({"err":"ERROR"});
+            res.json({err:"ERROR"});
         } else {
             res.json(tasks);
         }
     });
 });
 
+/**
+ * 200 - Created a task for the authenticated user with the resultant 'tid'
+ * 500 - No idea what happened wrong
+ */
 app.post("/api/task", function(req, res) {
-    console.log(req.body);
     addTask(req.session.email, req.body, function(status, tid) {
         if (status !== 200) {
-            res.json({"err":"ERROR"});
+            res.send(500);
         } else {
-            res.json({"tid":tid});
+            res.json({tid:tid});
         }
     });
 });
 
+/**
+ * 205 - Successfully deleted the task
+ * 403 - TID does not belong to the user
+ * 404 - TID not found
+ * 500 - Server error
+ */
 app.del("/api/task/:tid", function(req, res) {
-    finishTask(tid, function(success) {
-        if (!success) {
-            res.json({"err":"ERROR"});
-        } else {
-            res.json({"success":true});
+    redis.exists(key_task(tid), function(err, doesexist) {
+        if (!doesexist) {
+            res.send(404);
+            return;
         }
+        redis.smembers(key_user_tids(req.session.email), function(err, tids) {
+            if (err) {
+                res.send(500);
+                return;
+            }
+            var found = false;
+            for (var i = 0; i < tids.length; i++) {
+                if (tids[i] === tid) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                res.send(403);
+                return;
+            }
+            finishTask(tid, function(success) {
+                res.send(success ? 205 : 500);
+            });
+        });
+    });
+});
+
+/**
+ * 200 - Name in plaintext
+ * 500 - Server error
+ */
+app.get("/api/user/name", function(req, res) {
+    redis.get(key_user(req.session.email) + ":name", function(err, name) {
+        if (err) {
+            res.send(500);
+        } else {
+            if (!name)
+                name = "";
+            res.set('Content-Type','text/plain');
+            res.send(name);
+        }
+    });
+});
+
+/**
+ * 205 - Successfully updated the name
+ * 500 - Server error
+ */
+app.put("/api/user/name", function(req, res) {
+    redis.set(key_user(req.session.email) + ":name", req.body.name, function(err, resp) {
+        res.send(err ? 500 : 205);
     });
 });
 
@@ -267,6 +326,7 @@ function getTasks(uid, callback) {
     });
 }
 
+
 function addTask(uid, task, pin, callback) {
     var tid = guid();
     var taskkey = key_task(tid);
@@ -298,7 +358,6 @@ function addTask(uid, task, pin, callback) {
             }
         });	
     });
-    updateTimeout(task.time - new Date().getTime());
 }
 
 /* Successfully complete a task */
