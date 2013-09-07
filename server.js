@@ -65,9 +65,10 @@ app.use(express.logger())
     .use(express.session({secret:"mozillapersona"}))
     .use(function(req, res, next) {
         var pathname = url.parse(req.url).pathname;
+        console.log("I WILL NOW CHECK MY STATE...");
         if (req.session.email) {
             console.log("I AM LOGGED IN AS " + req.session.email);
-            if (pathname === '/' || pathname === '') {
+            if (pathname === '/' || pathname === '/index.html' || pathname === '') {
                 res.redirect(302, '/app.html');
                 return;
             }
