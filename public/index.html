@@ -47,6 +47,9 @@
 
 		<div class="expanded-show clearfix" ng-show="task.title=='Do big thing'">
 		
+			<span class="amount-alt">{{task.amount | currency}}</span>
+			<span class="due-date-alt">{{task.dueDate | date:'EEEE @ h a'}}</span>
+
 			<div class="coach">
 				<span class="coach-title">Coach</span>
 				<span class="coach-body">{{task.coach}}</span>

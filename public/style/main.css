@@ -134,6 +134,7 @@ article {
 .task .amount {
 	padding-top: 2px;
 	font-weight: 600;
+	color: #21baea;
 	display: inline-block;
 	width: 2em;
 	padding-right: 10px;
@@ -220,7 +221,7 @@ article {
 
 }
 .gray {
-	margin-right: 12px;
+	margin-right: 8px;
 	background: #3e4447;
 	opacity: 0.2;
 	border: 0px;
@@ -234,7 +235,27 @@ article {
 	text-transform: uppercase;
 }
 
+.amount-alt {
+	padding-top: 12px;
+	padding-left: 14px;
+	font-weight: 600;
+	color: #21baea;
+	display: inline-block;
+	width: 2em;
+	padding-right: 10px;
+}
+
+.due-date-alt {
+	float: right;
+}
+
 @media screen and (min-width: 601px) {
+	.amount-alt {
+		display: none;
+	}
+	.due-date-alt {
+		display: none;
+	}
 	nav a#logo {
 		padding-top: 20px;
 		padding-left: 40px;
