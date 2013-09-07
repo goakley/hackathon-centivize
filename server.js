@@ -53,9 +53,8 @@ function guid() {
         s4() + '-' + s4() + s4() + s4();
 }
 
-https.createServer({key: fs.readFileSync('./sslcert/ssl.key', 'binary'),
-                    cert:fs.readFileSync('./sslcert/ssl.crt', 'utf8'),
-		    ca:fs.readFileSync('./sslcert/sub.class1.server.ca.pem', 'utf8')},
+https.createServer({key: fs.readFileSync('./sslcert/ssl.key', 'utf8'),
+                    cert:fs.readFileSync('./sslcert/ssl.crt', 'utf8')},
                    app).listen(443);
 
 app.use(express.bodyParser())
