@@ -1,5 +1,24 @@
-var redis = require('redis').createClient();
+#!/usr/bin/env node
 
+
+const PCOL="http";
+const HOST="centivize.co";
+const PORT=80;
+
+
+var express = require('express'),
+    app = express(),
+    redis = require('redis').createClient();
+
+app.use(express.bodyParser())
+    .use(express.cookieParser())
+    .use(express.session({secret:"mozillapersona"}));
+
+require('express-persona')(app, {
+    audience: PCOL+"://"+HOST+":"+PORT,
+    verifyPath: "/persona/verify",
+    logoutPath: "/persona/logout"
+});
 
 
 function getTasks(uid, callback) {
@@ -23,5 +42,3 @@ function getTasks(uid, callback) {
 
 function addTask(uid, task, callbacks) {
 }
-
-getTasks(0, function(response) { console.log(response); });
