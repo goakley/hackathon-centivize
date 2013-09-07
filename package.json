@@ -1,0 +1,26 @@
+{
+    "name": "centivize",
+    "version": "0.0.1",
+    "licences": [ { "type": "GPLv3", "url": "https://gnu.org/licenses/gpl.txt" } ],
+    "contributors": [
+        {
+            "name": "Viraj Bindra"
+        },
+        {
+            "name": "Charles Lehner"
+        },
+        {
+            "name": "Glen Oakley"
+        },
+        {
+            "name": "Greg Owen"
+        }
+    ],
+    "dependencies": {
+	"express": "3.x",
+        "express-persona": "*",
+        "redis": "*",
+	"socket.io": "*"
+    },
+    "private": true
+}
