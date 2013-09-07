@@ -11,7 +11,7 @@ a {
 	text-decoration: none;
 }
 
-nav #logo {
+#logo {
 	display: inline-block;
 }
 
@@ -22,22 +22,23 @@ nav {
 	font-size: 14px;
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 600;
-	color:black;
 	position: relative;
+	text-align: center;
 }
 
 nav ul {
-	opacity: 0.2;
 	padding: 0;
 	margin: 0 auto;
-	width: 300px;
 	height: 100px;
 	float: right;
 }
 
+nav ul a {
+	opacity: 0.2;
+}
+
 nav li {
-	display: inline;
-	float: right;
+	display: inline-block;
 }
 
 .clearfix:before,
@@ -52,60 +53,63 @@ nav li {
 	*zoom: 1;
 }
 
-nav a {
-	color: #3e4447;
-	display: inline-block;
-	width: 100px;
-	text-align: center;
-	text-decoration: none;
-	line-height: 100px;
-}
-
-nav li a {
-	box-sizing:border-box;
-	-moz-box-sizing:border-box;
-	-webkit-box-sizing:border-box;
-}
-
-nav li:last-child a {
-	border-right: 0;
-}
-
 nav a:hover, nav a:active {
-	opacity: 0.1;
-}
-
-nav a#pull {
-	display none;
-	padding-top: 24px;
+	opacity: 1;
 }
 
 @media screen and (min-width: 601px) {
-	nav a#pull {
+	nav a#logo {
+		padding-top: 20px;
+		padding-left: 40px;
+		float: left;
+	}
+	nav a#menu {
 		display: none;
+	}
+	nav ul {
+		padding-right: 20px;
 	}
 }
 
 @media screen and (max-width: 600px) {
+	nav {
+		height: 60px;
+	}
 	nav ul {
 		display: none;
 		height: auto;
 	}
-	nav a#pull {
-		display: block;
-		width: 100%;
-		position: relative;
+	nav a#menu {
+		display: none;
 	}
-	nav a#pull:after {
+
+	nav a#logo {
+		padding-top: 9px;
+	}
+
+	nav a img#resize {
+		width: 160px;
+		height: auto;
+	}
+
+	nav a#menu {
+		display: block;
+		width: 32px;
+		height: 32px;
+		margin-top: 16px;
+		margin-left: 20px;
+		position: absolute;
+	}
+
+	/*nav a#logo:after {
 		content: "";
-		background: url('nav-icon.png') no-repeat;
 		width: 30px;
 		height: 30px;
 		display: inline-block;
 		position: absolute;
 		right: 15px;
 		top: 10px;
-	}
+	}*/
 }
 
 @media only screen and (max-width : 320px) {
@@ -116,13 +120,7 @@ nav a#pull {
 	}
 }
 
-
-
-
-
-
-
-a.nav-link {
+.nav-link {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 600;
 	font-size: 14px;
@@ -132,9 +130,14 @@ a.nav-link {
 	margin-right: 40px;
 	letter-spacing: 2px;
 	opacity: 0.2;
+	line-height: 100px;
 }
 
-a.task-filter {
+.nav-link.selected {
+	opacity: 1;
+}
+
+.task-filter {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 600;
 	font-size: 14px;
@@ -146,32 +149,15 @@ a.task-filter {
 	opacity: .2;
 }
 
-a.selected {
+.task-filter.selected {
 	color: #21baea;
 	opacity: 1;
 }
 
-h2 {
-	font-family: 'Open Sans', sans-serif;
-	font-weight: 500;
-	font-size: 14px;
-	text-transform: uppercase;
-	display: inline-block;
-	color: #3e4447;
-	margin-right: 40px;
-}
-
-h2.unselected {
-	opacity: .2;
-}
-
-h2.selected {
-	color: #21baea;
-}
-
-.content {
+article {
 	max-width: 920px;
 	margin: auto;
+	padding: 0 12px;
 }
 
 #tasks li {
@@ -181,10 +167,6 @@ h2.selected {
 	list-style-type: none;
 	text-indent: 0;
 	margin-bottom: 10px;
-}
-
-#tasks li.selected {
-	color: #21baea;
 }
 
 #tasks ul {

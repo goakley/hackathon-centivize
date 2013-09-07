@@ -12,28 +12,19 @@
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
 		<script src="script/app.js"></script>
 	</head>
-	<body ng-app>
+	<body ng-app ng-controller="HomeController">
 
-<!-- nav class="{{active}}" ng-click="$event.preventDefault()">
-	<ul class="{{active}}">
-		<li><h1 id="logo"><img src="img/centivize_logo.svg"></h1></li>
-
-		<li><a href="#" class="nav-link" ng-click="active='tasks'">Tasks</a></li>
-		<li><a href="#" class="nav-link unselected" ng-click="active='settings'">Settings</a></li>
-		<li><a href="#" class="nav-link unselected" ng-click="active='about'">About</a></li>
-	</ul>
-	<a href="#" id="pull">Menu</a>
-</nav> -->
-
-<nav class="clearfix">
+<nav class="clearfix" ng-click="$event.preventDefault()">
 	<ul class="clearfix">
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='tasks'}" ng-click="active='tasks'">Tasks</a></li>
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='settings'}" ng-click="active='settings'">Settings</a></li>
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='about'}" ng-click="active='about'">About</a></li>
 	</ul>
-	<a href="#" id="pull"><img src="img/centivize_logo.svg"></a>
+	<a href="#" id="menu"><img src="img/nav-icon.svg"></a>
+	<a href="#" id="logo"><img id="resize" src="img/centivize_logo.svg"></a>
 </nav>
 
+<article>
 
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
 
@@ -65,6 +56,8 @@
 <div ng-show="active=='about'">
 	About
 </div>
+
+</article>
 
 	</body>
 </html>
