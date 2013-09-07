@@ -14,7 +14,7 @@ function TasksController($scope) {
 		{
 			title: 'Finish the hack',
 			amount: 1.00,
-			coach: 'Virage',
+			coach: 'Viraj',
 			completed: false
 		},
 		{
