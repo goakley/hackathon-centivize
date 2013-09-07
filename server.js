@@ -23,7 +23,7 @@ CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
 CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
 
 var HOST="centivize.co";
-var PORT=80;
+var PORT=443;
 
 /*****************************************************************************/
 /* SETUP */
@@ -72,13 +72,13 @@ require('express-persona')(app, {
 
 app.get("/verify/:tid/yes", function(req, res) {
     finishTask(tid, function(status, err) {
-        res.sendfile("./templates/verify_completed_" + (err ? "n" : "") + "okay.html");
+        res.sendfile("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs");
     });
 });
 
 app.get("/verify/:tid/no", function(req, res) {
     failTask(tid, function(status, err) {
-        res.sendfile("./templates/verify_failed_" + (err ? "n" : "") + "okay.html");
+        res.sendfile("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs");
     });
 });
 
@@ -217,8 +217,8 @@ function sendCoachEmail(tid, callback) {
         var email = fs.readFileSync("./templates/email_coach.ejs");
         var emailtext = ejs.render(file, {user:task.uid,
                                           expiration:task.time,
-                                          approval:"https://" + HOST + "/verify/" + tid + "/yes",
-                                          deinal:"https://" + HOST + "/verify/" + tid + "/no"});
+                                          approval:"https://" + HOST + ":" + PORT + "/verify/" + tid + "/yes",
+                                          deinal:"https://" + HOST + ":" + PORT + "/verify/" + tid + "/no"});
 	sendgrid.send({
             to: task.cid,
             from: task.uid,
