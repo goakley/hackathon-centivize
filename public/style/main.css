@@ -1,7 +1,9 @@
 body {
 	font-family: 'Open Sans', sans-serif;
+	font-weight: 500;
+	font-size: 14px;
 	color: #3e4447;
-	margin: 0 12px;
+	margin: 0;
 	background-image: url(../img/squairy_light.png);
 }
 
@@ -13,6 +15,113 @@ nav #logo {
 	display: inline-block;
 }
 
+nav {
+	height: 100px;
+	width: 100%;
+	background: white;
+	font-size: 14px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	color:black;
+	position: relative;
+}
+
+nav ul {
+	opacity: 0.2;
+	padding: 0;
+	margin: 0 auto;
+	width: 300px;
+	height: 100px;
+	float: right;
+}
+
+nav li {
+	display: inline;
+	float: right;
+}
+
+.clearfix:before,
+.clearfix:after {
+	content: " ";
+	display: table;
+}
+.clearfix:after {
+	clear: both;
+}
+.clearfix {
+	*zoom: 1;
+}
+
+nav a {
+	color: #3e4447;
+	display: inline-block;
+	width: 100px;
+	text-align: center;
+	text-decoration: none;
+	line-height: 100px;
+}
+
+nav li a {
+	box-sizing:border-box;
+	-moz-box-sizing:border-box;
+	-webkit-box-sizing:border-box;
+}
+
+nav li:last-child a {
+	border-right: 0;
+}
+
+nav a:hover, nav a:active {
+	opacity: 0.1;
+}
+
+nav a#pull {
+	display none;
+	padding-top: 24px;
+}
+
+@media screen and (min-width: 601px) {
+	nav a#pull {
+		display: none;
+	}
+}
+
+@media screen and (max-width: 600px) {
+	nav ul {
+		display: none;
+		height: auto;
+	}
+	nav a#pull {
+		display: block;
+		width: 100%;
+		position: relative;
+	}
+	nav a#pull:after {
+		content: "";
+		background: url('nav-icon.png') no-repeat;
+		width: 30px;
+		height: 30px;
+		display: inline-block;
+		position: absolute;
+		right: 15px;
+		top: 10px;
+	}
+}
+
+@media only screen and (max-width : 320px) {
+	nav li {
+		display: block;
+		float: none;
+		width: 100%;
+	}
+}
+
+
+
+
+
+
+
 a.nav-link {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 600;
@@ -22,6 +131,7 @@ a.nav-link {
 	color: black;
 	margin-right: 40px;
 	letter-spacing: 2px;
+	opacity: 0.2;
 }
 
 a.task-filter {
@@ -32,12 +142,13 @@ a.task-filter {
 	display: inline-block;
 	margin-right: 40px;
 	letter-spacing: 2px;
-	color: #21baea;
+	color: black;
+	opacity: .2;
 }
 
-a.unselected {
-	color: black;
-	opacity: 0.2;
+a.selected {
+	color: #21baea;
+	opacity: 1;
 }
 
 h2 {

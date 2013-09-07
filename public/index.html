@@ -3,6 +3,7 @@
 	<head>
 		<title>centivize</title>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 		<link rel="stylesheet" href="style/normalize.css">
 		<link rel="stylesheet" href="style/main.css">
@@ -13,19 +14,31 @@
 	</head>
 	<body ng-app>
 
-<nav class="{{active}}" ng-click="$event.preventDefault()">
+<!-- nav class="{{active}}" ng-click="$event.preventDefault()">
+	<ul class="{{active}}">
+		<li><h1 id="logo"><img src="img/centivize_logo.svg"></h1></li>
 
-	<h1 id="logo"><img src="img/centivize_logo.svg"></h1>
+		<li><a href="#" class="nav-link" ng-click="active='tasks'">Tasks</a></li>
+		<li><a href="#" class="nav-link unselected" ng-click="active='settings'">Settings</a></li>
+		<li><a href="#" class="nav-link unselected" ng-click="active='about'">About</a></li>
+	</ul>
+	<a href="#" id="pull">Menu</a>
+</nav> -->
 
-	<a href="#" class="nav-link" ng-click="active='tasks'">Tasks</a>
-	<a href="#" class="nav-link unselected" ng-click="active='settings'">Settings</a>
-	<a href="#" class="nav-link unselected" ng-click="active='about'">About</a>
+<nav class="clearfix">
+	<ul class="clearfix">
+		<li><a href="#" ng-class="{'nav-link': true, selected: active=='tasks'}" ng-click="active='tasks'">Tasks</a></li>
+		<li><a href="#" ng-class="{'nav-link': true, selected: active=='settings'}" ng-click="active='settings'">Settings</a></li>
+		<li><a href="#" ng-class="{'nav-link': true, selected: active=='about'}" ng-click="active='about'">About</a></li>
+	</ul>
+	<a href="#" id="pull"><img src="img/centivize_logo.svg"></a>
 </nav>
+
 
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
 
-	<a href="" class="task-filter" ng-click="showComplete = false">Current tasks</a>
-	<a href="" class="task-filter unselected" ng-click="showComplete = true">Completed tasks</a>
+	<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
+	<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
 
 	<ul>
 		<li ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
