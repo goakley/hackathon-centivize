@@ -22,9 +22,7 @@
                           xhr.addEventListener("loadend", function(e) {
                               var data = JSON.parse(this.responseText);
                               if (data && data.status === "okay") {
-                                  document.querySelector("#user").textContent = data.email;
-                                  document.querySelector("#login").disabled = "disabled";
-                                  document.querySelector("#logout").disabled = "";
+                                  location.reload();
                               }
                           }, false);
                           xhr.send(JSON.stringify({
