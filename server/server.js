@@ -1,10 +1,12 @@
 #!/usr/bin/env node
 
-const PCOL="https";
-const HOST="centivize.co";
-const PORT=80;
+"use strict";
 
-const SECRET = require("./secret.json");
+var PCOL="https";
+var HOST="centivize.co";
+var PORT=80;
+
+var SECRET = require("./secret.json");
 var CONFIG = {
     DWOLLA: {
         ID: "NCmLk7qYgDeu+wxCbjmt7178/upeGgzeD/HNPWIiLX2CH4zI9+",
@@ -16,15 +18,13 @@ var CONFIG = {
 };
 CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
 
-function s4() {
-   return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-};
-
 function guid() {
-   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-      s4() + '-' + s4() + s4() + s4();
+    function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+            .toString(16).substring(1);
+    };
+    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+        s4() + '-' + s4() + s4() + s4();
 }
 
 var express = require('express'),
@@ -158,7 +158,7 @@ function getTasks(uid, callback) {
  */
 function addTask(uid, task, callback) {
     var taskid = guid();
-    var taskkey = taskKey(task);
+    var taskkey = taskKey(taskid);
     var multi = redis.multi();
     multi.sadd(userTasksKey(uid), taskid, function(err, res) {
         if (err) {
