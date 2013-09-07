@@ -147,7 +147,7 @@ function getTasks(uid, callback) {
  */
 function addTask(uid, task, callback) {
    var taskid = guid();
-   var taskkey = taskKey(task);
+   var taskkey = taskKey(taskid);
    var multi = redis.multi();
    multi.sadd(userTasksKey(uid), taskid, function(err, res) {
          if (err) {
@@ -167,7 +167,7 @@ function addTask(uid, task, callback) {
    multi.exec(function(err, res) {
          if (err) {
             callback(undefined);
-            return -1 ;
+            return -1;
          }
       });
    return taskid;
