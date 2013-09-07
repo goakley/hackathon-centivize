@@ -46,12 +46,19 @@
 		</span>
 
 		<div class="expanded-show" ng-show="task.title=='Do big thing'">
+		
+			<div class="coach">
+				<span class="coach-title">Coach</span>
+				<span class="coach-body">{{task.coach}}</span>
+			</div>
 			
-			<div class="expanded-title">Coach</div>
-			<div class="expanded-body">{{task.coach}}</div>
-			<div class="expanded-title">Description</div>
-			<div class="expanded-body">{{task.description}}</div>
+			<div class="description-title">Description</div>
+			<div class="description">{{task.description}}</div>
 
+			<div class="buttons">
+				<button type="button" class="blue">Button</button>
+				<button type="button" class="gray">Button</button>
+			</div>
 		</div>
 
 		</li>
