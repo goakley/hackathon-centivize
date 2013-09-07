@@ -1,5 +1,15 @@
 "use strict";
 
+var app = angular.module("centivize", ["ngResource"]);
+
+app.factory("Task", function($resource) {
+	return $resource("/tasks/:taskId", {}, {
+		index: {method: "GET", isArray: true},
+		destroy: { method: "DELETE" },
+		create: {method: "GET"}
+	});
+});
+
 function HomeController($scope) {
 	$scope.active = "tasks";
 }
