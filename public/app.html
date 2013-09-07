@@ -14,6 +14,7 @@
 		</script>
 		<script src="https://login.persona.org/include.js"></script>
                 <script>
+                  console.log("I AM NOW LOGGING OUT");
                   var xhr = new XMLHttpRequest();
                   xhr.open("POST", "/persona/logout", true);
                   xhr.addEventListener("loadend", function(e) {

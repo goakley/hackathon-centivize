@@ -12,10 +12,12 @@
 		<script src="https://login.persona.org/include.js"></script>
                 <script>
                   function onclicklogin() {
+                      console.log("I AM ATTEMPTING TO GET THE ASSERSION");
                       navigator.id.get(function(assertion) {
                           if (!assertion) {
                               return;
                           }
+                          console.log("I GOT THE ASSERSION");
                           var xhr = new XMLHttpRequest();
                           xhr.open("POST", "/persona/verify", true);
                           xhr.setRequestHeader("Content-Type", "application/json");
