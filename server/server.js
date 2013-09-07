@@ -87,20 +87,26 @@ function getTasks(uid, callback) {
 
 function addTask(uid, task, callback) {
    taskid = guid();
-   redis.sadd("user:" + uid + ":taskids", taskid, function(err, res) {
+   var multi = redis.multi();
+   multi.sadd("user:" + uid + ":taskids", taskid, function(err, res) {
          if (err) {
             callback(undefined);
             return;
          }
       });
    for (var field in task) {
-      redis.hset("tasks:" + taskid, task[field]['key'], task[field]['value'], function(err, res) {
+      multi.hset("tasks:" + taskid, task[field]['key'], task[field]['value'], function(err, res) {
             if (err) {
                callback(undefined);
                return;
             }
       });
    }
-
-    return;
+   multi.exec(function(err, res) {
+         if (err) {
+            callback(undefined);
+            return;
+         }
+      });
+   return;
 }
