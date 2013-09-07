@@ -131,6 +131,7 @@ a.nav-link {
 	color: black;
 	margin-right: 40px;
 	letter-spacing: 2px;
+	opacity: 0.2;
 }
 
 a.task-filter {
@@ -141,12 +142,13 @@ a.task-filter {
 	display: inline-block;
 	margin-right: 40px;
 	letter-spacing: 2px;
-	color: #21baea;
+	color: black;
+	opacity: .2;
 }
 
-a.unselected {
-	color: black;
-	opacity: 0.2;
+a.selected {
+	color: #21baea;
+	opacity: 1;
 }
 
 h2 {

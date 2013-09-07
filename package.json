@@ -18,11 +18,12 @@
     ],
     "dependencies": {
         "dwolla": "*",
+        "ejs": "*",
 	"express": "3.x",
         "express-persona": "*",
         "redis": "*",
         "restler": "*",
-	"socket.io": "*"
+        "sendgrid": "*"
     },
     "private": true
 }
