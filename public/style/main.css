@@ -140,9 +140,24 @@ article {
 	list-style-type: none;
 	margin-bottom: 10px;
 }
+
+.task:hover {
+	background-color: #f7f7f7;
+}
+
+
 .title {
 	padding-left: 10px;
 }
+
+.task .title-alt {
+	font-weight: 700;
+	display: inline-block;
+	font-size: 18px;
+	padding-right: 10px;
+	opacity: 0.25;
+}
+
 .task .title {
 	display: inline-block;
 	font-size: 18px;
@@ -271,9 +286,10 @@ article {
 	padding-top: 12px;
 	padding-right: 14px;
 	display: inline-block;
-	width: 5em;
 	padding-right: 10px;
+	width: 12em;
 	text-align: right;
+	color: #999;
 }
 
 @media screen and (min-width: 601px) {
