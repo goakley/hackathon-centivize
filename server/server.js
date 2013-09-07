@@ -23,10 +23,14 @@ var CONFIG = {
         SCOPE: "Balance|Send",
         AUTH_CALLBACK: "https://centivize.co/dwolla/auth/callback",
         PAY_CALLBACK: "https://centivize.co/dwolla/payment/callback",
-        RECV_ACCOUNT: "000-000-0000"
+        RECV_ACCOUNT: "812-528-4968"
+    },
+    SENDGRID: {
+        USER: "centivize"
     }
 };
 CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
+CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
 
 function guid() {
     function s4() {
@@ -76,14 +80,14 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
  * Returns a canonical key for uid's list of taskids.
  */
 function userTasksKey(uid) {
-   return "user:" + uid + ":taskids";
+    return "user:" + uid + ":taskids";
 }
 
 /*
  * Returns a canonical key for the hash for taskid.
  */
 function taskKey(taskid) {
-   return "tasks:" + taskid;
+    return "tasks:" + taskid;
 }
 
 
@@ -135,18 +139,18 @@ function payTask(taskid, pin, callback) {
  * Performs callback on the list of tasks belonging to uid.
  */
 function getTasks(uid, callback) {
-   redis.smembers(userTasksKey(uid), function(err, res) {
+    redis.smembers(userTasksKey(uid), function(err, res) {
         if (err) {
             callback(undefiend);
             return;
         }
         var tasks = [];
         for (var i = 0; i < res.length; i++) {
-           redis.hgetall(taskKey(res[i]), function(err, task) {
+            redis.hgetall(taskKey(res[i]), function(err, task) {
                 tasks.push(err ? undefined : task);
                 if (tasks.length === res.length) {
-                   callback(tasks);
-                   return;
+                    callback(tasks);
+                    return;
                 }
             });
         }
@@ -187,30 +191,30 @@ function addTask(uid, task, callback) {
         if (err) {
             callback(undefined);
             return -1;
-         }
-      });
-   return taskid;
+        }
+    });
+    return taskid;
 }
 
 /*
  * Removes taskid from uid's task list and removes the hash for taskid.
  */
 function removeTask(uid, taskid, callback) {
-   var multi = redis.multi();
-   multi.srem(userTasksKey(uid), taskid, function(err, res) {
-         if (err) {
+    var multi = redis.multi();
+    multi.srem(userTasksKey(uid), taskid, function(err, res) {
+        if (err) {
             callback(undefined);
             return;
-         }
-      });
-   multi.del(taskKey(taskid), function(err, res) {
-         if (err) {
+        }
+    });
+    multi.del(taskKey(taskid), function(err, res) {
+        if (err) {
             callback(undefined);
             return;
-         }
-      });
-   multi.exec(function(err, res) {
-         if (err) {
+        }
+    });
+    multi.exec(function(err, res) {
+        if (err) {
             callback(undefined);
             return;
         }
