@@ -14,6 +14,7 @@ navigator.id.watch({
         xhr.send(JSON.stringify({
             assertion: assertion
         }));
+        location.reload();
     },
     onlogout: function() {
         console.log("I AM NOW LOGGING OUT");
