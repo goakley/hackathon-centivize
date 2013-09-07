@@ -335,3 +335,63 @@ function failTask(tid, verified, callback) {
     });
     return;
 }
+
+
+
+var robotTQ;
+(function checkTaskQueue() {
+    redis.zrange("taskqueue", 0, 0, "WITHSCORES", function(err, head) {
+        if (err) {
+            return;
+        }
+        if (!head.length) {
+            robotTQ = undefined;
+            return;
+        }
+        if (parseInt(head[1]) > Date.now()) {
+            robotTQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
+            return;
+        }
+        if (parseInt(head[1]) <= Date.now()) {
+            redis.zadd("pendingqueue", head[1], head[0], function(err, status) {
+                if (err) {
+                    robotTQ = setTimeout(checkTaskQueue, 1000);
+                    return;
+                }
+                redis.zrem("taskqueue", head[1], head[0], function(err, status) {
+                    if (err) {
+                        robotTQ = setTimeout(checkTaskQueue, 1000);
+                        return;
+                    }
+                    checkTaskQueue();
+                });
+            });
+        }
+    });
+})();
+
+var robotPQ;
+(function checkPendingQueue() {
+    redis.zrange("pendingqueue", 0, 0, "WITHSCORES", function(err, head) {
+        if (err) {
+            return;
+        }
+        if (!head.length) {
+            robotPQ = undefined;
+            return;
+        }
+        if (parseInt(head[1]) > Date.now()) {
+            robotPQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
+            return;
+        }
+        if (parseInt(head[1]) <= Date.now()) {
+            finishTask(head[0], function(status, err) {
+                if (status !== 200) {
+                    robotPQ = setTimeout(checkTaskQueue, 1000);
+                    return;
+                }
+                checkTaskQueue();
+            });
+        }
+    });
+})();
