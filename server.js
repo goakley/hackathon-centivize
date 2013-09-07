@@ -152,16 +152,17 @@ function key_user_tids(uid) { return key_user(uid) + ":tids"; }
 /* PAYMENT HANDLING */
 
 function obtainMoney(tid, pin, callback) {
-    redis.get(key_task(tid), function(err, task) {
+    redis.hgetall(key_task(tid), function(err, task) {
         if (err) {
             callback(500, err);
             return;
         }
-        redis.get(key_user(task_id) + ":dwollatoken", function(err, token) {
+        redis.get(key_user(task.uid) + ":dwollatoken", function(err, token) {
             if (err) {
                 callback(500, err);
                 return;
             }
+	    console.log("token is " + token);
             redis.hset(key_task(tid), 'paid', '1', function(err, nothingofimportance) {
                 if (err) {
                     callback(500, err);
@@ -180,11 +181,13 @@ function obtainMoney(tid, pin, callback) {
 }
 
 function releaseMoney(tid, callback) {
-    redis.get(key_task(tid), function(err, task) {
+    redis.hgetall(key_task(tid), function(err, task) {
         if (err) {
             callback(500, err);
             return;
         }
+	console.log("tid is " + tid);
+	console.log(err, task);
         dwolla.send(CONFIG.DWOLLA.RECV_TOKEN, CONFIG.DWOLLA.RECV_PIN, task.uid, task.value, function(err, data) {
             if (err) {
                 callback(500, err);
@@ -209,7 +212,7 @@ function releaseMoney(tid, callback) {
  *  uid was successful/unsuccessful in their attempt to accomplish tid.
  */
 function sendCoachEmail(tid, callback) {
-    redis.get(key_task(tid), function(err, task) {
+    redis.hgetall(key_task(tid), function(err, task) {
 	if (err) {
 	    callback(500, err);
 	    return;
@@ -285,7 +288,7 @@ function addTask(uid, task, pin, callback) {
             callback(500, err);
             return;
         }
-        obtainMoney(tid, req.body.pin, function(success, err) {
+        obtainMoney(tid, pin, function(success, err) {
             if (!success) {
                 finishTask(tid, function(){});
                 callback(500, err);
@@ -332,27 +335,23 @@ function failTask(tid, verified, callback) {
     return;
 }
 
-
-
-
-
-
-
-
-
-/*
  function printRes(res) {
  console.log(res);
  }
 
  var uid = CONFIG.DWOLLA.ID;
- var groceries = addTask(uid, {name: "Groceries", time: UNIXTIMESTAMP, value: 10, 
- currency: "USD", coach: "Glen",
- description: "Milk and eggs"}, printRes);
- var victory = addTask(uid, {name: "Win PennApps", time: UNIXTIMESTAMP, value: 1000, 
- currency: "USD", coach: "Glen",
- description: "centivize kicks ass"}, printRes);
- getTasks(uid, printRes);
- removeTask(groceries, printRes);
- getTasks(uid, printRes);
- */
+ addTask(uid,
+	 {name: "Groceries", time: "Monday", value: 10, 
+	  currency: "USD", coach: "Glen",
+	  description: "Milk and eggs"},
+	 function(groceries) {
+	     addTask(uid,
+		     {name: "Win PennApps", time: "Sunday", value: 1000, 
+		      currency: "USD", coach: "Glen",
+		      description: "centivize kicks ass"},
+		     function(victory) {
+			 getTasks(uid, printRes);
+			 finishTask(groceries, printRes);
+			 getTasks(uid, printRes);
+		     });
+	 });
