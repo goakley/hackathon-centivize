@@ -8,6 +8,7 @@ navigator.id.watch({
             var data = JSON.parse(this.responseText);
             if (data && data.status === "okay") {
                 console.log("You have been logged in as: " + data.email);
+                location.reload();
             }
         }, false);
         
