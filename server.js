@@ -62,7 +62,24 @@ app.use(express.bodyParser())
     .use(express.cookieParser())
     .use(express.session({secret:"mozillapersona"}))
     .use(express.static('./public'))
-    .use(function(req, res, next){res.send(404, 'Nope!');});
+    .use(function(req, res, next) {
+        var pathname = url.parse(req.url).pathname;
+        if (req.session.email) {
+            if (pathname === '/' || pathname === '') {
+                res.redirect(302, '/app.html');
+                return;
+            }
+        } else {
+            if (pathname === '/app.html') {
+                res.redirect(302, '/');
+                return;
+            }
+        }
+        next();
+    })
+    .use(function(req, res, next) {
+        res.send(404, 'Nope!');
+    });
 
 require('express-persona')(app, {
     audience: "https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT,
