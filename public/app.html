@@ -50,7 +50,7 @@
 	</div>
 
 	<ul>
-		<li class="task" href="#" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
+		<li class="task" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
 
 		<span class="title">{{task.title}}</span>
 		&nbsp;
@@ -88,8 +88,14 @@
 	</ul>
 </div>
 
-<div ng-show="active=='settings'">
-	Settings
+<div id="tasks" ng-show="active=='settings'">
+	
+		<li class="task" ng-click="toggleExpand(settings)" ng-controller="TaskController">
+
+			<span class="title">Hello</span>
+			<span class="amount">There</span>
+		</li>
+
 </div>
 
 <div ng-show="active=='about'">
