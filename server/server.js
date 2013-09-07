@@ -44,11 +44,12 @@ function guid() {
 
 https.createServer({key: fs.readFileSync('./sslcert/server.key', 'utf8'),
                     cert:fs.readFileSync('./sslcert/server.crt', 'utf8')},
-                   app);
+                   app).listen(443);
 
 app.use(express.bodyParser())
     .use(express.cookieParser())
-    .use(express.session({secret:"mozillapersona"}));
+    .use(express.session({secret:"mozillapersona"}))
+    .use(express.static('../public'));
 
 require('express-persona')(app, {
     audience: PCOL+"://"+HOST+":"+PORT,
@@ -56,6 +57,10 @@ require('express-persona')(app, {
     logoutPath: "/persona/logout"
 });
 
+
+
+/*****************************************************************************/
+/* WEB API */
 
 app.get("/dwolla/auth", function(req, res) {
     var authUrl = 'https://www.dwolla.com/oauth/v2/authenticate?response_type=code' +
@@ -77,6 +82,58 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
     });
 });
 
+app.get("/api/task/list", function(req, res) {
+    getTasks(req.session.email, function(tasks) {
+        if (!tasks) {
+            res.json({"err":"ERROR"});
+        } else {
+            res.json(tasks);
+        }
+    });
+});
+
+app.post("/api/task/add", function(req, res) {
+    console.log(req.body);
+    addTask(req.session.email, req.body, function(taskid) {
+        if (!taskid) {
+            res.json({"err":"ERROR"});
+            return;
+        }
+        payTask(taskid, req.body.pin, function(success) {
+            if (!success) {
+                res.json({"err":"ERROR"});
+            } else {
+                res.json({"taskid":taskid});
+            }
+        });
+    });
+});
+
+app.post("/api/task/del", function(req, res) {
+    console.log(req.body);
+    removeTask(req.body.taskid, function(success) {
+        if (!success) {
+            res.json({"err":"ERROR"});
+        } else {
+            res.json({"success":true});
+        }
+    });
+});
+
+app.post("/api/task/pay", function(req, res) {
+    payTask(query.taskid, req.body.pin, function(success) {
+        if (!success) {
+            res.json({"err":"ERROR"});
+        } else {
+            res.json({"success":true});
+        }
+    });
+});
+
+/*****************************************************************************/
+
+
+
 /*
  * Returns a canonical key for uid's list of taskids.
  */
@@ -92,27 +149,6 @@ function taskKey(taskid) {
 }
 
 
-app.get("/api/tasklist", function(req, res) {
-    getTasks(req.session.email, function(tasks) {
-        // ???
-    });
-});
-
-app.post("/api/addtask", function(req, res) {
-    console.log(req.body);
-    addTask(req.session.email, req.body, function(taskid) {
-        // ???
-        payTask(taskid, req.body.pin, function(success) {
-            // ???
-        });
-    });
-});
-
-app.post("/api/pay", function(req, res) {
-    payTask(query.taskid, req.body.pin, function(success) {
-        // ???
-    });
-});
 
 function payTask(taskid, pin, callback) {
     redis.get(taskKey(taskid), function(err, task) {
