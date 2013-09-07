@@ -17,15 +17,15 @@
 
 	<h1 id="logo"><img src="img/centivize_logo.svg"></h1>
 
-	<a href="#" class="nav-link" ng-click="active='tasks'">Tasks</a>
-	<a href="#" class="nav-link unselected" ng-click="active='settings'">Settings</a>
-	<a href="#" class="nav-link unselected" ng-click="active='about'">About</a>
+	<a href="#" ng-class="{'nav-link': true, selected: active=='tasks'}" ng-click="active='tasks'">Tasks</a>
+	<a href="#" ng-class="{'nav-link': true, selected: active=='settings'}" ng-click="active='settings'">Settings</a>
+	<a href="#" ng-class="{'nav-link': true, selected: active=='about'}" ng-click="active='about'">About</a>
 </nav>
 
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
 
-	<a href="" class="task-filter" ng-click="showComplete = false">Current tasks</a>
-	<a href="" class="task-filter unselected" ng-click="showComplete = true">Completed tasks</a>
+	<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
+	<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
 
 	<ul>
 		<li ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
