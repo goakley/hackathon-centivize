@@ -57,7 +57,8 @@ https.createServer({key: fs.readFileSync('./sslcert/server.key', 'utf8'),
 app.use(express.bodyParser())
     .use(express.cookieParser())
     .use(express.session({secret:"mozillapersona"}))
-    .use(express.static('../public'));
+    .use(express.static('../public'))
+    .use(function(req, res, next){res.send(404, 'Nope!');});
 
 require('express-persona')(app, {
     audience: "https://" + HOST + ":" + PORT,
@@ -70,13 +71,13 @@ require('express-persona')(app, {
 
 app.get("/verify/:tid/yes", function(req, res) {
     finishTask(tid, function(status, err) {
-        res.send("");
+        res.sendfile("./templates/verify_completed_" + (err ? "n" : "") + "okay.html");
     });
 });
 
 app.get("/verify/:tid/no", function(req, res) {
     failTask(tid, function(status, err) {
-        res.send("");
+        res.sendfile("./templates/verify_failed_" + (err ? "n" : "") + "okay.html");
     });
 });
 
