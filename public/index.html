@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+	<head>
+		<title>centivize</title>
+		<meta charset="utf-8">
+
+		<link rel="stylesheet" href="style/normalize.css">
+		<link rel="stylesheet" href="style/main.css">
+		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300" rel="stylesheet" type="text/css">
+
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		<script src="script/app.js"></script>
+	</head>
+	<body ng-app>
+
+<nav class="{{active}}" ng-click="$event.preventDefault()">
+
+	<h1 id="logo"><img src="img/centivize_logo.svg"></h1>
+
+	<a href="#" class="tasks" ng-click="active='tasks'">Tasks</a>
+	<a href="#" class="settings" ng-click="active='settings'">Settings</a>
+	<a href="#" class="about" ng-click="active='about'">About</a>
+</nav>
+
+<div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
+
+	<a href="" class="current" ng-click="showComplete = false">Current tasks</a>
+	<a href="" class="completed" ng-click="showComplete = true">Completed tasks</a>
+
+	<ul>
+		<li ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
+
+		{{task.title}}
+		&nbsp;
+
+		<strong>{{task.amount | currency}}</strong>
+
+		<em>{{task.coach}}</em>
+
+		</li>
+	</ul>
+</div>
+
+<div ng-show="active=='settings'">
+	Settings
+</div>
+
+<div ng-show="active=='about'">
+	About
+</div>
+
+	</body>
+</html>
+
