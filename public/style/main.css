@@ -21,10 +21,22 @@ a.nav-link {
 	display: inline-block;
 	color: black;
 	margin-right: 40px;
-	letter-spacing: 1px;
+	letter-spacing: 2px;
+}
+
+a.task-filter {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	font-size: 14px;
+	text-transform: uppercase;
+	display: inline-block;
+	margin-right: 40px;
+	letter-spacing: 2px;
+	color: #21baea;
 }
 
 a.unselected {
+	color: black;
 	opacity: 0.2;
 }
 
