@@ -17,9 +17,9 @@
 
 	<h1 id="logo"><img src="img/centivize_logo.svg"></h1>
 
-	<a href="#" class="tasks" ng-click="active='tasks'">Tasks</a>
-	<a href="#" class="settings" ng-click="active='settings'">Settings</a>
-	<a href="#" class="about" ng-click="active='about'">About</a>
+	<a href="#" class="nav-link" ng-click="active='tasks'">Tasks</a>
+	<a href="#" class="nav-link unselected" ng-click="active='settings'">Settings</a>
+	<a href="#" class="nav-link unselected" ng-click="active='about'">About</a>
 </nav>
 
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
