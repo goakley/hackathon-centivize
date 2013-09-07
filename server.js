@@ -133,7 +133,7 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
  * 200 - Located all the user tasks which are provided
  * 500 - No idea what happened wrong
  */
-app.get("/api/tasks", function(req, res) {
+app.get("/api/task", function(req, res) {
     getTasks(req.session.email, function(status, tasks) {
         if (status !== 200) {
             res.json({err:"ERROR"});

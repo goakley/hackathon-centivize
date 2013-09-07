@@ -1,7 +1,7 @@
 "use strict";
 
 function HomeController($scope) {
-	$scope.active = 'tasks';
+	$scope.active = "tasks";
 }
 
 function TasksController($scope) {
