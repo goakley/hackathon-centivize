@@ -34,7 +34,7 @@
 	</div>
 
 	<ul>
-		<li class="task" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
+		<li class="task" href="#" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
 
 		<span class="title">{{task.title}}</span>
 		&nbsp;
@@ -62,9 +62,11 @@
 				<button type="button" class="gray">Edit Details</button>
 				<button type="button" class="blue">Task Completed</button>
 			</div>
-		</div>
+		</div>			
+
 
 		</li>
+		<li class="task clearfix"> <span class="title-alt">Add a task</span> </li>
 	</ul>
 </div>
 
