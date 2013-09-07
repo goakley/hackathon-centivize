@@ -45,7 +45,7 @@
 			<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
 		</span>
 
-		<div class="expanded-show" ng-show="task.title=='Do big thing'">
+		<div class="expanded-show clearfix" ng-show="task.title=='Do big thing'">
 		
 			<div class="coach">
 				<span class="coach-title">Coach</span>
@@ -56,8 +56,8 @@
 			<div class="description">{{task.description}}</div>
 
 			<div class="buttons">
-				<button type="button" class="blue">Button</button>
-				<button type="button" class="gray">Button</button>
+				<button type="button" class="gray">Edit Details</button>
+				<button type="button" class="blue">Task Completed</button>
 			</div>
 		</div>
 

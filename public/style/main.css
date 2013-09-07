@@ -167,7 +167,7 @@ article {
 
 .expanded-show {
 	margin-top: 20px;
-	background-color: #fbfbfb;
+	background-color: #f7f7f7;
 }
 
 .coach {
@@ -194,19 +194,44 @@ article {
 
 .description {
 	padding-left: 14px;
+	padding-right: 14px;
 	padding-top: 4px;
 	font-family: 'Open Sans', sans-serif;
 	padding-bottom: 12px;
 }
-
+.buttons {
+	float: right;
+	padding-right: 14px;
+	padding-left: 14px;
+	padding-bottom: 12px;
+	padding-top: 12px;
+}
 .blue {
-	font-family: 'Open Sans', sans-serif;
 	background: #21baea;
 	border: 0px;
 	height: 40px;
-	width: 160px;
+	width: 180px;
 	font-color: white;
-	font-size: 18px;
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 500;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+
+}
+.gray {
+	margin-right: 12px;
+	background: #3e4447;
+	opacity: 0.2;
+	border: 0px;
+	height: 40px;
+	width: 180px;
+	font-color: white;
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 500;
+	letter-spacing: 1px;
+	text-transform: uppercase;
 }
 
 @media screen and (min-width: 601px) {
@@ -265,7 +290,18 @@ article {
 	.task .due-date {
 		display: none;
 	}
-
+	.buttons {
+	}
+	.blue {
+		width: 150px;
+		font-size: 12px;
+		font-weight: 500;
+	}
+	.gray {
+		width: 150px;
+		font-size: 12px;
+		font-weight: 500;
+	}
 	/*nav a#logo:after {
 		content: "";
 		width: 30px;
