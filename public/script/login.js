@@ -1,5 +1,6 @@
 navigator.id.watch({
     onlogin: function(assertion) {
+        console.log("I AM NOW LOGGING IN");
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/persona/verify", true);
         xhr.setRequestHeader("Content-Type", "application/json");
@@ -15,6 +16,7 @@ navigator.id.watch({
         }));
     },
     onlogout: function() {
+        console.log("I AM NOW LOGGING OUT");
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/persona/logout", true);
         xhr.addEventListener("loadend", function(e) {

@@ -58,10 +58,11 @@ var httpsserver = https.createServer({key: fs.readFileSync('./sslcert/ssl.key', 
 		                      ca:fs.readFileSync('./sslcert/sub.class1.server.ca.pem', 'utf8')},
                                      app).listen(CONFIG.SERVER.PORT);
 
-app.use(express.bodyParser())
+app.use(express.logger())
+    .use(express.static('./public'))
+    .use(express.bodyParser())
     .use(express.cookieParser())
     .use(express.session({secret:"mozillapersona"}))
-    .use(express.static('./public'))
     .use(function(req, res, next) {
         var pathname = url.parse(req.url).pathname;
         if (req.session.email) {
@@ -76,15 +77,10 @@ app.use(express.bodyParser())
             }
         }
         next();
-    })
-    .use(function(req, res, next) {
-        res.send(404, 'Nope!');
     });
 
 require('express-persona')(app, {
-    audience: "https://" + CONFIG.SERVER.HOST,
-    verifyPath: "/persona/verify",
-    logoutPath: "/persona/logout"
+    audience: "https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT
 });
 
 /*****************************************************************************/
