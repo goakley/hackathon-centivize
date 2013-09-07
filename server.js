@@ -352,7 +352,10 @@ var robotTQ;
             return;
         }
         if (parseInt(head[1]) > Date.now()) {
-            robotTQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
+            if (parseInt(head[1]) - Date.now() > 60000)
+                robotTQ = setTimeout(checkTaskQueue, 60000);
+            else
+                robotTQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
             return;
         }
         redis.zadd("pendingqueue", head[1], head[0], function(err, status) {
@@ -382,7 +385,10 @@ var robotPQ;
             return;
         }
         if (parseInt(head[1]) > Date.now()) {
-            robotPQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
+            if (parseInt(head[1]) - Date.now() > 60000)
+                robotPQ = setTimeout(checkTaskQueue, 60000);
+            else
+                robotPQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
             return;
         }
         finishTask(head[0], function(status, err) {
