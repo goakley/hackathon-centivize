@@ -163,7 +163,6 @@ function obtainMoney(tid, pin, callback) {
                 callback(500, err);
                 return;
             }
-	    console.log("token is " + token);
             redis.hset(key_task(tid), 'paid', '1', function(err, nothingofimportance) {
                 if (err) {
                     callback(500, err);
@@ -187,8 +186,6 @@ function releaseMoney(tid, callback) {
             callback(500, err);
             return;
         }
-	console.log("tid is " + tid);
-	console.log(err, task);
         dwolla.send(CONFIG.DWOLLA.RECV_TOKEN, CONFIG.DWOLLA.RECV_PIN, task.uid, task.value, function(err, data) {
             if (err) {
                 callback(500, err);
@@ -335,24 +332,3 @@ function failTask(tid, verified, callback) {
     });
     return;
 }
-
- function printRes(res) {
- console.log(res);
- }
-
- var uid = CONFIG.DWOLLA.ID;
- addTask(uid,
-	 {name: "Groceries", time: "Monday", value: 10, 
-	  currency: "USD", coach: "Glen",
-	  description: "Milk and eggs"},
-	 function(groceries) {
-	     addTask(uid,
-		     {name: "Win PennApps", time: "Sunday", value: 1000, 
-		      currency: "USD", coach: "Glen",
-		      description: "centivize kicks ass"},
-		     function(victory) {
-			 getTasks(uid, printRes);
-			 finishTask(groceries, printRes);
-			 getTasks(uid, printRes);
-		     });
-	 });
