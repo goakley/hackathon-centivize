@@ -71,6 +71,7 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
     });
 });
 
+
 function userTasksKey(uid) {
    return "user:" + uid + ":taskids";
 }
@@ -79,15 +80,8 @@ function taskKey(taskid) {
    return "tasks:" + taskid;
 }
 
-app.get("/api/pay", function(req, res) {
-    var urlinfo = url.parse(req.url, true).query;
-    dwollaPay(req.session.email, query.pin, query.amount, function(status) {
-        // ???
-    });
-});
 
 app.get("/api/tasklist", function(req, res) {
-    var urlinfo = url.parse(req.url, true).query;
     getTasks(req.session.email, function(tasks) {
         // ???
     });
@@ -95,27 +89,43 @@ app.get("/api/tasklist", function(req, res) {
 
 app.post("/api/addtask", function(req, res) {
     console.log(req.body);
+    addTask(req.session.email, req.body, function(taskid) {
+        // ???
+        payTask(taskid, req.body.pin, function(success) {
+            // ???
+        });
+    });
+});
+
+app.post("/api/pay", function(req, res) {
+    payTask(query.taskid, req.body.pin, function(success) {
+        // ???
+    });
 });
 
 
 
-
-function dwollaPay(uid, pin, amount, callback) {
-    redis.get("user:" + uid + ":dwollatoken", function(err, res) {
+function payTask(taskid, pin, callback) {
+    redis.get(taskKey(taskid), function(err, task) {
         if (err) {
             callback(undefined);
             return;
         }
-        dwolla.send(res, pin, CONFIG.DWOLLA.RECV_ACCOUNT, amount, function(err, data) {
+        redis.get("user:" + task.uid + ":dwollatoken", function(err, token) {
             if (err) {
                 callback(undefined);
                 return;
             }
-            callback(true);
+            dwolla.send(token, pin, CONFIG.DWOLLA.RECV_ACCOUNT, task.value, function(err, data) {
+                if (err) {
+                    callback(undefined);
+                    return;
+                }
+                callback(true);
+            });
         });
     });
 }
-
 
 
 function getTasks(uid, callback) {
@@ -138,29 +148,36 @@ function getTasks(uid, callback) {
 }
 
 function addTask(uid, task, callback) {
-   var taskid = guid();
-   var taskkey = taskKey(task);
-   var multi = redis.multi();
-   multi.sadd(userTasksKey(uid), taskid, function(err, res) {
-         if (err) {
+    var taskid = guid();
+    var taskkey = taskKey(task);
+    var multi = redis.multi();
+    multi.sadd(userTasksKey(uid), taskid, function(err, res) {
+        if (err) {
             callback(undefined);
             return;
-         }
-      });
-   for (var field in task) {
-      multi.hset(taskkey, task[field]['key'], task[field]['value'],
-                 function(err, res) {
+        }
+    });
+    multi.hmset(taskkey,
+                'uid', uid,
+                'name', task['name'],
+                'time', task['time'],
+                'value', task['value'],
+                'currency', task['currency'],
+                'verifier', task['verifier'],
+                'description', task['description'],
+                'paid', '0',
+                function(err, res) {
                     if (err) {
-                       callback(undefined);
-                       return;
+                        callback(undefined);
+                        return;
                     }
-      });
-   }
-   multi.exec(function(err, res) {
-         if (err) {
+                });
+    multi.exec(function(err, res) {
+        if (err) {
             callback(undefined);
             return;
-         }
-      });
-   return;
+        }
+        callback(taskid);
+    });
+    return;
 }
