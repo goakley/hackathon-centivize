@@ -269,17 +269,18 @@ function addTask(uid, task, pin, callback) {
     var tid = guid();
     var taskkey = key_task(tid);
     var multi = redis.multi();
+    multi.zadd("taskqueue", task.time, tid);
     multi.sadd(key_user_tids(uid), tid);
     multi.hmset(taskkey,
-                'name', task['name'],
-                'time', task['time'],
-                'value', task['value'],
-                'currency', task['currency'],
-                'verifier', task['verifier'],
-                'description', task['description'],
+                'name', task.name,
+                'time', task.time,
+                'value', task.value,
+                'currency', task.currency,
+                'verifier', task.verifier,
+                'description', task.description,
                 'paid', '0',
                 'uid', uid,
-                'cid', task['cid']);
+                'cid', task.cid);
     multi.exec(function(err, res) {
         if (err) {
             finishTask(tid, function(){});
@@ -307,6 +308,7 @@ function finishTask(tid, callback) {
         var multi = redis.multi();
         multi.srem(key_user_tids(tid['uid']), tid);
         multi.del(key_task(tid));
+	multi.zrem("taskqueue", tid);
         multi.exec(function(err, res) {
             if (err) {
                 callback(500, err);
@@ -323,6 +325,7 @@ function failTask(tid, verified, callback) {
     var multi = redis.multi();
     multi.srem(key_user_tids(tid['uid']), tid);
     multi.del(key_task(tid));
+    multi.zrem("taskqueue", tid);
     multi.exec(function(err, res) {
         if (err) {
             callback(500, err);
