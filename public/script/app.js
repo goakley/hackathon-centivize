@@ -34,7 +34,7 @@ function TasksController($scope) {
 
 function TaskController($scope) {
 
-	this.toggleEditing = function() {
-		$scope.isEditing = !$scope.isEditing;
+	this.toggleExpanded = function() {
+		$scope.isExpanded = !$scope.isExpanded;
 	};
 }
