@@ -1,7 +1,10 @@
 "use strict";
 
-function TasksController($scope) {
+function HomeController($scope) {
 	$scope.active = 'tasks';
+}
+
+function TasksController($scope) {
 	$scope.showComplete = false;
 
 	$scope.tasks = [
