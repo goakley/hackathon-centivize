@@ -311,7 +311,7 @@ function finishTask(tid, callback) {
         multi.srem(key_user_tids(tid['uid']), tid);
         multi.del(key_task(tid));
 	multi.zrem("taskqueue", tid);
-	mutli.zrem("pendingqueue", tid);
+	multi.zrem("pendingqueue", tid);
         multi.exec(function(err, res) {
             if (err) {
                 callback(500, err);
@@ -355,21 +355,19 @@ var robotTQ;
             robotTQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
             return;
         }
-        if (parseInt(head[1]) <= Date.now()) {
-            redis.zadd("pendingqueue", head[1], head[0], function(err, status) {
+        redis.zadd("pendingqueue", head[1], head[0], function(err, status) {
+            if (err) {
+                robotTQ = setTimeout(checkTaskQueue, 1000);
+                return;
+            }
+            redis.zrem("taskqueue", head[1], head[0], function(err, status) {
                 if (err) {
                     robotTQ = setTimeout(checkTaskQueue, 1000);
                     return;
                 }
-                redis.zrem("taskqueue", head[1], head[0], function(err, status) {
-                    if (err) {
-                        robotTQ = setTimeout(checkTaskQueue, 1000);
-                        return;
-                    }
-                    checkTaskQueue();
-                });
+                checkTaskQueue();
             });
-        }
+        });
     });
 })();
 
@@ -387,14 +385,12 @@ var robotPQ;
             robotPQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
             return;
         }
-        if (parseInt(head[1]) <= Date.now()) {
-            finishTask(head[0], function(status, err) {
-                if (status !== 200) {
-                    robotPQ = setTimeout(checkTaskQueue, 1000);
-                    return;
-                }
-                checkTaskQueue();
-            });
-        }
+        finishTask(head[0], function(status, err) {
+            if (status !== 200) {
+                robotPQ = setTimeout(checkTaskQueue, 1000);
+                return;
+            }
+            checkTaskQueue();
+        });
     });
 })();
