@@ -29,6 +29,7 @@ var PORT=80;
 /* SETUP */
 
 var dwolla = require('dwolla'),
+    ejs = require('ejs'),
     express = require('express'),
     fs = require('fs'),
     https = require('https'),
@@ -207,13 +208,29 @@ function releaseMoney(tid, callback) {
  * Sends the coach for uid's task tid an email asking them to confirm if
  *  uid was successful/unsuccessful in their attempt to accomplish tid.
  */
-function sendCoachEmail(uid, tid, successful, callback) {
+function sendCoachEmail(tid, callback) {
     redis.get(key_task(tid), function(err, task) {
 	if (err) {
 	    callback(500, err);
 	    return;
 	}
-	
+        var email = fs.readFileSync("./templates/email_coach.ejs");
+        var emailtext = ejs.render(file, {user:task.uid,
+                                          expiration:task.time,
+                                          approval:"https://" + HOST + "/verify/" + tid + "/yes",
+                                          deinal:"https://" + HOST + "/verify/" + tid + "/no"});
+	sendgrid.send({
+            to: task.cid,
+            from: task.uid,
+            subject: task.uid + " Nearing The End of a Task",
+            text: emailtext
+        }, function(err, response) {
+            if (err) {
+                callback(500, err);
+                return;
+            }
+            callback(200);
+        });
     });
 }
 
@@ -260,7 +277,8 @@ function addTask(uid, task, pin, callback) {
                 'verifier', task['verifier'],
                 'description', task['description'],
                 'paid', '0',
-                'uid', uid);
+                'uid', uid,
+                'cid', task['cid']);
     multi.exec(function(err, res) {
         if (err) {
             finishTask(tid, function(){});
