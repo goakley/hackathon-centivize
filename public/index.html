@@ -34,18 +34,20 @@
 	</div>
 
 	<ul>
-		<li ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
+		<li class="task" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
 
-		{{task.title}}
+		<span class="title">{{task.title}}</span>
 		&nbsp;
 
-		<strong>{{task.amount | currency}}</strong>
+		<span class="amount">{{task.amount | currency}}</span>
 
-		<span>{{task.dueDate | date:'short'}}</span>
+		<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
 
-		<em>{{task.coach}}</em>
+		<a href="" class="toggle" ng-click="toggleExpanded()">{{ isExpanded ? '&#9660;' : '&#9650;'}}</a>
 
-		<a href="" class="toggle" ng-click="toggleEditing()">{{ isEditing ? '&#9660;' : '&#9650;'}}</a>
+		<div ng-show="isExpanded">
+			<span class="coach">{{task.coach}}</span>
+		</div>
 
 		</li>
 	</ul>

@@ -40,6 +40,7 @@ var dwolla = require('dwolla'),
     url = require('url');
 
 var app = express();
+var timeout = undefined;
 
 /*****************************************************************************/
 
@@ -294,8 +295,9 @@ function addTask(uid, task, pin, callback) {
             } else {
                 callback(200, tid);
             }
-        });
+        });	
     });
+    updateTimeout(task.time - new Date().getTime());
 }
 
 /* Successfully complete a task */
@@ -309,6 +311,7 @@ function finishTask(tid, callback) {
         multi.srem(key_user_tids(tid['uid']), tid);
         multi.del(key_task(tid));
 	multi.zrem("taskqueue", tid);
+	multi.zrem("pendingqueue", tid);
         multi.exec(function(err, res) {
             if (err) {
                 callback(500, err);
@@ -335,3 +338,65 @@ function failTask(tid, verified, callback) {
     });
     return;
 }
+
+
+
+var robotTQ;
+(function checkTaskQueue() {
+    redis.zrange("taskqueue", 0, 0, "WITHSCORES", function(err, head) {
+        if (err) {
+            return;
+        }
+        if (!head.length) {
+            robotTQ = undefined;
+            return;
+        }
+        if (parseInt(head[1]) > Date.now()) {
+            if (parseInt(head[1]) - Date.now() > 60000)
+                robotTQ = setTimeout(checkTaskQueue, 60000);
+            else
+                robotTQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
+            return;
+        }
+        redis.zadd("pendingqueue", head[1], head[0], function(err, status) {
+            if (err) {
+                robotTQ = setTimeout(checkTaskQueue, 1000);
+                return;
+            }
+            redis.zrem("taskqueue", head[1], head[0], function(err, status) {
+                if (err) {
+                    robotTQ = setTimeout(checkTaskQueue, 1000);
+                    return;
+                }
+                checkTaskQueue();
+            });
+        });
+    });
+})();
+
+var robotPQ;
+(function checkPendingQueue() {
+    redis.zrange("pendingqueue", 0, 0, "WITHSCORES", function(err, head) {
+        if (err) {
+            return;
+        }
+        if (!head.length) {
+            robotPQ = undefined;
+            return;
+        }
+        if (parseInt(head[1]) > Date.now()) {
+            if (parseInt(head[1]) - Date.now() > 60000)
+                robotPQ = setTimeout(checkTaskQueue, 60000);
+            else
+                robotPQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
+            return;
+        }
+        finishTask(head[0], function(status, err) {
+            if (status !== 200) {
+                robotPQ = setTimeout(checkTaskQueue, 1000);
+                return;
+            }
+            checkTaskQueue();
+        });
+    });
+})();
