@@ -2,6 +2,16 @@
 
 "use strict";
 
+var dwolla = require('dwolla'),
+    express = require('express'),
+    fs = require('fs'),
+    https = require('https'),
+    redis = require('redis').createClient(),
+    restler = require('restler'),
+    url = require('url');
+
+var app = express();
+
 var PCOL="https";
 var HOST="centivize.co";
 var PORT=80;
@@ -26,15 +36,6 @@ function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
-
-var express = require('express'),
-    app = express(),
-    dwolla = require('dwolla'),
-    fs = require('fs'),
-    https = require('https'),
-    redis = require('redis').createClient(),
-    restler = require('restler'),
-    url = require('url');
 
 https.createServer({key: fs.readFileSync('./sslcert/server.key', 'utf8'),
                     cert:fs.readFileSync('./sslcert/server.crt', 'utf8')},
