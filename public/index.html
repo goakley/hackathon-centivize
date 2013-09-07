@@ -9,72 +9,37 @@
 		<link rel="stylesheet" href="style/main.css">
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300" rel="stylesheet" type="text/css">
 
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
-		<script src="script/app.js"></script>
+		<script src="https://login.persona.org/include.js"></script>
+
 	</head>
-	<body ng-app ng-controller="HomeController">
+	<body class="splash">
 
 <nav class="clearfix" ng-click="$event.preventDefault()">
-	<ul class="clearfix">
-		<li><a href="#" ng-class="{'nav-link': true, selected: active=='tasks'}" ng-click="active='tasks'">Tasks</a></li>
-		<li><a href="#" ng-class="{'nav-link': true, selected: active=='settings'}" ng-click="active='settings'">Settings</a></li>
-		<li><a href="#" ng-class="{'nav-link': true, selected: active=='about'}" ng-click="active='about'">About</a></li>
-	</ul>
-	<a href="#" id="menu"><img src="img/nav-icon.svg"></a>
 	<a href="#" id="logo"><img id="resize" src="img/centivize_logo.svg"></a>
+	<button class="blue" ng-click="login()">Log In</button>
 </nav>
 
 <article>
 
-<div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
+<div class="splash-header">
+	Sometimes you just need a little push.<br>
+	Start accopmlishing your goals today.
+</div>
 
-	<div id="filters"> 
-		<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
-		<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
+<p>Stake some money on your goals. Meet your dealings in time and make it back. Take too long and donate it all.</p>
+
+<form target="" ng-submit="$event.preventDefault()">
+
+	<div>
+		<input ng-model="firstname" placeholder="First Name">
+		<input ng-model="lastname" placeholder="Last Name">
 	</div>
+	<div>
+		<input ng-model="email" placeholder="Email Address">
+	</div>
+	<button type="submit" class="blue">Sign Up</button>
 
-	<ul>
-		<li class="task" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
-
-		<span class="title">{{task.title}}</span>
-		&nbsp;
-
-		<span class="right-aligned-li">
-			<span class="amount">{{task.amount | currency}}</span>
-
-			<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
-		</span>
-
-		<div class="expanded-show clearfix" ng-show="task.title=='Do big thing'">
-		
-			<span class="amount-alt">{{task.amount | currency}}</span>
-			<span class="due-date-alt">{{task.dueDate | date:'EEEE @ h a'}}</span>
-
-			<div class="coach">
-				<span class="coach-title">Coach</span>
-				<span class="coach-body">{{task.coach}}</span>
-			</div>
-			
-			<div class="description-title">Description</div>
-			<div class="description">{{task.description}}</div>
-
-			<div class="buttons">
-				<button type="button" class="gray">Edit Details</button>
-				<button type="button" class="blue">Task Completed</button>
-			</div>
-		</div>
-
-		</li>
-	</ul>
-</div>
-
-<div ng-show="active=='settings'">
-	Settings
-</div>
-
-<div ng-show="active=='about'">
-	About
-</div>
+</form>
 
 </article>
 

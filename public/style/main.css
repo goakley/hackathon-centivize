@@ -57,6 +57,27 @@ nav a:hover, nav a:active {
 	opacity: 1;
 }
 
+/* Splash */
+
+.splash {
+	background: url('../img/splash_bg.jpg') no-repeat;
+	background-size: cover;
+	color: #cdf;
+}
+
+.splash-header {
+	font-size: 36px;
+	font-weight: 400;
+	color: white;
+	margin-top: 40px;
+}
+
+.splash article {
+	margin: 0 40px;
+}
+
+/* Tasks */
+
 div#tasks {
 	padding-top: 28px;
 	margin: 10px;
