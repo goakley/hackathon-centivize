@@ -1,4 +1,8 @@
-var redis = require('redis').createClient();
+#!/usr/bin/env node
+
+const PCOL="http";
+const HOST="centivize.co";
+const PORT=80;
 
 function s4() {
    return Math.floor((1 + Math.random()) * 0x10000)
@@ -10,6 +14,20 @@ function guid() {
    return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
       s4() + '-' + s4() + s4() + s4();
 }
+
+var express = require('express'),
+    app = express(),
+    redis = require('redis').createClient();
+
+app.use(express.bodyParser())
+    .use(express.cookieParser())
+    .use(express.session({secret:"mozillapersona"}));
+
+require('express-persona')(app, {
+    audience: PCOL+"://"+HOST+":"+PORT,
+    verifyPath: "/persona/verify",
+    logoutPath: "/persona/logout"
+});
 
 function getTasks(uid, callback) {
     redis.smembers("user:" + uid + ":taskids", function(err, res) {
@@ -49,13 +67,3 @@ function addTask(uid, task, callback) {
 
     return;
 }
-
-
-addTask(0, [{key: "name", value: "Groceries"},
-            {key: "time", value: "Monday"},
-            {key: "value", value: "10"},
-            {key: "currency", value: "USD"},
-            {key: "coach", value: "Viraj"},
-            {key: "description", value: "Milk and eggs, bitch"}],
-        function(response) { console.dir(JSON.stringify(response)); });
-getTasks(0, function(response) { console.dir(JSON.stringify(response)); });
