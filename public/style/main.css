@@ -22,6 +22,7 @@ nav {
 	font-size: 14px;
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 600;
+	color: #3e4447;
 	position: relative;
 	text-align: center;
 }
@@ -53,7 +54,7 @@ nav li {
 	*zoom: 1;
 }
 
-nav a:hover, nav a:active {
+nav a:hover, nav a:active{
 	opacity: 1;
 }
 
@@ -94,7 +95,7 @@ div#filters {
 	font-size: 14px;
 	text-transform: uppercase;
 	display: inline-block;
-	color: black;
+	color: #3e4447;
 	margin-right: 40px;
 	letter-spacing: 2px;
 	opacity: 0.2;
@@ -102,7 +103,7 @@ div#filters {
 }
 
 .nav-link.selected {
-	opacity: 1;
+	opacity: 0.6;
 }
 
 .task-filter {

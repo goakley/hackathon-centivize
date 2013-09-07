@@ -44,6 +44,17 @@ function TasksController($scope) {
 		}
 	];
 
+	$scope.settings = [
+		{
+			title: 'First Name',
+			status: 'Viraj'
+		},
+		{
+			title: 'Last Name',
+			status: 'Viraj'
+		}
+	];
+
 	$scope.toggleExpand = function(task) {
 		task.isExpanded = !task.isExpanded;
 	}
