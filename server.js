@@ -323,6 +323,10 @@ function getTasks(uid, callback) {
             callback(500, err);
             return;
         }
+        if (!res.length) {
+            callback(200, []);
+            return;
+        }
         var tasks = [];
         for (var i = 0; i < res.length; i++) {
             redis.hgetall(key_task(res[i]), function(err, task) {
