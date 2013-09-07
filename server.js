@@ -53,10 +53,10 @@ function guid() {
         s4() + '-' + s4() + s4() + s4();
 }
 
-https.createServer({key: fs.readFileSync('./sslcert/ssl.key', 'utf8'),
-                    cert:fs.readFileSync('./sslcert/ssl.crt', 'utf8'),
-		    ca:fs.readFileSync('./sslcert/sub.class1.server.ca.pem', 'utf8')},
-                   app).listen(443);
+var httpsserver = https.createServer({key: fs.readFileSync('./sslcert/ssl.key', 'utf8'),
+                                      cert:fs.readFileSync('./sslcert/ssl.crt', 'utf8'),
+		                      ca:fs.readFileSync('./sslcert/sub.class1.server.ca.pem', 'utf8')},
+                                     app).listen(PORT);
 
 app.use(express.bodyParser())
     .use(express.cookieParser())
@@ -82,7 +82,7 @@ app.use(express.bodyParser())
     });
 
 require('express-persona')(app, {
-    audience: "https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT,
+    audience: "https://" + CONFIG.SERVER.HOST,
     verifyPath: "/persona/verify",
     logoutPath: "/persona/logout"
 });
