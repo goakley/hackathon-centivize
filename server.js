@@ -8,9 +8,13 @@
 
 var SECRET = require("./secret.json");
 var CONFIG = {
+    SERVER: {
+        HOST: "centivize.co",
+        PORT: 443
+    },
     DWOLLA: {
         ID: "NCmLk7qYgDeu+wxCbjmt7178/upeGgzeD/HNPWIiLX2CH4zI9+",
-        SCOPE: "AccountInfoFull|Balance|Send",
+        SCOPE: "Balance|Send",
         AUTH_CALLBACK: "https://centivize.co/dwolla/auth/callback",
         PAY_CALLBACK: "https://centivize.co/dwolla/payment/callback",
         RECV_ACCOUNT: "812-528-4968"
@@ -21,9 +25,6 @@ var CONFIG = {
 };
 CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
 CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
-
-var HOST="centivize.co";
-var PORT=443;
 
 /*****************************************************************************/
 /* SETUP */
@@ -58,11 +59,11 @@ https.createServer({key: fs.readFileSync('./sslcert/server.key', 'utf8'),
 app.use(express.bodyParser())
     .use(express.cookieParser())
     .use(express.session({secret:"mozillapersona"}))
-    .use(express.static('../public'))
+    .use(express.static('./public'))
     .use(function(req, res, next){res.send(404, 'Nope!');});
 
 require('express-persona')(app, {
-    audience: "https://" + HOST + ":" + PORT,
+    audience: "https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT,
     verifyPath: "/persona/verify",
     logoutPath: "/persona/logout"
 });
@@ -220,8 +221,8 @@ function sendCoachEmail(tid, callback) {
         var email = fs.readFileSync("./templates/email_coach.ejs");
         var emailtext = ejs.render(file, {user:task.uid,
                                           expiration:task.time,
-                                          approval:"https://" + HOST + ":" + PORT + "/verify/" + tid + "/yes",
-                                          deinal:"https://" + HOST + ":" + PORT + "/verify/" + tid + "/no"});
+                                          approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
+                                          deinal:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
 	sendgrid.send({
             to: task.cid,
             from: task.uid,
