@@ -13,7 +13,14 @@
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-resource.min.js">
 		</script>
 		<script src="https://login.persona.org/include.js"></script>
-                <script src="script/login.js"></script>
+                <script>
+                  var xhr = new XMLHttpRequest();
+                  xhr.open("POST", "/persona/logout", true);
+                  xhr.addEventListener("loadend", function(e) {
+                      location.reload();
+                  });
+                  xhr.send();
+                </script>
 		<script src="script/app.js"></script>
 	</head>
 	<body ng-app ng-controller="HomeController">
@@ -35,7 +42,7 @@
 	<div id="filters"> 
 		<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
 		<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
-		<a href="" ng-class="{'task-filter': true, selected: showComplete}" onclick="navigator.id.logout()" ng-click="showComplete = true">Log the fuck out</a>
+		<a href="" ng-class="{'task-filter': true, selected: showComplete}" onclick="onclicklogout()" ng-click="showComplete = true">Log the fuck out</a>
 
 	</div>
 
