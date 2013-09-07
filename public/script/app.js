@@ -1,7 +1,17 @@
 "use strict";
 
+var app = angular.module("centivize", ["ngResource"]);
+
+app.factory("Task", function($resource) {
+	return $resource("/tasks/:taskId", {}, {
+		index: {method: "GET", isArray: true},
+		destroy: { method: "DELETE" },
+		create: {method: "GET"}
+	});
+});
+
 function HomeController($scope) {
-	$scope.active = 'tasks';
+	$scope.active = "tasks";
 }
 
 function TasksController($scope) {
@@ -21,21 +31,24 @@ function TasksController($scope) {
 			amount: 1.00,
 			coach: 'Viraj',
 			dueDate: new Date(2013, 9, 14),
-			completed: false
+			completed: false,
+			description: ''
 		},
 		{
 			title: 'Do small thing',
 			amount: 0.50,
 			coach: 'Glen',
 			dueDate: new Date(2013, 9, 7, 4, 41, 0),
-			completed: true
+			completed: true,
+			description: '',
 		}
 	];
+
+	$scope.toggleExpand = function(task) {
+		task.isExpanded = !task.isExpanded;
+	}
 }
 
 function TaskController($scope) {
 
-	this.toggleExpanded = function() {
-		$scope.isExpanded = !$scope.isExpanded;
-	};
 }

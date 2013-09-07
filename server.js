@@ -59,15 +59,15 @@ var httpsserver = https.createServer({key: fs.readFileSync('./sslcert/ssl.key', 
                                      app).listen(CONFIG.SERVER.PORT);
 
 app.use(express.logger())
-    .use(express.static('./public'))
     .use(express.bodyParser())
     .use(express.cookieParser())
     .use(express.session({secret:"mozillapersona"}))
     .use(function(req, res, next) {
         var pathname = url.parse(req.url).pathname;
+        console.log("I WILL NOW CHECK MY STATE AT LOCATION" + pathname + "...");
         if (req.session.email) {
             console.log("I AM LOGGED IN AS " + req.session.email);
-            if (pathname === '/' || pathname === '') {
+            if (pathname === '/' || pathname === '/index.html' || pathname === '') {
                 res.redirect(302, '/app.html');
                 return;
             }
@@ -79,7 +79,8 @@ app.use(express.logger())
             }
         }
         next();
-    });
+    })
+    .use(express.static('./public'));
 
 require('express-persona')(app, {
     audience: "https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT
@@ -132,7 +133,7 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
  * 200 - Located all the user tasks which are provided
  * 500 - No idea what happened wrong
  */
-app.get("/api/tasks", function(req, res) {
+app.get("/api/task", function(req, res) {
     getTasks(req.session.email, function(status, tasks) {
         if (status !== 200) {
             res.json({err:"ERROR"});
