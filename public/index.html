@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="style/main.css">
 		<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300" rel="stylesheet" type="text/css">
 
-		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js"></script>
+		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
 		<script src="script/app.js"></script>
 	</head>
 	<body ng-app>
@@ -35,7 +35,11 @@
 
 		<strong>{{task.amount | currency}}</strong>
 
+		<span>{{task.dueDate | date:'short'}}</span>
+
 		<em>{{task.coach}}</em>
+
+		<a href="" class="toggle" ng-click="toggleEditing()">{{ isEditing ? '&#9660;' : '&#9650;'}}</a>
 
 		</li>
 	</ul>
