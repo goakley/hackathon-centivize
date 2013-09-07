@@ -21,8 +21,7 @@
 	"express": "3.x",
         "express-persona": "*",
         "redis": "*",
-        "restler": "*",
-	"socket.io": "*"
+        "restler": "*"
     },
     "private": true
 }
