@@ -52,16 +52,17 @@
 
 	<ul>
 
-		<li class="task" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
+		<li class="task" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
 
-		<span class="title" ng-click="toggleExpand(task)">{{task.title}}</span>
-		&nbsp;
+		<div class="task-handle" ng-click="toggleExpand(task)">
+		<span class="title">{{task.title}}</span>
 
 		<span class="right-aligned-li">
 			<span class="amount">{{task.amount | currency}}</span>
 
 			<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
 		</span>
+		</div>
 
 		<div class="expanded-show clearfix" ng-show="task.isExpanded">
 		
