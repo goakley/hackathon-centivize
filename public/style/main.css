@@ -293,7 +293,7 @@ article {
 	color: #999;
 }
 
-#about .li {
+#about li {
 	background-color: white;
 	box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
 	padding: 14px;
@@ -302,7 +302,7 @@ article {
 	list-style-type: none;
 }
 
-#about .h1 {
+#about h1 {
 	color: #21baea;
 	width: 2em;
 }
