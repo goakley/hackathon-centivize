@@ -25,7 +25,7 @@ app.factory("Task", function($resource) {
 app.factory("User", function($resource) {
 	return $resource("/api/user", {}, {
 		get: {method: "GET"},
-		save: {method: "PUT"}
+		update: {method: "POST"}
 	});
 });
 
@@ -115,6 +115,7 @@ function TasksController($scope, Task) {
 }
 
 var charities = [
+	/*
 	{name: 'CFY', domain: 'cfy.org'},
 	{name: 'charity: water', domain: 'charitywater.org'},
 	{name: 'DonorsChoose.org', domain: 'donorschoose.org'},
@@ -125,8 +126,14 @@ var charities = [
 	{name: 'Kiva', domain: 'kiva.org'},
 	{name: 'Pencils of Promise', domain: 'pencilsofpromise.org'},
 	{name: 'She\'s the First', domain: 'shesthefirst.org'},
-	{name: 'United Way of New York City', domain: 'unitedwaynyc.org'}
+	{name: 'United Way of New York City', domain: 'unitedwaynyc.org'},
+	*/
+	{name: "Heart4Children Inc.", id: "812-573-9939"},
+	{name: "The Tor Project", id: "thetorproject"},
+	{name: "Cloudbase Foundation", id: "812-675-8638"},
+	{name: "Goodwill Industries of Arkansas", id: "goodwillar"}
 ];
+//https://www.dwolla.com/avatars/:id/104
 
 function SettingsController($scope, User) {
 	$scope.charities = charities;

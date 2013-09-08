@@ -176,7 +176,9 @@
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Charity</span> &nbsp;
 			<span class="right-aligned-li">
-				<span class="status">{{settings.charity}}</span>
+				<select ng-model="settings.charity" ng-options="o.id as o.name for o in charities">
+					<option ng-repeat="charity in charities" value="{{charity.id}}">{{charity.name}}</option>
+				</select>
 			</span>
 		</li>
 

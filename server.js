@@ -242,7 +242,7 @@ app.get("/api/user", function(req, res) {
  * 205 - Successfully updated the provided field
  * 500 - Server error
  */
-app.put("/api/user", function(req, res) {
+app.post("/api/user", function(req, res) {
     redis.hset(key_user(req.session.email), req.body.key, req.body.value, function(err, resp) {
         res.send(err ? 500 : 205);
     });
