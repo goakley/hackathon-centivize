@@ -447,6 +447,10 @@ function finishTask(tid, callback) {
 	});
     }
     redis.hget(key_task(tid), 'paid', function(err, paid) {
+	if (err) {
+	    callback(500, err);
+	    return;
+	}
 	if (paid) {
 	    releaseMoney(tid, function(status, err) {
 		if (status !== 200) {
