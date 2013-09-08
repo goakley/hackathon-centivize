@@ -136,6 +136,7 @@ app.get("/verify/:tid/no", function(req, res) {
 /* Dwolla autentication callback - NOT CALLED DIRECTLY */
 app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
     console.log("REDIRECTED FROM DWOLLA, NOW OBTAINING TOKEN THROUGH REQUEST...");
+    console.log("CODE " + req.query.code);
     restler.get("https://www.dwolla.com/oauth/v2/token", {
         query: {
             client_id: CONFIG.DWOLLA.ID,
