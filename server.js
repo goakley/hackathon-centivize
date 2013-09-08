@@ -170,6 +170,7 @@ app.get("/api/task", function(req, res) {
  */
 app.post("/api/task", function(req, res) {
     addTask(req.session.email, req.body, req.body.pin, function(status, tid) {
+        console.log("GOT RESPONSE " + status);
         if (status !== 200) {
             res.send(500);
         } else {
