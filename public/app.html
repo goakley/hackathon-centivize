@@ -118,7 +118,7 @@
 	</ul>
 </div>
 
-<div id="settings" ng-show="active=='settings'" ng-controller="TasksController">
+<div id="settings" ng-show="active=='settings'" ng-controller="SettingsController">
 
 	<div id="categories"> 
 		<span class="category" ng-click="showComplete = false">Account</span>
@@ -128,19 +128,22 @@
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">First Name</span> &nbsp;
 			<span class="right-aligned-li">
-			<span class="status">Viraj</span>
+				<span class="status">{{settings.firstName}}</span>
+			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Last Name</span>&nbsp;
 			<span class="right-aligned-li">
-			<span class="status">Bindra</span>
+				<span class="status">{{settings.lastName}}</span>
+			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Email</span>&nbsp;
 			<span class="right-aligned-li">
-			<span class="status">viraj.s.bindra@gmail.com</span>
+				<span class="status">{{settings.email}}</span>
+			</span>
 		</li>
 	</ul></div>
 
@@ -152,25 +155,29 @@
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Charity</span> &nbsp;
 			<span class="right-aligned-li">
-			<span class="status">Pencils of Promise</span>
+				<span class="status">{{settings.charity}}</span>
+			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Stake</span>&nbsp;
 			<span class="right-aligned-li">
-			<span class="status">$0.50</span>
+				<span class="status">{{settings.amount | currency}}</span>
+			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Coach</span>&nbsp;
 			<span class="right-aligned-li">
-			<span class="status">goodfriend@gmail.com</span>
+				<span class="status">{{settings.coach}}</span>
+			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Review Period</span>&nbsp;
 			<span class="right-aligned-li">
-			<span class="status">24 hours</span>
+				<span class="status">{{settings.reviewHours}} hours</span>
+			</span>
 		</li>
 	</ul></div>
 
