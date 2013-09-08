@@ -28,6 +28,10 @@ nav {
 	text-align: center;
 }
 
+.splash-nav {
+	background: rgba(0,0,0,0.3);
+}
+
 .yellow-shit {
 	background-color: #fde45a;
 	width: 100%;
@@ -72,16 +76,33 @@ nav a:active{
 /* Splash */
 
 .splash {
-	background: url('../img/splash_bg.jpg') no-repeat;
+	background: url('../img/splash_bg.jpg') no-repeat center center fixed;
 	background-size: cover;
-	color: #cdf;
+	-webkit-background-size: cover;
+ 	-moz-background-size: cover;
+  	-o-background-size: cover;
+}
+
+@media all and (-webkit-min-device-pixel-ratio: 1.5) {
+	.splash {
+		background: url('../img/splash_bg@2x.jpg') no-repeat center center fixed;
+		background-size: cover;
+		-webkit-background-size: cover;
+	 	-moz-background-size: cover;
+	  	-o-background-size: cover;
+	} 
 }
 
 .splash-header {
 	font-size: 36px;
-	font-weight: 400;
+	font-weight: 300;
 	color: white;
 	margin-top: 40px;
+	width: 70%;
+}
+
+.yellow-header {
+	color: #fde45a;
 }
 
 .splash article {
@@ -90,6 +111,7 @@ nav a:active{
 
 .splash .login {
 	margin: 30px;
+	float: right;
 }
 
 /* Tasks */
@@ -123,6 +145,10 @@ div#filters {
 
 .nav-link.selected {
 	opacity: 0.6;
+}
+
+.new-task {
+	margin-top: 24px;
 }
 
 .task-filter {
@@ -312,8 +338,9 @@ article {
 
 .darkblue {
 	background: #004b68;
+	opacity: 0.8;
 	border: 0px;
-	height: 54px;
+	height: 40px;
 	width: 180px;
 	font-color: white;
 	color: white;
@@ -612,9 +639,10 @@ div#categoriestwo {
 
 @media screen and (max-width: 600px) {
 	nav {
-		height: auto;
+		height:60px;
+		/*height: auto;
 		min-height: 60px;
-		min-width: 280px;
+		min-width: 280px;*/
 	}
 	nav ul {
 		display: none;
@@ -692,6 +720,10 @@ div#categoriestwo {
 		right: 15px;
 		top: 10px;
 	}*/
+	.splash-header {
+		width: 90%;
+		font-size: 28px;
+	}
 }
 
 @media only screen and (max-width : 320px) {
@@ -719,3 +751,11 @@ div#categoriestwo {
 	display: block;
 	margin: auto;
 }
+
+.sign-up {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	margin-right: 20px;
+}
+
