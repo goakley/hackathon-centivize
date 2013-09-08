@@ -75,14 +75,12 @@ app.use(express.logger())
     .use(function(req, res, next) {
         var pathname = url.parse(req.url).pathname;
         if (req.session.email) {
-            console.log("I AM LOGGED IN AS " + req.session.email);
             redis.get("user:" + req.session.email + ":dwollatoken", function(err, token) {
                 if (!token && pathname !== url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname) {
                     var authUrl = 'https://www.dwolla.com/oauth/v2/authenticate?response_type=code' +
                             '&client_id=' + encodeURIComponent(CONFIG.DWOLLA.ID) +
                             '&redirect_uri=' + encodeURIComponent(CONFIG.DWOLLA.AUTH_CALLBACK) + 
                             '&scope=' + encodeURIComponent(CONFIG.DWOLLA.SCOPE);
-                    console.log("REDIRECTING TO THE AUTH URL");
                     res.redirect(authUrl);
                     return;
                 } else {
@@ -96,7 +94,6 @@ app.use(express.logger())
             });
             return;
         } else {
-            console.log("I AM NOT LOGGED IN");
             if (pathname === '/app.html') {
                 res.redirect(302, '/');
                 return;
@@ -137,8 +134,6 @@ app.get("/verify/:tid/no", function(req, res) {
 
 /* Dwolla autentication callback - NOT CALLED DIRECTLY */
 app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
-    console.log("REDIRECTED FROM DWOLLA, NOW OBTAINING TOKEN THROUGH REQUEST...");
-    console.log("CODE " + req.query.code);
     restler.get("https://www.dwolla.com/oauth/v2/token", {
         query: {
             client_id: CONFIG.DWOLLA.ID,
@@ -148,7 +143,6 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
             code: req.query.code
         }
     }).once('complete', function(data) {
-        console.log("REQUEST COMPLETE, STORING");
         redis.set("user:" + req.session.email + ":dwollatoken", data.access_token, function(err, asdf) {
             res.redirect('/');
         });
@@ -224,11 +218,16 @@ app.del("/api/task/:tid", function(req, res) {
 });
 
 /**
- * 200 - Good shit
- * 500 - SERVER ERROR ZOMG
+ * 205 - Okay, marked as completed
+ * 404 - Bad tid
+ * 500 - Server error
  */
 app.post("/api/task/:tid/complete", function(req, res) {
     var tid = req.params.tid;
+    if (!tid) {
+        res.send(404);
+        return;
+    }
     redis.exists(key_task(tid), function(err, doesexist) {
         if (!doesexist) {
             res.send(404);
@@ -239,7 +238,7 @@ app.post("/api/task/:tid/complete", function(req, res) {
 		res.send(500);
 		return;
 	    }
-	    res.send(200);
+	    res.send(205);
 	    return;
 	});
     });
