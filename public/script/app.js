@@ -3,7 +3,7 @@
 var app = angular.module("centivize", ["ngResource"]);
 
 app.factory("Task", function($resource) {
-	return $resource("/api/task/:tid", {}, {
+	return $resource("/api/task/:tid", {tid: "@tid"}, {
 		index: {method: "GET", isArray: true},
 		destroy: {method: "DELETE"},
 		save: {
@@ -18,6 +18,10 @@ app.factory("Task", function($resource) {
 					pin: d.pin
 				});
 			}
+		},
+		complete: {
+			method: "POST",
+			url: "/api/task/:tid/complete"
 		}
 	});
 });
@@ -78,16 +82,26 @@ function TasksController($scope, Task) {
 
 	$scope.destroy = function(task) {
 		Task.destroy({tid: task.tid}, function(resource) {
+			// success
 			task.error = "";
-			// kill it
+			// remove from list
+			var i = $scope.tasks.indexOf(task);
+			if (i != -1) {
+				$scope.tasks.splice(i, 1);
+			}
 		}, function(response) {
 			task.error = "There was a problem deleting your task.";
 		});
 	};
 
 	$scope.complete = function(task) {
-		//api/task/:tid/complete
-		task.error = "Todo";
+		Task.complete({tid: task.tid}, function(resource) {
+			// success
+			task.error = "";
+		}, function(response) {
+			task.error = "There was a problem completing your task.";
+		});
+
 	};
 
 }
