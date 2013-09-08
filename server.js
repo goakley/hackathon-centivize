@@ -263,12 +263,17 @@ app.get("/api/user", function(req, res) {
 });
 
 /**
- * req should be {key: "keyname", value: "valname"}
+ * req should be {key: value, ...}
  * 205 - Successfully updated the provided field
  * 500 - Server error
  */
 app.post("/api/user", function(req, res) {
-    redis.hset(key_user(req.session.email), req.body.key, req.body.value, function(err, resp) {
+    var arr = [key_user(req.session.email)];
+    for (var key in req.body) {
+        var value = req.body[key];
+        arr.push(key, value);
+    }
+    redis.hmset(arr, function(err, resp) {
         res.send(err ? 500 : 205);
     });
 });

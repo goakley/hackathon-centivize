@@ -104,8 +104,9 @@ nav a:active{
 
 .splash-body {
 	color: white;
-	width: 60%;
+	width: 75%;
 	opacity: 0.75;
+	line-height: 30px;
 }
 
 .yellow-header {
@@ -118,7 +119,7 @@ nav a:active{
 }
 
 .splash .login {
-	margin: 12px;
+	margin: 30px;
 	float: right;
 }
 
@@ -428,6 +429,16 @@ div#settings {
 	margin: 10px;
 }
 
+#about ul {
+	padding: 0;
+	margin: 0;
+}
+
+div#about {
+	padding-top: 28px;
+	margin: 10px;
+}
+
 div#categories {
 	padding-left: 24px;
 	padding-bottom: 10px;
@@ -465,6 +476,33 @@ div#categoriestwo {
 	list-style-type: none;
 	margin-bottom: 10px;
 	cursor: pointer;
+}
+
+.link {
+	color: #21baea;
+}
+
+.link:hover {
+	color: #008bc1;
+}
+
+.about-li {
+	padding: 14px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	box-shadow: none;
+	background: none;
+}
+
+.about-title {
+	font-size: 18px;
+	font-weight: 500;
+	margin-bottom: 12px;
+	color: #21baea;
+}
+
+.about-bullets {
+
 }
 
 .setting {
@@ -507,8 +545,13 @@ div#categoriestwo {
 	text-align: right;
 }
 
-.logout {
+.settings-buttons {
 	float: right;
+}
+
+.charity-icon {
+	max-width: 1em;
+	max-height: 1em;
 }
 
 .columns {
@@ -525,6 +568,10 @@ div#categoriestwo {
 	font-size: 18px;
 	text-indent: 20px;
 	width: 100%;
+}
+
+.text-entry.ng-invalid {
+	outline: 2px solid red;
 }
 
 .area-entry {
@@ -568,6 +615,14 @@ div#categoriestwo {
 	opacity: 0.5;	
 }
 
+.sign-up {
+	position: absolute;
+	left: 0;
+	margin-top: 40px;
+	margin-left: 28px;
+	padding-bottom: 28px;
+}
+
 @media screen and (max-width: 920px) {
 	.columns {
 		-moz-column-count: 1;
@@ -588,11 +643,6 @@ div#categoriestwo {
 
 #about h1 {
 	color: #21baea;
-}
-
-#about h2 {
-	font-size: 1.25em;
-	margin-left: 0.75em;
 }
 
 .checkbox label {
@@ -648,6 +698,24 @@ div#categoriestwo {
 	}
 	nav ul {
 		padding-right: 20px;
+	}
+	.darkblue {
+		height: 80px;
+		width: 360px;
+		position: absolute;
+		left:0;		
+		font-color: white;
+		margin-left: 12px;
+		color: white;
+		font-family: 'Open Sans', sans-serif;
+		font-weight: 600;
+		font-size: 32px;
+		letter-spacing: 2px;
+		text-transform: uppercase;
+	}
+	.sign-up {
+		margin-top: 40px;
+		margin-bottom: 60px;
 	}
 }
 
@@ -750,6 +818,7 @@ div#categoriestwo {
 	.splash article {
 		margin: 28px;
 	}
+
 }
 
 @media only screen and (max-width : 320px) {
@@ -785,13 +854,5 @@ div#categoriestwo {
 	width: 95%;
 	display: block;
 	margin: auto;
-}
-
-.sign-up {
-	position: absolute;
-	right: 0;
-	margin-top: 40px;
-	margin-right: 28px;
-	padding-bottom: 28px;
 }
 

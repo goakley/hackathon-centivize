@@ -9,6 +9,8 @@
 		<link rel="stylesheet" href="style/main.css">
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:400,600,700,800,300" rel="stylesheet" type="text/css">
 
+		<link rel="apple-touch-icon" href="img/centivize-152.png">
+
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular.min.js"></script>
 		<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.1.5/angular-resource.min.js">
 		</script>
@@ -104,11 +106,11 @@
 					<ul>
 						<li class="label-entry">
 							<span class="label-entry-title">Coach</span><br>
-							<input class="text-entry half"  placeholder="coach@domain.com" ng-model="newTask.cid">
+							<input type="email" class="text-entry half" placeholder="coach@domain.com" ng-model="newTask.cid">
 						</li>
 						<li class="label-entry">
 							<span class="label-entry-title">Dwolla Pin</span><br>
-							<input type="password" maxlength="4" class="text-entry half" placeholder="****" ng-model="newTask.pin">
+							<input type="password" maxlength="4" ng-minlength="4" class="text-entry half" placeholder="****" ng-model="newTask.pin" integer>
 						</li>
 						<li class="label-entry">
 							<span class="label-entry-title">Completion Date</span><br>
@@ -147,21 +149,23 @@
 
 	<div class="columns"><ul class="col">
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">First Name</span> &nbsp;
+			<span class="title">First Name</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.firstName}}</span>
+				<input ng-show="isEditing" ng-model="settings.firstName">
+				<span ng-hide="isEditing" class="status">{{settings.firstName}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Last Name</span>&nbsp;
+			<span class="title">Last Name</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.lastName}}</span>
+				<input ng-show="isEditing" ng-model="settings.lastName">
+				<span ng-hide="isEditing" class="status">{{settings.lastName}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Email</span>&nbsp;
+			<span class="title">Email</span>
 			<span class="right-aligned-li">
 				<span class="status">{{settings.email}}</span>
 			</span>
@@ -174,44 +178,57 @@
 
 	<div class="columns"><ul class="col">
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Charity</span> &nbsp;
+			<span class="title">Charity</span> 
 			<span class="right-aligned-li">
-				<select ng-model="settings.charity" ng-options="o.id as o.name for o in charities"></select>
+				<img class="charity-icon" src="https://www.dwolla.com/avatars/{{settings.charity}}/16">
+				<select ng-show="isEditing" ng-model="settings.charity" ng-options="o.id as o.name for o in charities"></select>
+				<span ng-hide="isEditing" class="status">{{charityName()}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Stake</span>&nbsp;
+			<span class="title">Stake (USD)</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.value | currency}}</span>
+				<input ng-show="isEditing" ng-model="settings.value">
+				<span ng-hide="isEditing" class="status">{{settings.value}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Coach</span>&nbsp;
+			<span class="title">Coach</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.cid}}</span>
+				<input type="email" ng-show="isEditing" ng-model="settings.cid">
+				<span ng-hide="isEditing" class="status">{{settings.cid}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Review Period</span>&nbsp;
+			<span class="title">Review Period (hours)</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.reviewHours}} hours</span>
+				<input type="number" ng-show="isEditing" ng-model="settings.reviewHours">
+				<span ng-hide="isEditing" class="status">{{settings.reviewHours}}</span>
 			</span>
 		</li>
 	</ul></div>
 
-	<div class="logout">
-		<button type="button" class="gray solo-button" href="#" onclick="onclicklogout()">Logout</button>
+	<div class="error">{{error}}</div>
+
+	<div class="settings-buttons">
+		<button class="gray solo-button" onclick="onclicklogout()">Logout</button>
+		<button class="blue solo-button" ng-show="isEditing" ng-click="save()">Save settings</button>
+		<button class="blue solo-button" ng-hide="isEditing" ng-click="edit()">Edit settings</button>
 	</div>
 </div>
 
 <div ng-show="active=='about'" id="about">
+  	
+  	<div id="categories"> 
+		<span class="category">How It Works</span>
+	</div>
+
   <ul>
     <li class="about">
-	<h1>Get Stuff Done</h1>
-        <h2>Centivize helps you take control of your to-do lists. Here's how it works:</h2>
+        <div class="about-title">Centivize helps you take control of your to-do lists. Here's how it works:</div>
         <ul>
           <li> Add your tasks </li>
           <li> Commit some money to each task </li>
@@ -219,10 +236,13 @@
           <li> If you slack off on a task and its timer runs out, your money gets donated to a charity of your choice</li>
         </ul>
     </li>
-    <li>
-        <h1>Slack Off, Save the World</h1>
-        <h2>Centivize currently supports the following charities:</h2>
-        <ul>
+
+    <div id="categories"> 
+		<br><span class="category">Slack Off, Save the World</span>
+	</div>
+    <li class="about">
+        <div class="about-title">Centivize currently supports the following charities:</div>
+       	<ul>
           <li>CFY (cfy.org)</li>
           <li>charity: water (charitywater.org)</li>
           <li>DonorsChoose.org (donorschoose.org)</li>
@@ -236,19 +256,29 @@
           <li> United Way of New York City (unitedwaynyc.org)</li>
         </ul>
     </li>
+
+    <div id="categories"> 
+		<br><span class="category">Better with Friends</span>
+	</div>
+
     <li>
-        <h1>Better with Friends</h1>
-        <h2>Sometimes, money isn't the best motivator.</h2>
+        <div class="about-title">Sometimes, money isn't the best motivator.</div>
         <p> That's why Centivize has you select a friend to be your personal coach
         for each task. Your coach will receive an update when you complete the
         task and will be asked to verify that you've stuck to your goals. If you
         slack off, your coach will get a notification when your timer expires.</p>
     </li>
+
+    <div id="categories"> 
+		<br><span class="category">Origin Story</span>
+	</div>
+
     <li>
-        <h1>Origin Story</h1>
-        <p>Centivize was created by Viraj Bindra, Charles Lehner, Glen Oakley, and
-        Greg Owen at PennApps Fall 2013, where it won all of the prizes.</p>
+        <div class="about-title">From Sleepy Beginnings</div>
+        <p>Centivize was created in the span of 40 hours by <a href="http://twitter.com/vrjbndr" class="link">Viraj Bindra</a>, Charles Lehner</a>, Glen Oakley, and
+        Greg Owen at PennApps Fall 2013. </p>
     </li>
+    <br><br>
   </ul>
 </div>
 
