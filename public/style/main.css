@@ -156,10 +156,6 @@ div#filters {
 	opacity: 0.6;
 }
 
-.new-task {
-	margin-top: 24px;
-}
-
 .task-filter {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 600;
@@ -210,14 +206,6 @@ article {
 
 .title {
 	padding-left: 10px;
-}
-
-.task .title-alt {
-	font-weight: 700;
-	display: inline-block;
-	font-size: 18px;
-	padding-right: 10px;
-	opacity: 0.25;
 }
 
 .task .title {
@@ -517,14 +505,6 @@ div#categoriestwo {
 }
 .setting:active {
 	background-color: #f6f6f6;
-}
-
-.setting .title-alt {
-	font-weight: 700;
-	display: inline-block;
-	font-size: 18px;
-	padding-right: 18px;
-	opacity: 0.25;
 }
 
 .setting .title {
@@ -843,10 +823,14 @@ div#categoriestwo {
 
 .new-task {
 	margin-bottom: 40px;
+	margin-top: 24px;
 }
 
-.new-task .title-alt {
-	display: block;
+.new-task .task-handle {
+	font-weight: 700;
+	font-size: 18px;
+	padding-right: 10px;
+	color: #ccc;
 }
 
 .new-task .title {
