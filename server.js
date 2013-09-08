@@ -375,7 +375,7 @@ function sendCoachEmail(tid, callback) {
 
 function sendCoachSuccessEmail(task, callback) {
     var email = fs.readFileSync("./templates/email_coach_completed.ejs");
-    var emailtext = ejs.render(file, {user:task.uid,
+    var emailtext = ejs.render(email, {user:task.uid,
 				      task:task.name,
 				      description:task.description,
                                       expiration:task.date,
@@ -397,7 +397,7 @@ function sendCoachSuccessEmail(task, callback) {
 
 function sendCoachFailEmail(task, callback) {
     var email = fs.readFileSync("./templates/email_coach_failed.ejs");
-    var emailtext = ejs.render(file, {user:task.uid,
+    var emailtext = ejs.render(email, {user:task.uid,
 				      task:task.name,
 				      description:task.description,
                                       expiration:task.date,
