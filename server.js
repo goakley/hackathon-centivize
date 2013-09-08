@@ -333,7 +333,7 @@ function sendCoachEmail(tid, callback) {
 	}
         var email = fs.readFileSync("./templates/email_coach.ejs");
         var emailtext = ejs.render(file, {user:task.uid,
-                                          expiration:task.time,
+                                          expiration:task.date,
                                           approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
                                           deinal:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
 	sendgrid.send({
@@ -395,11 +395,11 @@ function addTask(uid, task, pin, callback) {
     multi.zadd("taskqueue", task.time, tid);
     multi.sadd(key_user_tids(uid), tid);
     multi.hmset(taskkey,
-                'title', task.title,
-                'time', task.dueDate,
-                'amount', task.amount,
+                'name', task.name,
+                'date', task.date,
+                'value', task.value,
                 'currency', "USD",
-                'cid', task.coach,
+                'cid', task.cid,
                 'description', task.description,
                 'paid', '0',
                 'uid', uid);
