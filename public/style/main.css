@@ -125,10 +125,10 @@ div#filters {
 	font-size: 14px;
 	text-transform: uppercase;
 	display: inline-block;
-	margin-right: 20px;
 	letter-spacing: 2px;
 	color: #3e4447;
 	opacity: .2;
+	padding-right: 20px;
 }
 
 .task-filter.selected {
@@ -321,7 +321,8 @@ article {
 }
 
 .solo-button {
-	margin-top: 40px;
+	margin-top: 24px;
+	margin-bottom: 24px;
 }
 
 .amount-alt {

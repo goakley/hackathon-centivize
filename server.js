@@ -10,7 +10,8 @@ var SECRET = require("./secret.json");
 var CONFIG = {
     SERVER: {
         HOST: "centivize.co",
-        PORT: 443
+        PORT: 443,
+        REDIRECT_PORT: 80
     },
     DWOLLA: {
         ID: "NCmLk7qYgDeu+wxCbjmt7178/upeGgzeD/HNPWIiLX2CH4zI9+",
@@ -35,6 +36,7 @@ var dwolla = require('dwolla'),
     ejs = require('ejs'),
     express = require('express'),
     fs = require('fs'),
+    http = require('http'),
     https = require('https'),
     redis = require('redis').createClient(),
     restler = require('restler'),
@@ -58,6 +60,13 @@ var httpsserver = https.createServer({key: fs.readFileSync('./sslcert/ssl.key', 
                                       cert:fs.readFileSync('./sslcert/ssl.crt', 'utf8'),
 		                      ca:fs.readFileSync('./sslcert/sub.class1.server.ca.pem', 'utf8')},
                                      app).listen(CONFIG.SERVER.PORT);
+
+http.createServer(function (req, res) {
+    res.writeHead(301, {
+        Location: 'https://' + CONFIG.SERVER.HOST + req.url
+    });
+    res.end("");
+}).listen(CONFIG.SERVER.REDIRECT_PORT);
 
 app.use(express.logger())
     .use(express.bodyParser())
@@ -148,7 +157,7 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
 app.get("/api/task", function(req, res) {
     getTasks(req.session.email, function(status, tasks) {
         if (status !== 200) {
-            res.json({err:"ERROR"});
+            res.send(500);
         } else {
             res.json(tasks);
         }
@@ -242,6 +251,10 @@ function key_user_tids(uid) { return key_user(uid) + ":tids"; }
 /* PAYMENT HANDLING */
 
 function obtainMoney(tid, pin, callback) {
+    if (!pin) {
+        callback(400, "PIN is falsy");
+        return;
+    }
     redis.hgetall(key_task(tid), function(err, task) {
         if (err) {
             callback(500, err);
@@ -368,15 +381,14 @@ function addTask(uid, task, pin, callback) {
     multi.zadd("taskqueue", task.time, tid);
     multi.sadd(key_user_tids(uid), tid);
     multi.hmset(taskkey,
-                'name', task.name,
-                'time', task.time,
-                'value', task.value,
-                'currency', task.currency,
-                'verifier', task.verifier,
+                'title', task.title,
+                'time', task.dueDate,
+                'amount', task.amount,
+                'currency', "USD",
+                'cid': task.coach,
                 'description', task.description,
                 'paid', '0',
-                'uid', uid,
-                'cid', task.cid);
+                'uid', uid);
     multi.exec(function(err, res) {
         if (err) {
             finishTask(tid, function(){});
