@@ -381,15 +381,14 @@ function addTask(uid, task, pin, callback) {
     multi.zadd("taskqueue", task.time, tid);
     multi.sadd(key_user_tids(uid), tid);
     multi.hmset(taskkey,
-                'name', task.name,
-                'time', task.time,
-                'value', task.value,
-                'currency', task.currency,
-                'verifier', task.verifier,
+                'title', task.title,
+                'time', task.dueDate,
+                'amount', task.amount,
+                'currency', "USD",
+                'cid': task.coach,
                 'description', task.description,
                 'paid', '0',
-                'uid', uid,
-                'cid', task.cid);
+                'uid', uid);
     multi.exec(function(err, res) {
         if (err) {
             finishTask(tid, function(){});
