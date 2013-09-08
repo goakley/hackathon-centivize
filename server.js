@@ -112,6 +112,7 @@ app.get("/verify/:tid/no", function(req, res) {
 
 /* Dwolla authentication endpoint */
 app.get("/dwolla/auth", function(req, res) {
+    console.log("GOT DWOLLA AUTH");
     var authUrl = 'https://www.dwolla.com/oauth/v2/authenticate?response_type=code' +
             '&client_id=' + encodeURIComponent(CONFIG.DWOLLA.ID) +
             '&redirect_uri=' + encodeURIComponent(CONFIG.DWOLLA.AUTH_CALLBACK) + 
