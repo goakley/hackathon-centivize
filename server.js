@@ -374,7 +374,7 @@ function sendCoachEmail(tid, callback) {
 }
 
 function sendCoachSuccessEmail(task, callback) {
-    var email = fs.readFileSync("./templates/email_coach_completed.ejs");
+    var email = fs.readFileSync("./templates/email_coach_completed.ejs", 'utf8');
     var emailtext = ejs.render(email, {user:task.uid,
 				      task:task.name,
 				      description:task.description,
@@ -396,7 +396,7 @@ function sendCoachSuccessEmail(task, callback) {
 }
 
 function sendCoachFailEmail(task, callback) {
-    var email = fs.readFileSync("./templates/email_coach_failed.ejs");
+    var email = fs.readFileSync("./templates/email_coach_failed.ejs", 'utf8');
     var emailtext = ejs.render(email, {user:task.uid,
 				      task:task.name,
 				      description:task.description,
