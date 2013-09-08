@@ -29,13 +29,15 @@
 	<body ng-app ng-controller="HomeController">
 
 <nav class="clearfix" ng-click="$event.preventDefault()">
-	<ul class="clearfix">
+	<ul ng-class="{clearfix: true, expanded: menuExpanded}">
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='tasks'}" ng-click="active='tasks'">Tasks</a></li>
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='settings'}" ng-click="active='settings'">Settings</a></li>
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='about'}" ng-click="active='about'">About</a></li>
 	</ul>
-	<a href="#" id="menu"><img src="img/nav-icon.svg"></a>
-	<a href="#" id="logo"><img id="resize" src="img/centivize_logo.svg"></a>
+	<h1 id="logo">
+		<a href="#"><img id="resize" src="img/centivize_logo.svg"></a>
+	</h1>
+	<a href="#" id="menu" ng-click="toggleMenu()"><img src="img/nav-icon.svg"></a>
 </nav>
 
 <article>

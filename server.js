@@ -40,7 +40,6 @@ var dwolla = require('dwolla'),
     url = require('url');
 
 var app = express();
-var timeout = undefined;
 
 /*****************************************************************************/
 
@@ -64,13 +63,24 @@ app.use(express.logger())
     .use(express.session({secret:"mozillapersona"}))
     .use(function(req, res, next) {
         var pathname = url.parse(req.url).pathname;
-        console.log("I WILL NOW CHECK MY STATE AT LOCATION" + pathname + "...");
         if (req.session.email) {
             console.log("I AM LOGGED IN AS " + req.session.email);
-            if (pathname === '/' || pathname === '/index.html' || pathname === '') {
-                res.redirect(302, '/app.html');
-                return;
-            }
+            redis.get("user:" + req.session.email + ":dwollatoken", function(err, token) {
+                if (!token) {
+                    var authUrl = 'https://www.dwolla.com/oauth/v2/authenticate?response_type=code' +
+                            '&client_id=' + encodeURIComponent(CONFIG.DWOLLA.ID) +
+                            '&redirect_uri=' + encodeURIComponent(CONFIG.DWOLLA.AUTH_CALLBACK) + 
+                            '&scope=' + encodeURIComponent(CONFIG.DWOLLA.SCOPE);
+                    console.log("REDIRECTING TO THE AUTH URL");
+                    res.redirect(authUrl);
+                    return;
+                } else {
+                    if (pathname === '/' || pathname === '/index.html' || pathname === '') {
+                        res.redirect(302, '/app.html');
+                        return;
+                    }
+                }
+            });
         } else {
             console.log("I AM NOT LOGGED IN");
             if (pathname === '/app.html') {
@@ -104,15 +114,9 @@ app.get("/verify/:tid/no", function(req, res) {
 /*****************************************************************************/
 /* AUTHENTICATION ENDPOINTS */
 
-/* Dwolla authentication endpoint */
-app.get("/dwolla/auth", function(req, res) {
-    var authUrl = 'https://www.dwolla.com/oauth/v2/authenticate?response_type=code' +
-            '&client_id=' + encodeURIComponent(CONFIG.DWOLLA.ID) +
-            '&redirect_uri=' + encodeURIComponent(CONFIG.DWOLLA.AUTH_CALLBACK) + 
-            '&scope=' + encodeURIComponent(CONFIG.DWOLLA.SCOPE);
-});
 /* Dwolla autentication callback - NOT CALLED DIRECTLY */
 app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
+    console.log("REDIRECTED FROM DWOLLA, NOW OBTAINING TOKEN THROUGH REQUEST...");
     restler.get("https://www.dwolla.com/oauth/v2/token", {
         query: {
             client_id: CONFIG.DWOLLA.ID,
@@ -122,7 +126,9 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
             code: req.query.code
         }
     }).on('complete', function(data) {
+        console.log("REQUEST COMPLETE, STORING");
         redis.set("user:" + req.session.email + ":dwollatoken", data.access_token);
+        res.redirect('/');
     });
 });
 
@@ -148,7 +154,7 @@ app.get("/api/task", function(req, res) {
  * 500 - No idea what happened wrong
  */
 app.post("/api/task", function(req, res) {
-    addTask(req.session.email, req.body, function(status, tid) {
+    addTask(req.session.email, req.body, req.body.pin, function(status, tid) {
         if (status !== 200) {
             res.send(500);
         } else {
