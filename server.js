@@ -146,8 +146,9 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
         }
     }).on('complete', function(data) {
         console.log("REQUEST COMPLETE, STORING");
-        redis.set("user:" + req.session.email + ":dwollatoken", data.access_token);
-        //res.redirect('/');
+        redis.set("user:" + req.session.email + ":dwollatoken", data.access_token, function(err, asdf) {
+            res.redirect('/');
+        });
     });
 });
 
