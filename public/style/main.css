@@ -185,13 +185,17 @@ article {
 	padding: 14px;
 	list-style-type: none;
 	margin-bottom: 10px;
-	cursor: pointer;
 }
 
-.task:hover {
+.task-handle {
+	cursor: pointer;
+	margin: -13px;
+	padding: 13px;
+}
+.task-handle:hover {
 	background-color: #fbfbfb;
 }
-.task:active {
+.task-handle:active {
 	background-color: #f6f6f6;
 }
 
@@ -232,8 +236,6 @@ article {
 
 .expanded .task-handle {
 	border-bottom: 1px solid #eee;
-	margin: -14px;
-	padding: 14px;
 }
 
 .task .due-date {
