@@ -234,7 +234,7 @@ app.post("/api/task/:tid/complete", function(req, res) {
             res.send(404);
             return;
         }
-	redis.zadd("taskqueue", 0, tid, function(err, res) {
+	redis.zadd("taskqueue", 0, tid, function(err, val) {
 	    if (err) {
 		res.send(500);
 		return;
