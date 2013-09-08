@@ -639,10 +639,9 @@ div#categoriestwo {
 
 @media screen and (max-width: 600px) {
 	nav {
-		height:60px;
-		/*height: auto;
+		height: auto;
 		min-height: 60px;
-		min-width: 280px;*/
+		min-width: 280px;
 	}
 	nav ul {
 		display: none;
