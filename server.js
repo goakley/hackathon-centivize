@@ -19,7 +19,7 @@ var CONFIG = {
         AUTH_CALLBACK: "https://centivize.co/dwolla/auth/callback",
         PAY_CALLBACK: "https://centivize.co/dwolla/payment/callback",
         RECV_ACCOUNT: "812-528-4968",
-        RECV_TOKEN: "NYEM3HBIvHIK38Jh0tCUvVaATunf6N6DXIMYsR8yIIuH53DXGY"
+        RECV_PIN: "AZXW"
     },
     SENDGRID: {
         USER: "centivize"
