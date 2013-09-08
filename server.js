@@ -66,7 +66,7 @@ app.use(express.logger())
         if (req.session.email) {
             console.log("I AM LOGGED IN AS " + req.session.email);
             redis.get("user:" + req.session.email + ":dwollatoken", function(err, token) {
-                if (!token) {
+                if (!token && pathname !== url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname) {
                     var authUrl = 'https://www.dwolla.com/oauth/v2/authenticate?response_type=code' +
                             '&client_id=' + encodeURIComponent(CONFIG.DWOLLA.ID) +
                             '&redirect_uri=' + encodeURIComponent(CONFIG.DWOLLA.AUTH_CALLBACK) + 
@@ -79,16 +79,20 @@ app.use(express.logger())
                         res.redirect(302, '/app.html');
                         return;
                     }
+                    next();
                 }
+                return;
             });
+            return;
         } else {
             console.log("I AM NOT LOGGED IN");
             if (pathname === '/app.html') {
                 res.redirect(302, '/');
                 return;
             }
+            next();
+            return;
         }
-        next();
     })
     .use(express.static('./public'));
 

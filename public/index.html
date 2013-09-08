@@ -11,7 +11,7 @@
 
 		<script src="https://login.persona.org/include.js"></script>
                 <script>
-                  function onclicklogin() {
+                  function login() {
                       console.log("I AM ATTEMPTING TO GET THE ASSERSION");
                       navigator.id.get(function(assertion) {
                           if (!assertion) {
@@ -39,7 +39,7 @@
 
 <nav class="clearfix" ng-click="$event.preventDefault()">
 	<a href="#" id="logo"><img id="resize" src="img/centivize_logo.svg"></a>
-	<button class="blue" ng-click="navigator.id.request()" onclick="onclicklogin()">Log In</button>
+	<button class="blue login" onclick="login()">Log In</button>
 </nav>
 
 <article>
@@ -51,21 +51,10 @@
 
 <p>Stake some money on your goals. Accomplish them in time and make it back. Take too long and donate it all.</p>
 
-<form target="" ng-submit="$event.preventDefault()">
-
-	<div>
-		<input ng-model="firstname" placeholder="First Name">
-		<input ng-model="lastname" placeholder="Last Name">
-	</div>
-	<div>
-		<input ng-model="email" placeholder="Email Address">
-	</div>
-	<button type="submit" class="blue">Sign Up</button>
-
-</form>
+<button class="darkblue" onclick="login()">Sign Up</button>
 
 </article>
 
-	</body>
+</body>
 </html>
 
