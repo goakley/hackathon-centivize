@@ -101,6 +101,10 @@ app.use(express.logger())
                 res.redirect(302, '/');
                 return;
             }
+            if (pathname.substr(0,4) === '/api') {
+                res.send(401);
+                return;
+            }
             next();
             return;
         }
