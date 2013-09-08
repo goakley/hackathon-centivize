@@ -63,17 +63,6 @@ function TasksController($scope, Task) {
 		}
 	];
 
-	$scope.settings = [
-		{
-			title: 'First Name',
-			status: 'Viraj'
-		},
-		{
-			title: 'Last Name',
-			status: 'Viraj'
-		}
-	];
-
 	$scope.toggleExpand = function(task) {
 		task.isExpanded = !task.isExpanded;
 	};
@@ -107,4 +96,18 @@ function TasksController($scope, Task) {
 		task.error = "Todo";
 	};
 
+}
+
+function SettingsController($scope) {
+	$scope.settings = {
+		// user settings
+		email: 'viraj.s.bindra@gmail.com',
+		firstName: 'Viraj',
+		lastName: 'Bindra',
+		// default task settings
+		charity: 'Pencils of Promise',
+		amount: 0.50,
+		coach: 'goodfriend@gmail.com',
+		reviewHours: 24
+	};
 }

@@ -428,10 +428,8 @@ div#categoriestwo {
 }
 
 .setting .title {
-	display: inline-block;
 	font-size: 18px;
 	color: #3e4447;
-	width:6.65em;
 }
 
 .setting .status {
@@ -440,7 +438,6 @@ div#categoriestwo {
 	color: #21baea;
 	display: inline-block;
 	white-space: nowrap;
-	width: 13em;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	text-align: right;
