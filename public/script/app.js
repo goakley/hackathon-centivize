@@ -14,7 +14,7 @@ app.factory("Task", function($resource) {
 					description: d.description,
 					date: new Date(d.date).getTime(),
 					value: Number(d.value.replace('$', '')),
-					coach: d.coach,
+					cid: d.cid,
 					pin: d.pin
 				});
 			}
@@ -45,8 +45,8 @@ function TasksController($scope, Task) {
 
 	$scope.newTask = {
 		name: 'New Task',
-		value: '$1.00',
-		coach: '',
+		value: '1.00',
+		cid: '', // coach email address
 		date: '',
 		pin: '',
 		description: ''
@@ -124,7 +124,7 @@ function SettingsController($scope, User) {
 		// default task settings
 		charity: 'Pencils of Promise',
 		value: 0.50,
-		coach: 'goodfriend@gmail.com',
+		cid: 'goodfriend@gmail.com',
 		reviewHours: 24
 	};
 	*/
