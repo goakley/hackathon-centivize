@@ -363,7 +363,7 @@ function getTasks(uid, callback) {
                             tasks[j] = undefined;
                         }
                     }
-                    callback(200, task.filter(function(v){return v !== undefined;}));
+                    callback(200, tasks.filter(function(v){return v !== undefined;}));
                     return;
                 }
             });
