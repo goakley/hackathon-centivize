@@ -3,7 +3,7 @@
 var app = angular.module("centivize", ["ngResource"]);
 
 app.factory("Task", function($resource) {
-	return $resource("/tasks/:tid", {}, {
+	return $resource("/api/task/:tid", {}, {
 		index: {method: "GET", isArray: true},
 		destroy: { method: "DELETE" },
 		create: {method: "GET"}
