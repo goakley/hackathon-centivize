@@ -367,7 +367,10 @@ function getTasks(uid, callback) {
         var tasks = [];
         for (var i = 0; i < res.length; i++) {
             redis.hgetall(key_task(res[i]), function(err, task) {
-                tasks.push(err ? undefined : task);
+                tasks.push(err || !task ? undefined : task);
+		if (!task) {
+		    redis.srem(key_user_tids(uid), function(err, res) {})
+		}
                 if (tasks.length === res.length) {
                     for (var j = 0; j < tasks.length; j++) {
                         if (tasks[j] !== undefined && tasks[j].paid === '0') {
