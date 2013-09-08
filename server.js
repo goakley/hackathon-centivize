@@ -17,13 +17,15 @@ var CONFIG = {
         SCOPE: "Balance|Send",
         AUTH_CALLBACK: "https://centivize.co/dwolla/auth/callback",
         PAY_CALLBACK: "https://centivize.co/dwolla/payment/callback",
-        RECV_ACCOUNT: "812-528-4968"
+        RECV_ACCOUNT: "812-528-4968",
+        RECV_TOKEN: "NYEM3HBIvHIK38Jh0tCUvVaATunf6N6DXIMYsR8yIIuH53DXGY"
     },
     SENDGRID: {
         USER: "centivize"
     }
 };
 CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
+CONFIG.DWOLLA.RECV_TOKEN = SECRET.RECV_TOKEN;
 CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
 
 /*****************************************************************************/
@@ -358,6 +360,8 @@ function getTasks(uid, callback) {
 
 
 function addTask(uid, task, pin, callback) {
+    console.log("TASK!!!");
+    console.dir(task);
     var tid = guid();
     var taskkey = key_task(tid);
     var multi = redis.multi();
