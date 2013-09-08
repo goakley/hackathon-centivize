@@ -120,13 +120,13 @@ require('express-persona')(app, {
 
 app.get("/verify/:tid/yes", function(req, res) {
     finishTask(req.params.tid, function(status, err) {
-        res.sendfile("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs");
+        ejs.render("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs");
     });
 });
 
 app.get("/verify/:tid/no", function(req, res) {
     failTask(req.params.tid, function(status, err) {
-        res.sendfile("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs");
+        ejs.render("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs");
     });
 });
 
@@ -339,6 +339,34 @@ function releaseMoney(tid, callback) {
     });
 }
 
+function sendToCharity(tid, callback) {
+    redis.hgetall(key_task(tid), function(err, task) {
+	if (err) {
+	    callback(500, err);
+	    return;
+	}
+	if (task.paid === '0') {
+	    callback(200);
+	    return;
+	}
+	redis.hget(key_user(task.uid), 'charity', function(err, charity) {
+	    dwolla.send(CONFIG.DWOLLA.RECV_TOKEN, CONFIG.DWOLLA.RECV_PIN, charity, task.value, function(err, data) {
+		if (err) {
+		    callback(500, err);
+		    return;
+		}
+		redis.hset(key_task(tid), 'paid', '0', function(err, nothingofimportance) {
+		    if (err) {
+			callback(500, err);
+			return;
+		    }
+		    callback(200);
+		});
+	    });
+	});
+    });
+}
+
 /*****************************************************************************/
 /* EXTERNAL NOTIFICATIONS */
 
@@ -385,7 +413,7 @@ function sendCoachSuccessEmail(task, callback) {
         to: task.cid,
         from: task.uid,
         subject: task.uid + " Has Completed a Task",
-        text: emailtext
+        html: emailtext
     }, function(err, response) {
         if (err) {
             callback(500, err);
@@ -407,7 +435,7 @@ function sendCoachFailEmail(task, callback) {
         to: task.cid,
         from: task.uid,
         subject: task.uid + " Has not Completed a Task",
-        text: emailtext
+        html: emailtext
     }, function(err, response) {
         if (err) {
             callback(500, err);
@@ -493,28 +521,30 @@ function addTask(uid, task, pin, callback) {
 }
 
 /* Remove a task from the system */
-function finishTask(tid, callback) {
-    function destroyTask() {
-	redis.hget(key_task(tid), 'uid', function(err, uid){
+function destroyTask(tid, callback) {
+    redis.hget(key_task(tid), 'uid', function(err, uid){
+	if (err) {
+	    callback(500, err);
+	    return;
+	}
+	var multi = redis.multi();
+	multi.srem(key_user_tids(uid), tid);
+	multi.del(key_task(tid));
+	multi.zrem("taskqueue", tid);
+	multi.zrem("pendingqueue", tid);
+	multi.exec(function(err, res) {
 	    if (err) {
 		callback(500, err);
 		return;
 	    }
-	    var multi = redis.multi();
-	    multi.srem(key_user_tids(uid), tid);
-	    multi.del(key_task(tid));
-	    multi.zrem("taskqueue", tid);
-	    multi.zrem("pendingqueue", tid);
-	    multi.exec(function(err, res) {
-		if (err) {
-		    callback(500, err);
-		    return;
-		}
-		callback(200);
-	    });
-	    return;
+	    callback(200);
 	});
-    }
+	return;
+    });
+}
+
+/* Successfully complete a task */
+function finishTask(tid, callback) {
     redis.hget(key_task(tid), 'paid', function(err, paid) {
 	if (err) {
 	    callback(500, err);
@@ -526,28 +556,23 @@ function finishTask(tid, callback) {
 		    callback(500, err);
 		    return;
 		}
-		destroyTask();
+		destroyTask(tid, callback);
 		return;
 	    });
 	}
-	destroyTask();
+	destroyTask(tid, callback);
     });
 }
 
 /* Unsuccessfully complete a task */
-function failTask(tid, verified, callback) {
-    var multi = redis.multi();
-    multi.srem(key_user_tids(tid['uid']), tid);
-    multi.del(key_task(tid));
-    multi.zrem("taskqueue", tid);
-    multi.exec(function(err, res) {
-        if (err) {
-            callback(500, err);
-            return;
-        }
-        callback(200);
+function failTask(tid, callback) {
+    sendToCharity(tid, function(status, err) {
+	if (status != 200) {
+	    callback(500, err);
+	    return;
+	}
+	destroyTask(tid, callback);
     });
-    return;
 }
 
 var robotTQ;
