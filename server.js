@@ -372,9 +372,35 @@ function sendToCharity(tid, callback) {
 /*****************************************************************************/
 /* EXTERNAL NOTIFICATIONS */
 
+/* Alerts the coach that they are now coaching the given task */
+function alertCoach(tid, callback) {
+    redis.hgetall(key_task(tid), function(err, task) {
+	if (err) {
+	    callback(500, err);
+	    return;
+	}
+	var email = fs.readFileSync("./templates/email_coach_alert.ejs", 'utf8');
+	var emailtext = ejs.render(email, {user:task.uid,
+					   task:task.name,
+					   description:task.description});
+	sendgrid.send({
+            to: task.cid,
+            from: task.uid,
+            subject: task.uid + " Has Selected You as Their Coach",
+            html: emailtext
+	}, function(err, response) {
+            if (err) {
+		callback(500, err);
+		return;
+            }
+            callback(200);
+	});
+    });
+}
+
 /*
- * Sends the coach for uid's task tid an email asking them to confirm if
- *  uid was successful/unsuccessful in their attempt to accomplish tid.
+ * Sends the coach for tid an email asking them to confirm if the user was
+ *  successful/unsuccessful in their attempt to accomplish tid.
  */
 function sendCoachEmail(tid, callback) {
     redis.hgetall(key_task(tid), function(err, task) {
@@ -510,14 +536,21 @@ function addTask(uid, task, pin, callback) {
             return;
         }
         console.log("WE ARE OKAY AFTER MULTI EXEC");
-        obtainMoney(tid, pin, function(code, err) {
-            if (code !== 200) {
-		console.log(err);
-                finishTask(tid, function(){});
-                callback(500, err);
-            } else {
-                callback(200, tid);
-            }
+	alertCoach(tid, function(code, err) {
+	    if (code !== 200) {
+		finishTask(tid, function(){});
+		callback(500, err);
+		return;
+	    }
+	    obtainMoney(tid, pin, function(code, err) {
+		if (code !== 200) {
+		    console.log(err);
+                    finishTask(tid, function(){});
+                    callback(500, err);
+		} else {
+                    callback(200, tid);
+		}
+	    });
         });	
     });
 }
