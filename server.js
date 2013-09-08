@@ -229,8 +229,9 @@ app.get("/api/user", function(req, res) {
         if (err) {
             res.send(500);
         } else {
-            if (!user || !user.email)
-                user = {email: req.session.email};
+            if (!user)
+                user = {};
+            user.email = req.session.email;
             res.json(user);
         }
     });
