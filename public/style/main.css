@@ -99,10 +99,18 @@ nav a:active{
 	color: white;
 	margin-top: 40px;
 	width: 70%;
+	margin-bottom: 40px;
+}
+
+.splash-body {
+	color: white;
+	width: 60%;
+	opacity: 0.75;
 }
 
 .yellow-header {
 	color: #fde45a;
+	font-weight: 600;
 }
 
 .splash article {
@@ -110,7 +118,7 @@ nav a:active{
 }
 
 .splash .login {
-	margin: 30px;
+	margin: 12px;
 	float: right;
 }
 
@@ -329,6 +337,10 @@ article {
 	font-weight: 500;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+}
+
+.tiny {
+	width: 100px;
 }
 
 .blue:hover {
@@ -667,8 +679,14 @@ div#categoriestwo {
 	#logo {
 		position: absolute;
 		left: 0;
-		right: 0;
+		margin-left: 12px;
+		/*right: 0;*/
 		top: 9px;
+	}
+
+	.splash .login {
+		margin: 10px;
+		float: right;
 	}
 
 	nav a img#resize {
@@ -706,6 +724,9 @@ div#categoriestwo {
 		font-size: 10.5px;
 		font-weight: 600;
 	}
+	.tiny {
+		width: 100px;
+	}
 	.gray {
 		width: 130px;
 		font-size: 10.5px;
@@ -724,6 +745,10 @@ div#categoriestwo {
 	.splash-header {
 		width: 90%;
 		font-size: 28px;
+		margin-top: 28px;
+	}
+	.splash article {
+		margin: 28px;
 	}
 }
 
@@ -733,6 +758,15 @@ div#categoriestwo {
 		float: none;
 		width: 100%;
 	}
+	.splash-header {
+		font-size: 20px;
+		margin-top: 18px;
+		font-weight: 400;
+	}
+	.splash article {
+		margin: 18px;
+	}
+
 }
 
 .error {
@@ -755,8 +789,9 @@ div#categoriestwo {
 
 .sign-up {
 	position: absolute;
-	bottom: 0;
 	right: 0;
-	margin-right: 20px;
+	margin-top: 40px;
+	margin-right: 28px;
+	padding-bottom: 28px;
 }
 
