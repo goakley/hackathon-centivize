@@ -117,14 +117,14 @@ require('express-persona')(app, {
 
 app.get("/verify/:tid/yes", function(req, res) {
     finishTask(req.params.tid, function(status, err) {
-	var message = fs.readFileSync("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs", 'utf8');
+	var message = fs.readFileSync("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs", 'utf8').toString();
         res.send(ejs.render(message));
     });
 });
 
 app.get("/verify/:tid/no", function(req, res) {
     failTask(req.params.tid, function(status, err) {
-	var message = fs.readFileSync("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs", 'utf8');
+	var message = fs.readFileSync("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs", 'utf8').toString();
         res.send(ejs.render(message));
     });
 });
@@ -383,7 +383,7 @@ function alertCoach(tid, callback) {
 	    callback(500, err);
 	    return;
 	}
-	var email = fs.readFileSync("./templates/email_coach_alert.ejs", 'utf8');
+	var email = fs.readFileSync("./templates/email_coach_alert.ejs", 'utf8').toString();
 	var emailtext = ejs.render(email, {user:task.uid,
 					   task:task.name,
 					   description:task.description});
@@ -434,7 +434,7 @@ function sendCoachEmail(tid, callback) {
 }
 
 function sendCoachSuccessEmail(task, callback) {
-    var email = fs.readFileSync("./templates/email_coach_completed.ejs", 'utf8');
+    var email = fs.readFileSync("./templates/email_coach_completed.ejs", 'utf8').toString();
     var emailtext = ejs.render(email, {user:task.uid,
 				      task:task.name,
 				      description:task.description,
@@ -456,7 +456,7 @@ function sendCoachSuccessEmail(task, callback) {
 }
 
 function sendCoachFailEmail(task, callback) {
-    var email = fs.readFileSync("./templates/email_coach_failed.ejs", 'utf8');
+    var email = fs.readFileSync("./templates/email_coach_failed.ejs", 'utf8').toString();
     var emailtext = ejs.render(email, {user:task.uid,
 				      task:task.name,
 				      description:task.description,
