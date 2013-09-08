@@ -52,7 +52,7 @@
 
 	<ul>
 
-		<li class="task" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
+		<li ng-class="{task: true, expanded: task.isExpanded}" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
 
 		<div class="task-handle" ng-click="toggleExpand(task)">
 		<span class="title">{{task.title}}</span>

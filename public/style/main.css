@@ -198,6 +198,12 @@ article {
 	padding-right: 12px;
 }
 
+.expanded .task-handle {
+	border-bottom: 1px solid #eee;
+	margin: -14px;
+	padding: 14px;
+}
+
 .task .due-date {
 	display: inline-block;
 	white-space: nowrap;
