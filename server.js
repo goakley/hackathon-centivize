@@ -26,6 +26,7 @@ var CONFIG = {
 };
 CONFIG.DWOLLA.SECRET = SECRET.DWOLLA;
 CONFIG.DWOLLA.RECV_TOKEN = SECRET.RECV_TOKEN;
+CONFIG.DWOLLA.RECV_PIN = SECRET.RECV_PIN;
 CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
 
 /*****************************************************************************/
