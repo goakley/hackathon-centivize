@@ -293,6 +293,11 @@ function releaseMoney(tid, callback) {
             callback(500, err);
             return;
         }
+        console.log(task);
+        if (task.paid === '0') {
+            callback(200);
+            return;
+        }
         dwolla.send(CONFIG.DWOLLA.RECV_TOKEN, CONFIG.DWOLLA.RECV_PIN, task.uid, task.value, function(err, data) {
             if (err) {
                 callback(500, err);
