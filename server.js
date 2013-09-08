@@ -221,6 +221,27 @@ app.del("/api/task/:tid", function(req, res) {
 });
 
 /**
+ * 200 - Good shit
+ * 500 - SERVER ERROR ZOMG
+ */
+app.post("/api/task/:tid/complete", function(req, res) {
+    redis.exists(key_task(tid), function(err, doesexist) {
+        if (!doesexist) {
+            res.send(404);
+            return;
+        }
+	redis.zadd("taskqueue", 0, tid, function(err, res) {
+	    if (err) {
+		res.send(500);
+		return;
+	    }
+	    res.send(200);
+	    return;
+	});
+    });
+});
+
+/**
  * 200 - User as a JSON object
  * 500 - Server error
  */
