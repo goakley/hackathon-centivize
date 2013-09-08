@@ -13,6 +13,7 @@ a {
 
 #logo {
 	display: inline-block;
+	margin: 0;
 }
 
 nav {
@@ -322,7 +323,7 @@ article {
 	.due-date-alt {
 		display: none;
 	}
-	nav a#logo {
+	#logo {
 		padding-top: 20px;
 		padding-left: 40px;
 		float: left;
@@ -337,18 +338,34 @@ article {
 
 @media screen and (max-width: 600px) {
 	nav {
-		height: 60px;
+		height: auto;
+		min-height: 60px;
+		min-width: 280px;
 	}
 	nav ul {
 		display: none;
 		height: auto;
 	}
-	nav a#menu {
-		display: none;
+
+	nav ul.expanded {
+		display: block;
+		float: left;
+		margin-top: 50px;
+		text-align: left;
+	}
+	nav ul.expanded li {
+		display: block;
+		margin: 1em;
+	}
+	nav ul.expanded a {
+		line-height: 1em;
 	}
 
-	nav a#logo {
-		padding-top: 9px;
+	#logo {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 9px;
 	}
 
 	nav a img#resize {
