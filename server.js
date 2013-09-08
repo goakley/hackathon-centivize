@@ -120,13 +120,15 @@ require('express-persona')(app, {
 
 app.get("/verify/:tid/yes", function(req, res) {
     finishTask(req.params.tid, function(status, err) {
-        ejs.render("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs");
+	var message = fs.readFileSync("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs");
+        res.send(ejs.render(message));
     });
 });
 
 app.get("/verify/:tid/no", function(req, res) {
     failTask(req.params.tid, function(status, err) {
-        ejs.render("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs");
+	var message = fs.readFileSync("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs");
+        res.send(ejs.render(message));
     });
 });
 
