@@ -262,6 +262,7 @@ function obtainMoney(tid, pin, callback) {
         callback(400, "PIN is falsy");
         return;
     }
+    console.log("Pin is " + pin);
     redis.hgetall(key_task(tid), function(err, task) {
         if (err) {
             callback(500, err);
