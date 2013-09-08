@@ -81,6 +81,7 @@ app.use(express.logger())
                     }
                     next();
                 }
+                return;
             });
             return;
         } else {
@@ -90,6 +91,7 @@ app.use(express.logger())
                 return;
             }
             next();
+            return;
         }
     })
     .use(express.static('./public'));
