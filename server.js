@@ -91,7 +91,8 @@ app.use(express.logger())
         }
         next();
     })
-    .use(express.static('./public'));
+    .use(express.static('./public'))
+    .use(everyauth.middleware());
 
 require('express-persona')(app, {
     audience: "https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT
