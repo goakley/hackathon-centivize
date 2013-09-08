@@ -106,7 +106,7 @@ function TasksController($scope, Task) {
 		Task.complete({tid: task.tid}, function(resource) {
 			task.error = "";
 			$scope.remove(task);
-			$scope.notifications.push("Your couch " + task.cid + " has been messaged to verify your completion of '" + task.name + "'.");
+			$scope.notifications.push("Your coach " + task.cid + " has been messaged to verify your completion of '" + task.name + "'.");
 		}, function(response) {
 			task.error = "There was a problem completing your task.";
 		});
