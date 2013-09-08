@@ -78,7 +78,11 @@ nav a:active{
 }
 
 .splash article {
-	margin: 0 40px;
+	margin: 40px;
+}
+
+.splash .login {
+	margin: 30px;
 }
 
 /* Tasks */
@@ -268,11 +272,26 @@ article {
 	letter-spacing: 1px;
 	text-transform: uppercase;
 }
+
 .blue:hover {
 	background: #16acdc;
 }
 .blue:active {
 	background: #0a9ece;
+}
+
+.darkblue {
+	background: #004b68;
+	border: 0px;
+	height: 54px;
+	width: 180px;
+	font-color: white;
+	color: white;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 500;
+	font-size: 16px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
 }
 
 .gray {
@@ -449,7 +468,7 @@ div#categoriestwo {
 
 .checkbox label {
 	cursor: pointer;
-	position: absolute;
+	position: relative;
 	width: 1.4em;
 	height: 1.4em;
 	top: 0;
@@ -461,7 +480,7 @@ div#categoriestwo {
 .checkbox label:after {
 	opacity: 0;
 	content: '';
-	position: absolute;
+	position: relative;
 	width: 0.7em;
 	height: 0.4em;
 	background: transparent;
