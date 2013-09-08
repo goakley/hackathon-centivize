@@ -19,6 +19,7 @@
     "dependencies": {
         "dwolla": "*",
         "ejs": "*",
+        "everyauth": "*",
 	"express": "3.x",
         "express-persona": "*",
         "redis": "*",

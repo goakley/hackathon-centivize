@@ -29,13 +29,15 @@
 	<body ng-app ng-controller="HomeController">
 
 <nav class="clearfix" ng-click="$event.preventDefault()">
-	<ul class="clearfix">
+	<ul ng-class="{clearfix: true, expanded: menuExpanded}">
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='tasks'}" ng-click="active='tasks'">Tasks</a></li>
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='settings'}" ng-click="active='settings'">Settings</a></li>
 		<li><a href="#" ng-class="{'nav-link': true, selected: active=='about'}" ng-click="active='about'">About</a></li>
 	</ul>
-	<a href="#" id="menu"><img src="img/nav-icon.svg"></a>
-	<a href="#" id="logo"><img id="resize" src="img/centivize_logo.svg"></a>
+	<h1 id="logo">
+		<a href="#"><img id="resize" src="img/centivize_logo.svg"></a>
+	</h1>
+	<a href="#" id="menu" ng-click="toggleMenu()"><img src="img/nav-icon.svg"></a>
 </nav>
 
 <article>
@@ -50,9 +52,15 @@
 	</div>
 
 	<ul>
-		<li class="task" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
 
-		<span class="title">{{task.title}}</span>
+		<li class="task" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
+
+                <div class="checkbox">
+                  <input type="checkbox" value="1" class="ballerCheckbox" ng-click="complete(task)" />
+                  <label for="checkboxInput"></label>
+                </div>
+
+		<span class="title" ng-click="toggleExpand(task)">{{task.title}}</span>
 		&nbsp;
 
 		<span class="right-aligned-li">
@@ -70,21 +78,48 @@
 				<span class="coach-title">Coach</span>
 				<span class="coach-body">{{task.coach}}</span>
 			</div>
-			
-			<span class="descriptions" ng-show="task.description!=''">
+
+			<div class="descriptions" ng-show="task.description">
 				<div class="description-title">Description</div>
 				<div class="description">{{task.description}}</div>
-			</span>
+			</div>
 
 			<div class="buttons">
-				<button type="button" class="gray multiple-buttons">Delete Task</button>
-				<button type="button" class="blue">Task Completed</button>
+				<button type="button" class="gray multiple-buttons" ng-click="destroy(task)">Delete Task</button>
+				<button type="button" class="blue" ng-click="complete(task)" ng-show="!task.completed">Task Completed</button>
 			</div>
+
+			<div class="error">{{task.error}}</div>
 		</div>			
 
-
 		</li>
-		<li class="task clearfix"> <span class="title-alt">Add a task</span> </li>
+
+		<li class="task new-task clearfix">
+			<form action="" ng-submit="create(newTask)">
+
+			<div class="title-alt" ng-click="toggleExpand(newTask)">Add a task</div>
+			<div class="expanded-show" ng-show="newTask.isExpanded">
+
+				<input class="title" placeholder="New Task" ng-model="newTask.title">
+				<div class="coach">
+					<span class="coach-title">Coach</span>
+					<input class="coach" placeholder="task" ng-model="newTask.coach">
+				</div>
+
+				<div class="descriptions">
+					<div class="description-title">Description</div>
+					<textarea class="description" ng-model="newTask.description"></textarea>
+				</div>
+
+				<div class="buttons">
+					<button type="submit" class="blue">Add Task</button>
+				</div>
+
+				<div class="error">{{newTask.error}}</div>
+
+				</form>
+			</div>
+		</li>
 	</ul>
 </div>
 
@@ -147,14 +182,13 @@
 	<div class="logout">
 		<button type="button" class="gray solo-button" href="#" ng-class="{'task-filter': true, selected: showComplete}" onclick="onclicklogout()" ng-click="showComplete = true">Logout</button>
 	</div>
-
 </div>
 
-<div ng-show="active=='about'">
+<div ng-show="active=='about'" id="about">
   <ul>
-    <li>
-	<p>Get Stuff Done</p>
-        <p>Centivize helps you take control of your to-do lists. Here's how it works:</p>
+    <li class="about">
+	<h1>Get Stuff Done</h1>
+        <h2>Centivize helps you take control of your to-do lists. Here's how it works:</h2>
         <ul>
           <li> Add your tasks </li>
           <li> Commit some money to each task </li>
@@ -163,8 +197,8 @@
         </ul>
     </li>
     <li>
-        <p>Slack Off, Save the World</p>
-        <p>Centivize currently supports the following charities:</p>
+        <h1>Slack Off, Save the World</h1>
+        <h2>Centivize currently supports the following charities:</h2>
         <ul>
           <li>CFY (cfy.org)</li>
           <li>charity: water (charitywater.org)</li>
@@ -180,15 +214,15 @@
         </ul>
     </li>
     <li>
-        <p>Better with Friends</p>
-        <p>Sometimes, money isn't the best motivator. That's why Centivize has you
-        select a friend to be your personal coach for each task. Your coach will
-        receive an update when you complete the task and will be asked to verify
-        that you've stuck to your goals. If you slack off, your coach will get a
-        notification when your timer expires.</p>
+        <h1>Better with Friends</h1>
+        <h2>Sometimes, money isn't the best motivator.</h2>
+        <p> That's why Centivize has you select a friend to be your personal coach
+        for each task. Your coach will receive an update when you complete the
+        task and will be asked to verify that you've stuck to your goals. If you
+        slack off, your coach will get a notification when your timer expires.</p>
     </li>
     <li>
-        <p>Origin Story</p>
+        <h1>Origin Story</h1>
         <p>Centivize was created by Viraj Bindra, Charles Lehner, Glen Oakley, and
         Greg Owen at PennApps Fall 2013, where it won all of the prizes.</p>
     </li>
