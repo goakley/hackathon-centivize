@@ -336,6 +336,8 @@ article {
 .checkbox label {
 	cursor: pointer;
 	position: relative;
+	display: inline-block;
+	margin-left: -1.25em;
 	width: 1.4em;
 	height: 1.4em;
 	top: 0;
