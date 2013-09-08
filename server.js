@@ -221,28 +221,28 @@ app.del("/api/task/:tid", function(req, res) {
 });
 
 /**
- * 200 - Name in plaintext
+ * 200 - User as a JSON object
  * 500 - Server error
  */
-app.get("/api/user/name", function(req, res) {
-    redis.get(key_user(req.session.email) + ":name", function(err, name) {
+app.get("/api/user", function(req, res) {
+    redis.hgetall(key_user(req.session.email), function(err, user) {
         if (err) {
             res.send(500);
         } else {
-            if (!name)
-                name = "";
-            res.set('Content-Type','text/plain');
-            res.send(name);
+            if (!user || !user.email)
+                user = {email: req.session.email};
+            res.json(user);
         }
     });
 });
 
 /**
- * 205 - Successfully updated the name
+ * req should be {key: "keyname", value: "valname"}
+ * 205 - Successfully updated the provided field
  * 500 - Server error
  */
-app.put("/api/user/name", function(req, res) {
-    redis.set(key_user(req.session.email) + ":name", req.body.name, function(err, resp) {
+app.put("/api/user", function(req, res) {
+    redis.hset(key_user(req.session.email), req.body.key, req.body.value, function(err, resp) {
         res.send(err ? 500 : 205);
     });
 });
