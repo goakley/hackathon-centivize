@@ -229,8 +229,9 @@ app.get("/api/user", function(req, res) {
         if (err) {
             res.send(500);
         } else {
-            if (!user || !user.email)
-                user = {email: req.session.email};
+            if (!user)
+                user = {};
+            user.email = req.session.email;
             res.json(user);
         }
     });
@@ -262,7 +263,6 @@ function obtainMoney(tid, pin, callback) {
         callback(400, "PIN is falsy");
         return;
     }
-    console.log("Pin is " + pin);
     redis.hgetall(key_task(tid), function(err, task) {
         if (err) {
             callback(500, err);
@@ -296,7 +296,6 @@ function releaseMoney(tid, callback) {
             callback(500, err);
             return;
         }
-        console.log(task);
         if (task.paid === '0') {
             callback(200);
             return;
@@ -332,7 +331,7 @@ function sendCoachEmail(tid, callback) {
 	}
         var email = fs.readFileSync("./templates/email_coach.ejs");
         var emailtext = ejs.render(file, {user:task.uid,
-                                          expiration:task.time,
+                                          expiration:task.date,
                                           approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
                                           deinal:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
 	sendgrid.send({
@@ -394,11 +393,11 @@ function addTask(uid, task, pin, callback) {
     multi.zadd("taskqueue", task.time, tid);
     multi.sadd(key_user_tids(uid), tid);
     multi.hmset(taskkey,
-                'title', task.title,
-                'time', task.dueDate,
-                'amount', task.amount,
+                'name', task.name,
+                'date', task.date,
+                'value', task.value,
                 'currency', "USD",
-                'cid', task.coach,
+                'cid', task.cid,
                 'description', task.description,
                 'paid', '0',
                 'uid', uid);
@@ -411,6 +410,7 @@ function addTask(uid, task, pin, callback) {
         console.log("WE ARE OKAY AFTER MULTI EXEC");
         obtainMoney(tid, pin, function(code, err) {
             if (code !== 200) {
+		console.log(err);
                 finishTask(tid, function(){});
                 callback(500, err);
             } else {
@@ -427,19 +427,25 @@ function finishTask(tid, callback) {
             callback(500, err);
             return;
         }
-        var multi = redis.multi();
-        multi.srem(key_user_tids(tid['uid']), tid);
-        multi.del(key_task(tid));
-	multi.zrem("taskqueue", tid);
-	multi.zrem("pendingqueue", tid);
-        multi.exec(function(err, res) {
-            if (err) {
-                callback(500, err);
-                return;
-            }
-            callback(200);
-        });
-        return;
+	redis.hget(key_task(tid), 'uid', function(err, uid){
+	    if (err) {
+		callback(500, err);
+		return;
+	    }
+	    var multi = redis.multi();
+	    multi.srem(key_user_tids(uid), tid);
+	    multi.del(key_task(tid));
+	    multi.zrem("taskqueue", tid);
+	    multi.zrem("pendingqueue", tid);
+	    multi.exec(function(err, res) {
+		if (err) {
+		    callback(500, err);
+		    return;
+		}
+		callback(200);
+	    });
+	    return;
+	});
     });
 }
 

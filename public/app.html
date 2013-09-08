@@ -46,29 +46,28 @@
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
 
 	<div id="filters"> 
-		<a href="" ng-class="{'task-filter': true, selected: !showComplete}" ng-click="showComplete = false">Current tasks</a>
-		<a href="" ng-class="{'task-filter': true, selected: showComplete}" ng-click="showComplete = true">Completed tasks</a>
+		<a href="" class="task-filter selected">Current tasks</a>
 
 	</div>
 
 	<ul>
 
-		<li ng-class="{task: true, expanded: task.isExpanded}" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
+		<li ng-class="{task: true, expanded: task.isExpanded}" ng-repeat="task in tasks">
 
 		<div class="task-handle" ng-click="toggleExpand(task)">
-		<span class="title">{{task.title}}</span>
+		<span class="title">{{task.name}}</span>
 
 		<span class="right-aligned-li">
-			<span class="amount">{{task.amount | currency}}</span>
+			<span class="amount">{{task.value | currency}}</span>
 
-			<span class="due-date">{{task.dueDate | date:'EEEE @ h a'}}</span>
+			<span class="due-date">{{task.date | date:'EEEE @ h a'}}</span>
 		</span>
 		</div>
 
 		<div class="expanded-show clearfix" ng-show="task.isExpanded">
 		
-			<span class="amount-alt">{{task.amount | currency}}</span>
-			<span class="due-date-alt">{{task.dueDate | date:'EEEE @ h a'}}</span>
+			<span class="amount-alt">{{task.value | currency}}</span>
+			<span class="due-date-alt">{{task.date | date:'EEEE @ h a'}}</span>
 
 			<div class="coach">
 				<span class="coach-title">Coach</span>
@@ -82,7 +81,7 @@
 
 			<div class="buttons">
 				<button type="button" class="gray multiple-buttons" ng-click="destroy(task)">Delete Task</button>
-				<button type="button" class="blue" ng-click="complete(task)" ng-show="!task.completed">Task Completed</button>
+				<button type="button" class="blue" ng-click="complete(task)">Task Completed</button>
 			</div>
 
 			<div class="error">{{task.error}}</div>
@@ -97,7 +96,8 @@
 			<div class="expanded-show" ng-show="newTask.isExpanded">
 
 				<div class="row"> 
-				<input class="text-entry first-margin" placeholder="New Task" ng-model="newTask.title">
+
+				<input class="text-entry first-margin" placeholder="New Task" ng-model="newTask.name">
 				</div>
 				
 				<div class="columns">
@@ -112,11 +112,11 @@
 						</li>
 						<li class="label-entry">
 							<span class="label-entry-title">Completion Date</span><br>
-							<input class="text-entry half" maxlength="10" placeholder="MM/DD/YYYY" ng-model="newTask.dueDate">
+							<input class="text-entry half" maxlength="10" placeholder="MM/DD/YYYY" ng-model="newTask.date">
 						</li>
 						<li class="label-entry">
 							<span class="label-entry-title">Your Stake (USD)</span><br>
-							<input class="text-entry half" placeholder="1.00" ng-model="newTask.amount">
+							<input class="text-entry half" placeholder="1.00" ng-model="newTask.value">
 						</li>
 
 					</ul>
@@ -142,7 +142,7 @@
 <div id="settings" ng-show="active=='settings'" ng-controller="SettingsController">
 
 	<div id="categories"> 
-		<span class="category" ng-click="showComplete = false">Account</span>
+		<span class="category">Account</span>
 	</div>
 
 	<div class="columns"><ul class="col">
@@ -169,7 +169,7 @@
 	</ul></div>
 
 	<div id="categoriestwo"> 
-		<span class="category" ng-click="showComplete = false">Defaults</span>
+		<span class="category">Defaults</span>
 	</div>
 
 	<div class="columns"><ul class="col">
@@ -183,7 +183,7 @@
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Stake</span>&nbsp;
 			<span class="right-aligned-li">
-				<span class="status">{{settings.amount | currency}}</span>
+				<span class="status">{{settings.value | currency}}</span>
 			</span>
 		</li>
 
@@ -203,7 +203,7 @@
 	</ul></div>
 
 	<div class="logout">
-		<button type="button" class="gray solo-button" href="#" ng-class="{'task-filter': true, selected: showComplete}" onclick="onclicklogout()" ng-click="showComplete = true">Logout</button>
+		<button type="button" class="gray solo-button task-filter" href="#" onclick="onclicklogout()">Logout</button>
 	</div>
 </div>
 

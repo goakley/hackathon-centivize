@@ -5,8 +5,20 @@ var app = angular.module("centivize", ["ngResource"]);
 app.factory("Task", function($resource) {
 	return $resource("/api/task/:tid", {}, {
 		index: {method: "GET", isArray: true},
-		destroy: { method: "DELETE" },
-		create: {method: "GET"}
+		destroy: {method: "DELETE"},
+		save: {
+			method: "POST",
+			transformRequest: function(d, headersGetter) {
+				return JSON.stringify({
+					name: d.name,
+					description: d.description,
+					date: new Date(d.date).getTime(),
+					value: Number(d.value.replace('$', '')),
+					coach: d.coach,
+					pin: d.pin
+				});
+			}
+		}
 	});
 });
 
@@ -25,42 +37,38 @@ function TasksController($scope, Task) {
 	tomorrow.setDate(tomorrow.getDate() + 1);
 
 	$scope.newTask = {
-		title: 'New Task',
-		amount: '1.00',
+		name: 'New Task',
+		value: '$1.00',
 		coach: '',
-		dueDate: '',
+		date: '',
 		pin: '',
-		description: '',
-		completed: false
+		description: ''
 	};
 
 	$scope.tasks = [
 		{
 			tid: 1,
-			title: 'Do big thing',
-			amount: 1.00,
+			name: 'Do big thing',
+			value: 1.00,
 			coach: 'Greg',
-			dueDate: new Date(2013, 9, 10),
-			completed: false,
+			date: new Date(2013, 9, 10),
 			description: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus.'
 		},
 		{
 			tid: 2,
-			title: 'Finish the hack',
-			amount: 1.00,
+			name: 'Finish the hack',
+			value: 1.00,
 			coach: 'Viraj',
-			dueDate: new Date(2013, 9, 14),
-			completed: false,
+			date: new Date(2013, 9, 14),
 			description: ''
 		},
 		{
 			tid: 3,
-			title: 'Do small thing',
-			amount: 0.50,
+			name: 'Do small thing',
+			value: 0.50,
 			coach: 'Glen',
-			dueDate: new Date(2013, 9, 7, 4, 41, 0),
-			completed: true,
-			description: '',
+			date: new Date(2013, 9, 7, 4, 41, 0),
+			description: ''
 		}
 	];
 
@@ -69,7 +77,7 @@ function TasksController($scope, Task) {
 	};
 
 	$scope.create = function(task) {
-		if (!task.title) {
+		if (!task.name) {
 			task.error = "Name your task.";
 			return;
 		}
@@ -107,7 +115,7 @@ function SettingsController($scope) {
 		lastName: 'Bindra',
 		// default task settings
 		charity: 'Pencils of Promise',
-		amount: 0.50,
+		value: 0.50,
 		coach: 'goodfriend@gmail.com',
 		reviewHours: 24
 	};
