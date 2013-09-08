@@ -18,8 +18,7 @@ var CONFIG = {
         SCOPE: "Balance|Send",
         AUTH_CALLBACK: "https://centivize.co/dwolla/auth/callback",
         PAY_CALLBACK: "https://centivize.co/dwolla/payment/callback",
-        RECV_ACCOUNT: "812-528-4968",
-        RECV_PIN: "AZXW"
+        RECV_ACCOUNT: "812-528-4968"
     },
     SENDGRID: {
         USER: "centivize"
