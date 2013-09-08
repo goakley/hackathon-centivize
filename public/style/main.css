@@ -222,6 +222,10 @@ article {
 	font-family: 'Open Sans', sans-serif;
 }
 
+.descriptions {
+	display: inline;
+}
+
 .description-title {
 	padding-left: 12px;
 	padding-top: 12px;
@@ -398,4 +402,18 @@ article {
 		float: none;
 		width: 100%;
 	}
+}
+
+.error {
+	color: red;
+}
+
+.new-task .title-alt {
+	display: block;
+}
+
+.new-task .title {
+	width: 95%;
+	display: block;
+	margin: auto;
 }

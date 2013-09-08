@@ -50,9 +50,9 @@
 	</div>
 
 	<ul>
-		<li class="task" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete" ng-controller="TaskController">
+		<li class="task" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
 
-		<span class="title">{{task.title}}</span>
+		<span class="title" ng-click="toggleExpand(task)">{{task.title}}</span>
 		&nbsp;
 
 		<span class="right-aligned-li">
@@ -70,27 +70,54 @@
 				<span class="coach-title">Coach</span>
 				<span class="coach-body">{{task.coach}}</span>
 			</div>
-			
-			<span class="descriptions" ng-show="task.description!=''">
+
+			<div class="descriptions" ng-show="task.description">
 				<div class="description-title">Description</div>
 				<div class="description">{{task.description}}</div>
-			</span>
+			</div>
 
 			<div class="buttons">
-				<button type="button" class="gray">Delete Task</button>
-				<button type="button" class="blue">Task Completed</button>
+				<button type="button" class="gray" ng-click="destroy(task)">Delete Task</button>
+				<button type="button" class="blue" ng-click="complete(task)" ng-show="!task.completed">Task Completed</button>
 			</div>
+
+			<div class="error">{{task.error}}</div>
 		</div>			
 
-
 		</li>
-		<li class="task clearfix"> <span class="title-alt">Add a task</span> </li>
+
+		<li class="task new-task clearfix">
+			<form action="" ng-submit="create(newTask)">
+
+			<div class="title-alt" ng-click="toggleExpand(newTask)">Add a task</div>
+			<div class="expanded-show" ng-show="newTask.isExpanded">
+
+				<input class="title" placeholder="New Task" ng-model="newTask.title">
+				<div class="coach">
+					<span class="coach-title">Coach</span>
+					<input class="coach" placeholder="task" ng-model="newTask.coach">
+				</div>
+
+				<div class="descriptions">
+					<div class="description-title">Description</div>
+					<textarea class="description" ng-model="newTask.description"></textarea>
+				</div>
+
+				<div class="buttons">
+					<button type="submit" class="blue">Add Task</button>
+				</div>
+
+				<div class="error">{{newTask.error}}</div>
+
+				</form>
+			</div>
+		</li>
 	</ul>
 </div>
 
 <div id="tasks" ng-show="active=='settings'">
 	
-		<li class="task" ng-click="toggleExpand(settings)" ng-controller="TaskController">
+		<li class="task" ng-click="toggleExpand(settings)">
 
 			<span class="title">Hello</span>
 			<span class="amount">There</span>
