@@ -104,11 +104,11 @@
 					<ul>
 						<li class="label-entry">
 							<span class="label-entry-title">Coach</span><br>
-							<input class="text-entry half"  placeholder="coach@domain.com" ng-model="newTask.cid">
+							<input type="email" class="text-entry half" placeholder="coach@domain.com" ng-model="newTask.cid">
 						</li>
 						<li class="label-entry">
 							<span class="label-entry-title">Dwolla Pin</span><br>
-							<input type="password" maxlength="4" class="text-entry half" placeholder="****" ng-model="newTask.pin">
+							<input type="password" maxlength="4" ng-minlength="4" class="text-entry half" placeholder="****" ng-model="newTask.pin" integer>
 						</li>
 						<li class="label-entry">
 							<span class="label-entry-title">Completion Date</span><br>
@@ -147,23 +147,23 @@
 
 	<div class="columns"><ul class="col">
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">First Name</span> &nbsp;
+			<span class="title">First Name</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.firstName}}</span>
+				<input ng-model="settings.firstName">
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Last Name</span>&nbsp;
+			<span class="title">Last Name</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.lastName}}</span>
+				<input ng-model="settings.lastName">
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Email</span>&nbsp;
+			<span class="title">Email</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.email}}</span>
+				<input ng-model="settings.email">
 			</span>
 		</li>
 	</ul></div>
@@ -174,36 +174,40 @@
 
 	<div class="columns"><ul class="col">
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Charity</span> &nbsp;
+			<span class="title">Charity</span> 
 			<span class="right-aligned-li">
+				<img src="https://www.dwolla.com/avatars/{{settings.charity}}/16">
 				<select ng-model="settings.charity" ng-options="o.id as o.name for o in charities"></select>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Stake</span>&nbsp;
+			<span class="title">Stake (USD)</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.value | currency}}</span>
+				<input ng-model="settings.value">
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Coach</span>&nbsp;
+			<span class="title">Coach</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.cid}}</span>
+				<input ng-model="settings.cid">
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
-			<span class="title">Review Period</span>&nbsp;
+			<span class="title">Review Period (hours)</span>
 			<span class="right-aligned-li">
-				<span class="status">{{settings.reviewHours}} hours</span>
+				<input ng-model="settings.reviewHours">
 			</span>
 		</li>
 	</ul></div>
 
-	<div class="logout">
-		<button type="button" class="gray solo-button" href="#" onclick="onclicklogout()">Logout</button>
+	<div class="error">{{error}}</div>
+
+	<div class="settings-buttons">
+		<button class="gray solo-button" onclick="onclicklogout()">Logout</button>
+		<button class="blue solo-button" ng-click="save()">Save settings</button>
 	</div>
 </div>
 

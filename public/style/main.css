@@ -508,7 +508,7 @@ div#categoriestwo {
 	text-align: right;
 }
 
-.logout {
+.settings-buttons {
 	float: right;
 }
 
@@ -526,6 +526,10 @@ div#categoriestwo {
 	font-size: 18px;
 	text-indent: 20px;
 	width: 100%;
+}
+
+.text-entry.ng-invalid {
+	outline: 2px solid red;
 }
 
 .area-entry {

@@ -101,7 +101,6 @@ function TasksController($scope, Task) {
 		}, function(response) {
 			task.error = "There was a problem completing your task.";
 		});
-
 	};
 
 }
@@ -121,28 +120,25 @@ var charities = [
 	{name: 'United Way of New York City', domain: 'unitedwaynyc.org'},
 	*/
 	{name: "Heart4Children Inc.", id: "812-573-9939"},
-	{name: "The Tor Project", id: "thetorproject"},
+	{name: "The Tor Project", id: "812-526-5770"},
 	{name: "Cloudbase Foundation", id: "812-675-8638"},
-	{name: "Goodwill Industries of Arkansas", id: "goodwillar"}
+	{name: "Goodwill Industries of Arkansas", id: "812-678-3756"},
+	{name: "Glen Oakley", id: "812-580-3594"},
+	{name: "Greg Owen", id: "812-590-7026"},
+	{name: "Charles Lehner", id: "812-580-3594"}
 ];
-//https://www.dwolla.com/avatars/:id/104
 
 function SettingsController($scope, User) {
 	$scope.charities = charities;
-
 	$scope.settings = User.get();
+	$scope.error = "";
 
-	/*
-	$scope.settings = {
-		// user settings
-		email: 'viraj.s.bindra@gmail.com',
-		firstName: 'Viraj',
-		lastName: 'Bindra',
-		// default task settings
-		charity: 'Pencils of Promise',
-		value: 0.50,
-		cid: 'goodfriend@gmail.com',
-		reviewHours: 24
+	$scope.save = function() {
+		User.update($scope.settings, function(resource) {
+			// success
+			$scope.error = "";
+		}, function(response) {
+			$scope.error = "There was a problem saving your settings.";
+		});
 	};
-	*/
 }
