@@ -385,7 +385,7 @@ function addTask(uid, task, pin, callback) {
                 'time', task.dueDate,
                 'amount', task.amount,
                 'currency', "USD",
-                'cid': task.coach,
+                'cid', task.coach,
                 'description', task.description,
                 'paid', '0',
                 'uid', uid);
