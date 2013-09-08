@@ -119,13 +119,13 @@ require('express-persona')(app, {
 /* DYNAMIC WEB SERVE */
 
 app.get("/verify/:tid/yes", function(req, res) {
-    finishTask(tid, function(status, err) {
+    finishTask(req.params.tid, function(status, err) {
         res.sendfile("./templates/verify_completed_" + (err ? "n" : "") + "okay.ejs");
     });
 });
 
 app.get("/verify/:tid/no", function(req, res) {
-    failTask(tid, function(status, err) {
+    failTask(req.params.tid, function(status, err) {
         res.sendfile("./templates/verify_failed_" + (err ? "n" : "") + "okay.ejs");
     });
 });
@@ -192,6 +192,7 @@ app.post("/api/task", function(req, res) {
  * 500 - Server error
  */
 app.del("/api/task/:tid", function(req, res) {
+    var tid = req.params.tid;
     redis.exists(key_task(tid), function(err, doesexist) {
         if (!doesexist) {
             res.send(404);
@@ -225,6 +226,7 @@ app.del("/api/task/:tid", function(req, res) {
  * 500 - SERVER ERROR ZOMG
  */
 app.post("/api/task/:tid/complete", function(req, res) {
+    var tid = req.params.tid;
     redis.exists(key_task(tid), function(err, doesexist) {
         if (!doesexist) {
             res.send(404);
