@@ -379,8 +379,8 @@ function sendCoachSuccessEmail(task, callback) {
 				      task:task.name,
 				      description:task.description,
                                       expiration:task.date,
-                                      approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
-                                      denial:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
+                                      approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + task.tid + "/yes",
+                                      denial:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + task.tid + "/no"});
     sendgrid.send({
         to: task.cid,
         from: task.uid,
@@ -401,8 +401,8 @@ function sendCoachFailEmail(task, callback) {
 				      task:task.name,
 				      description:task.description,
                                       expiration:task.date,
-                                      approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
-                                      denial:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
+                                      approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + task.tid + "/yes",
+                                      denial:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + task.tid + "/no"});
     sendgrid.send({
         to: task.cid,
         from: task.uid,
