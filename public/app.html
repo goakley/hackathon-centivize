@@ -54,11 +54,6 @@
 
 		<li class="task" ng-click="toggleExpand(task)" ng-repeat="task in tasks" ng-show="task.completed == showComplete">
 
-                <span class="checkbox">
-                  <input type="checkbox" value="1" class="ballerCheckbox" ng-click="complete(task)" />
-                  <label for="checkboxInput"></label>
-                </span>
-
 		<span class="title" ng-click="toggleExpand(task)">{{task.title}}</span>
 		&nbsp;
 
