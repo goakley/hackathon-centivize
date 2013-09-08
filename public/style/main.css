@@ -475,7 +475,6 @@ div#categoriestwo {
 	padding: 14px;
 	list-style-type: none;
 	margin-bottom: 10px;
-	cursor: pointer;
 }
 
 .link {
@@ -511,7 +510,6 @@ div#categoriestwo {
 	padding: 14px;
 	list-style-type: none;
 	margin-bottom: 10px;
-	cursor: pointer;
 }
 
 .setting:hover {
@@ -748,13 +746,16 @@ div#categoriestwo {
 		position: absolute;
 		left: 0;
 		margin-left: 12px;
-		/*right: 0;*/
+		right: 0;
 		top: 9px;
 	}
 
 	.splash .login {
 		margin: 10px;
 		float: right;
+	}
+	.splash #logo {
+		right: auto;
 	}
 
 	nav a img#resize {
@@ -818,7 +819,6 @@ div#categoriestwo {
 	.splash article {
 		margin: 28px;
 	}
-
 }
 
 @media only screen and (max-width : 320px) {

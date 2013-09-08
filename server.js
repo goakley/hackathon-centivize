@@ -619,10 +619,11 @@ var robotTQ;
 (function checkTaskQueue() {
     redis.zrange("taskqueue", 0, 0, "WITHSCORES", function(err, head) {
         if (err) {
+            robotTQ = setTimeout(checkTaskQueue, 60000);
             return;
         }
         if (!head.length) {
-            robotTQ = undefined;
+            robotTQ = setTimeout(checkTaskQueue, 60000);
             return;
         }
         if (parseInt(head[1]) > Date.now()) {
@@ -657,10 +658,11 @@ var robotPQ;
 (function checkPendingQueue() {
     redis.zrange("pendingqueue", 0, 0, "WITHSCORES", function(err, head) {
         if (err) {
+            robotPQ = setTimeout(checkPendingQueue, 60000);
             return;
         }
         if (!head.length) {
-            robotPQ = undefined;
+            robotPQ = setTimeout(checkPendingQueue, 60000);
             return;
         }
         if (parseInt(head[1]) > Date.now()) {
