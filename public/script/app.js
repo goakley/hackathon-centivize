@@ -59,8 +59,22 @@ function TasksController($scope, Task) {
 	$scope.tasks = Task.index();
 	$scope.newTask = angular.copy(defaultTask);
 
+	$scope.notifications = [];
+
+	$scope.dismissNotification = function(i) {
+		$scope.notifications.splice(i, 1);
+	};
+
 	$scope.toggleExpand = function(task) {
 		task.isExpanded = !task.isExpanded;
+	};
+
+	// remove a task from the list
+	$scope.remove = function(task) {
+		var i = $scope.tasks.indexOf(task);
+		if (i != -1) {
+			$scope.tasks.splice(i, 1);
+		}
 	};
 
 	$scope.create = function(task) {
@@ -70,7 +84,6 @@ function TasksController($scope, Task) {
 		}
 		task.error = "";
 		Task.save({}, task, function(resource) {
-			// success
 			task.tid = resource.tid;
 			$scope.tasks.push(task);
 			// reset the form
@@ -82,13 +95,8 @@ function TasksController($scope, Task) {
 
 	$scope.destroy = function(task) {
 		Task.destroy({tid: task.tid}, function(resource) {
-			// success
 			task.error = "";
-			// remove from list
-			var i = $scope.tasks.indexOf(task);
-			if (i != -1) {
-				$scope.tasks.splice(i, 1);
-			}
+			$scope.remove(task);
 		}, function(response) {
 			task.error = "There was a problem deleting your task.";
 		});
@@ -96,8 +104,9 @@ function TasksController($scope, Task) {
 
 	$scope.complete = function(task) {
 		Task.complete({tid: task.tid}, function(resource) {
-			// success
 			task.error = "";
+			$scope.remove(task);
+			$scope.notifications.push("Your couch " + task.cid + " has been messaged to verify your completion of '" + task.name + "'.");
 		}, function(response) {
 			task.error = "There was a problem completing your task.";
 		});

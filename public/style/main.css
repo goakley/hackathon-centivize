@@ -835,7 +835,6 @@ div#categoriestwo {
 	.splash article {
 		margin: 18px;
 	}
-
 }
 
 .error {
@@ -856,3 +855,15 @@ div#categoriestwo {
 	margin: auto;
 }
 
+.notification {
+	background-color: #fde45a;
+	padding: 1ex 0 1ex 1ex;
+	margin-bottom: 1em;
+}
+
+.notification-dismiss {
+	float: right;
+	cursor: pointer;
+	font-size: 1.25em;
+	padding: 0 1ex;
+}
