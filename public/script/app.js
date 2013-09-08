@@ -22,6 +22,13 @@ app.factory("Task", function($resource) {
 	});
 });
 
+app.factory("User", function($resource) {
+	return $resource("/api/user", {}, {
+		get: {method: "GET"},
+		save: {method: "PUT"}
+	});
+});
+
 function HomeController($scope) {
 	$scope.active = "tasks";
 
@@ -107,7 +114,26 @@ function TasksController($scope, Task) {
 
 }
 
-function SettingsController($scope) {
+var charities = [
+	{name: 'CFY', domain: 'cfy.org'},
+	{name: 'charity: water', domain: 'charitywater.org'},
+	{name: 'DonorsChoose.org', domain: 'donorschoose.org'},
+	{name: 'Fuck Cancer', domain: 'letsfcancer.com'},
+	{name: 'Goods for Good', domain: 'goodsforgood.org'},
+	{name: 'hackNY', domain: 'hackny.org'},
+	{name: 'iMentor', domain: 'imentor.org'},
+	{name: 'Kiva', domain: 'kiva.org'},
+	{name: 'Pencils of Promise', domain: 'pencilsofpromise.org'},
+	{name: 'She\'s the First', domain: 'shesthefirst.org'},
+	{name: 'United Way of New York City', domain: 'unitedwaynyc.org'}
+];
+
+function SettingsController($scope, User) {
+	$scope.charities = charities;
+
+	$scope.settings = User.get();
+
+	/*
 	$scope.settings = {
 		// user settings
 		email: 'viraj.s.bindra@gmail.com',
@@ -119,4 +145,5 @@ function SettingsController($scope) {
 		coach: 'goodfriend@gmail.com',
 		reviewHours: 24
 	};
+	*/
 }
