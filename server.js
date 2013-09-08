@@ -30,7 +30,6 @@ CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
 /* SETUP */
 
 var dwolla = require('dwolla'),
-    everyauth = require('everyauth'),
     ejs = require('ejs'),
     express = require('express'),
     fs = require('fs'),
@@ -41,17 +40,6 @@ var dwolla = require('dwolla'),
     url = require('url');
 
 var app = express();
-
-everyauth.dwolla
-    .appId(CONFIG.DWOLLA.ID)
-    .appSecret(CONFIG.DWOLLA.SECRET)
-    .scope(CONFIG.DWOLLA.SCOPE)
-    .findOrCreateUser(function(session, accessToken, accessTokenExtra, dwollaUserMetadata) {
-        console.dir(session);
-        console.dir(accessToken);
-        console.dir(accessTokenExtra);
-        console.dir(dwollaUserMetadata);
-    }).redirectPath('/');
 
 /*****************************************************************************/
 
@@ -78,10 +66,17 @@ app.use(express.logger())
         console.log("I WILL NOW CHECK MY STATE AT LOCATION" + pathname + "...");
         if (req.session.email) {
             console.log("I AM LOGGED IN AS " + req.session.email);
-            if (pathname === '/' || pathname === '/index.html' || pathname === '') {
-                res.redirect(302, '/app.html');
-                return;
-            }
+            redis.get("user:" + req.session.email + ":dwollatoken", function(err, token) {
+                if (!token) {
+                    res.redirect("/dwolla/auth");
+                    return;
+                } else {
+                    if (pathname === '/' || pathname === '/index.html' || pathname === '') {
+                        res.redirect(302, '/app.html');
+                        return;
+                    }
+                }
+            });
         } else {
             console.log("I AM NOT LOGGED IN");
             if (pathname === '/app.html') {
@@ -91,8 +86,7 @@ app.use(express.logger())
         }
         next();
     })
-    .use(express.static('./public'))
-    .use(everyauth.middleware());
+    .use(express.static('./public'));
 
 require('express-persona')(app, {
     audience: "https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT
@@ -122,6 +116,7 @@ app.get("/dwolla/auth", function(req, res) {
             '&client_id=' + encodeURIComponent(CONFIG.DWOLLA.ID) +
             '&redirect_uri=' + encodeURIComponent(CONFIG.DWOLLA.AUTH_CALLBACK) + 
             '&scope=' + encodeURIComponent(CONFIG.DWOLLA.SCOPE);
+    res.redirect(authUrl);
 });
 /* Dwolla autentication callback - NOT CALLED DIRECTLY */
 app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
