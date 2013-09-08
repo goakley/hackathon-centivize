@@ -316,6 +316,40 @@ article {
 	margin-left: 0.75em;
 }
 
+.checkbox label {
+	cursor: pointer;
+	position: absolute;
+	width: 1.4em;
+	height: 1.4em;
+	top: 0;
+	left: 0;
+	background: #eee;
+	border:4px solid #555;
+}
+
+.checkbox label:after {
+	opacity: 0;
+	content: '';
+	position: absolute;
+	width: 0.7em;
+	height: 0.4em;
+	background: transparent;
+	top: 6px;
+	left: 7px;
+	border: 4px solid #333;
+	border-top: none;
+	border-right: none;
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+
+.checkbox label:hover::after {
+	opacity: 0.5;
+}
+
 @media screen and (min-width: 601px) {
 	.amount-alt {
 		display: none;
