@@ -3,7 +3,7 @@
 var app = angular.module("centivize", ["ngResource"]);
 
 app.factory("Task", function($resource) {
-	return $resource("/api/task/:tid", {}, {
+	return $resource("/api/task/:tid", {tid: "@tid"}, {
 		index: {method: "GET", isArray: true},
 		destroy: {method: "DELETE"},
 		save: {
@@ -18,6 +18,10 @@ app.factory("Task", function($resource) {
 					pin: d.pin
 				});
 			}
+		},
+		complete: {
+			method: "POST",
+			url: "/api/task/:tid/complete"
 		}
 	});
 });
@@ -37,22 +41,23 @@ function HomeController($scope) {
 	};
 }
 
+var defaultTask = {
+	name: 'New Task',
+	value: '1.00',
+	cid: '', // coach email address
+	date: '', // ms
+	pin: '',
+	description: ''
+};
+
+var tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
 function TasksController($scope, Task) {
 	$scope.showComplete = false;
 
-	var tomorrow = new Date();
-	tomorrow.setDate(tomorrow.getDate() + 1);
-
-	$scope.newTask = {
-		name: 'New Task',
-		value: '1.00',
-		cid: '', // coach email address
-		date: '',
-		pin: '',
-		description: ''
-	};
-
 	$scope.tasks = Task.index();
+	$scope.newTask = angular.copy(defaultTask);
 
 	$scope.toggleExpand = function(task) {
 		task.isExpanded = !task.isExpanded;
@@ -65,26 +70,38 @@ function TasksController($scope, Task) {
 		}
 		task.error = "";
 		Task.save({}, task, function(resource) {
-			console.log("saved", resource);
-			$scope.tasks.push(resource);
-			task.error = "";
+			// success
+			task.tid = resource.tid;
+			$scope.tasks.push(task);
+			// reset the form
+			$scope.newTask = angular.copy(defaultTask);
 		}, function(response) {
 			task.error = "There was a problem creating your task.";
 		});
 	};
 
 	$scope.destroy = function(task) {
-		Task.destroy(task, function(resource) {
-			console.log("destroyed");
+		Task.destroy({tid: task.tid}, function(resource) {
+			// success
 			task.error = "";
-			// kill it
+			// remove from list
+			var i = $scope.tasks.indexOf(task);
+			if (i != -1) {
+				$scope.tasks.splice(i, 1);
+			}
 		}, function(response) {
 			task.error = "There was a problem deleting your task.";
 		});
 	};
 
 	$scope.complete = function(task) {
-		task.error = "Todo";
+		Task.complete({tid: task.tid}, function(resource) {
+			// success
+			task.error = "";
+		}, function(response) {
+			task.error = "There was a problem completing your task.";
+		});
+
 	};
 
 }
