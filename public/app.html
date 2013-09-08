@@ -95,16 +95,33 @@
 			<div class="title-alt" ng-click="toggleExpand(newTask)">Add a task</div>
 			<div class="expanded-show" ng-show="newTask.isExpanded">
 
-				<input class="title" placeholder="New Task" ng-model="newTask.title">
-				<div class="coach">
-					<span class="coach-title">Coach</span>
-					<input class="coach" placeholder="task" ng-model="newTask.coach">
+				<div class="row"> 
+				<input class="text-entry first-margin full" placeholder="New Task" ng-model="newTask.title">
+				</div>
+				
+				<div class="columns">
+					<ul>
+						<li class="label-entry">
+							<span class="label-entry-title">Coach</span><br>
+							<input class="text-entry half"  placeholder="coach@domain.com" ng-model="newTask.coach">
+						</li>
+						<li class="label-entry">
+							<span class="label-entry-title">Dwolla Pin</span><br>
+							<input class="text-entry half" placeholder="****" ng-model="newTask.pin">
+						</li>
+						<li class="label-entry">
+							<span class="label-entry-title">Date</span><br>
+							<input class="text-entry half" placeholder="MM/DD/YYYY" ng-model="newTask.dueDate">
+						</li>
+						<li class="label-entry">
+							<span class="label-entry-title">Stake</span><br>
+							<input class="text-entry half" placeholder="$0.00" ng-model="newTask.amount">
+						</li>
+
+					</ul>
 				</div>
 
-				<div class="descriptions">
-					<div class="description-title">Description</div>
-					<textarea class="description" ng-model="newTask.description"></textarea>
-				</div>
+				<textarea rows="4" class="area-entry" placeholder="Description (optional)" ng-model="newTask.description"></textarea>
 
 				<div class="buttons">
 					<button type="submit" class="blue">Add Task</button>

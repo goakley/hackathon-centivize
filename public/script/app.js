@@ -25,10 +25,11 @@ function TasksController($scope, Task) {
 	tomorrow.setDate(tomorrow.getDate() + 1);
 
 	$scope.newTask = {
-		title: 'Untitled Task',
-		amount: 1.00,
-		coach: 'yomomma@example.org',
-		dueDate: tomorrow,
+		title: 'New Task',
+		amount: '$1.00',
+		coach: '',
+		dueDate: '',
+		pin: '',
 		description: '',
 		completed: false
 	};

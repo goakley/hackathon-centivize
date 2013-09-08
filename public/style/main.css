@@ -229,11 +229,27 @@ article {
 
 .coach {
 	padding-top: 12px;
+	list-style: none;
 }
-.coach-title {
-	padding-left: 12px;
+
+.label-entry {
+	padding-top: 12px;
+	list-style: none;
+}
+
+.label-entry-title {
 	font-family: 'Open Sans', sans-serif;
 	font-weight: 700;
+	line-height: 40px;
+	padding-right: 20px;
+	opacity: 0.4;
+}
+
+.coach-title {
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 700;
+	line-height: 40px;
+	padding-right: 20px;
 }
 
 .coach-body {
@@ -453,11 +469,49 @@ div#categoriestwo {
 	column-count: 2;
 }
 
+.text-entry {
+	border: none;
+	background: #eaeaea;
+	height: 40px;
+	color: #3e4447;
+	font-size: 18px;
+	text-indent: 20px;
+	width: 100%;
+}
+
+.area-entry {
+	margin-top: 24px;
+	border: none;
+	background: #eaeaea;
+	font-size: 14px;
+	padding: 20px;
+	width: 100%;
+}
+
+.first-margin {
+	margin-top: 12px;
+	font-weight: 600;
+}
+
+.textarea {
+	background: #eaeaea;
+
+}
+
+.row {
+	padding-left: 0px;
+	padding-right: 0px;
+	width: auto;
+}
+
 @media screen and (max-width: 920px) {
 	.columns {
 		-moz-column-count: 1;
 		-webkit-column-count: 1;
 		column-count: 1;
+	}
+	.half {
+		width: 100%;
 	}
 	list-style-type: none;
 }
