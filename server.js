@@ -423,6 +423,7 @@ function addTask(uid, task, pin, callback) {
                 'cid', task.cid,
                 'description', task.description,
                 'paid', '0',
+		'tid', tid,
                 'uid', uid);
     multi.exec(function(err, res) {
         if (err) {
