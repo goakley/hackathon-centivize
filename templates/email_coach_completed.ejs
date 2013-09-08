@@ -1,7 +1,8 @@
 <html>
 <head></head>
 <body>
-<p>Your friend <%= user %> claims to have completed the task <%= task %>.</p>
+<p>Your friend <%= user %> claims to have completed the following task:</p>
+<p><%= task %>: <%= description =%></p>
 <p>As the coach for this task, you have the final say. Did they really do it?</p>
 <p>Please respond before <%= expiration %></p>
 <p>Click here to approve: <%= approval %></p>

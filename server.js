@@ -350,23 +350,68 @@ function sendCoachEmail(tid, callback) {
 	    callback(500, err);
 	    return;
 	}
-        var email = fs.readFileSync("./templates/email_coach.ejs");
-        var emailtext = ejs.render(file, {user:task.uid,
-                                          expiration:task.date,
-                                          approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
-                                          deinal:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
-	sendgrid.send({
-            to: task.cid,
-            from: task.uid,
-            subject: task.uid + " Nearing The End of a Task",
-            text: emailtext
-        }, function(err, response) {
-            if (err) {
-                callback(500, err);
-                return;
-            }
-            callback(200);
-        });
+	if (task.completed) {
+	    sendCoachSuccessEmail(task, function(err, res) {
+		if (err) {
+		    callback(500, err);
+		    return;
+		}
+		callback(200);
+	    });
+	}
+	else {
+	    sendCoachFailEmail(task, function(err, res) {
+		if (err) {
+		    callback(500, err);
+		    return;
+		}
+		callback(200);
+	    });
+	}
+    });
+}
+
+function sendCoachSuccessEmail(task, callback) {
+    var email = fs.readFileSync("./templates/email_coach_completed.ejs");
+    var emailtext = ejs.render(file, {user:task.uid,
+				      task:task.name,
+				      description:task.description,
+                                      expiration:task.date,
+                                      approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
+                                      denial:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
+    sendgrid.send({
+        to: task.cid,
+        from: task.uid,
+        subject: task.uid + " Has Completed a Task",
+        text: emailtext
+    }, function(err, response) {
+        if (err) {
+            callback(500, err);
+            return;
+        }
+        callback(200);
+    });
+}
+
+function sendCoachFailEmail(task, callback) {
+    var email = fs.readFileSync("./templates/email_coach_.ejs");
+    var emailtext = ejs.render(file, {user:task.uid,
+				      task:task.name,
+				      description:task.description,
+                                      expiration:task.date,
+                                      approval:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/yes",
+                                      denial:"https://" + CONFIG.SERVER.HOST + ":" + CONFIG.SERVER.PORT + "/verify/" + tid + "/no"});
+    sendgrid.send({
+        to: task.cid,
+        from: task.uid,
+        subject: task.uid + " Has not Completed a Task",
+        text: emailtext
+    }, function(err, response) {
+        if (err) {
+            callback(500, err);
+            return;
+        }
+        callback(200);
     });
 }
 
@@ -423,6 +468,7 @@ function addTask(uid, task, pin, callback) {
                 'cid', task.cid,
                 'description', task.description,
                 'paid', '0',
+		'completed', false,
 		'tid', tid,
                 'uid', uid);
     multi.exec(function(err, res) {
@@ -444,7 +490,7 @@ function addTask(uid, task, pin, callback) {
     });
 }
 
-/* Successfully complete a task */
+/* Remove a task from the system */
 function finishTask(tid, callback) {
     function destroyTask() {
 	redis.hget(key_task(tid), 'uid', function(err, uid){
@@ -502,8 +548,6 @@ function failTask(tid, verified, callback) {
     return;
 }
 
-
-
 var robotTQ;
 (function checkTaskQueue() {
     redis.zrange("taskqueue", 0, 0, "WITHSCORES", function(err, head) {
@@ -521,19 +565,24 @@ var robotTQ;
                 robotTQ = setTimeout(checkTaskQueue, parseInt(head[1])-Date.now());
             return;
         }
-        redis.zadd("pendingqueue", head[1], head[0], function(err, status) {
-            if (err) {
-                robotTQ = setTimeout(checkTaskQueue, 1000);
-                return;
-            }
-            redis.zrem("taskqueue", head[1], head[0], function(err, status) {
-                if (err) {
+	sendCoachEmail(head[0], function(err, res) {
+	    if (err) {
+		return;
+	    }
+            redis.zadd("pendingqueue", head[1], head[0], function(err, status) {
+		if (err) {
                     robotTQ = setTimeout(checkTaskQueue, 1000);
                     return;
-                }
-                checkTaskQueue();
+		}
+		redis.zrem("taskqueue", head[1], head[0], function(err, status) {
+                    if (err) {
+			robotTQ = setTimeout(checkTaskQueue, 1000);
+			return;
+                    }
+                    checkTaskQueue();
+		});
             });
-        });
+	});
     });
 })();
 

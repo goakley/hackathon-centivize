@@ -1,7 +1,8 @@
 <html>
 <head></head>
 <body>
-<p>Your friend <%= user %> has not indicated that they completed the task <%= task %>, and the time limit has expired.</p>
+<p>Your friend <%= user %> has not indicated that they completed the following task, and the time limit has expired:</p>
+<p><%= task =%><%= description =%></p>
 <p>As the coach for this task, you have the final say. Did they finish their task?</p>
 <p>Please respond before <%= expiration %></p>
 <p>Click here to approve: <%= approval %></p>
