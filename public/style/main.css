@@ -429,6 +429,16 @@ div#settings {
 	margin: 10px;
 }
 
+#about ul {
+	padding: 0;
+	margin: 0;
+}
+
+div#about {
+	padding-top: 28px;
+	margin: 10px;
+}
+
 div#categories {
 	padding-left: 24px;
 	padding-bottom: 10px;
@@ -466,6 +476,33 @@ div#categoriestwo {
 	list-style-type: none;
 	margin-bottom: 10px;
 	cursor: pointer;
+}
+
+.link {
+	color: #21baea;
+}
+
+.link:hover {
+	color: #008bc1;
+}
+
+.about-li {
+	padding: 14px;
+	margin-bottom: 8px;
+	list-style-type: none;
+	box-shadow: none;
+	background: none;
+}
+
+.about-title {
+	font-size: 18px;
+	font-weight: 500;
+	margin-bottom: 12px;
+	color: #21baea;
+}
+
+.about-bullets {
+
 }
 
 .setting {
@@ -606,11 +643,6 @@ div#categoriestwo {
 
 #about h1 {
 	color: #21baea;
-}
-
-#about h2 {
-	font-size: 1.25em;
-	margin-left: 0.75em;
 }
 
 .checkbox label {
