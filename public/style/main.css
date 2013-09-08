@@ -754,6 +754,9 @@ div#categoriestwo {
 		margin: 10px;
 		float: right;
 	}
+	.splash #logo {
+		right: auto;
+	}
 
 	nav a img#resize {
 		width: 160px;
