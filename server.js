@@ -79,6 +79,7 @@ app.use(express.logger())
                     }
                 }
             });
+            return;
         } else {
             console.log("I AM NOT LOGGED IN");
             if (pathname === '/app.html') {
