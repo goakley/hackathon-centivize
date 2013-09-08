@@ -12,6 +12,10 @@ app.factory("Task", function($resource) {
 
 function HomeController($scope) {
 	$scope.active = "tasks";
+
+	$scope.toggleMenu = function() {
+		$scope.menuExpanded = !$scope.menuExpanded;
+	};
 }
 
 function TasksController($scope, Task) {
