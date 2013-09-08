@@ -77,7 +77,7 @@
 			</span>
 
 			<div class="buttons">
-				<button type="button" class="gray">Delete Task</button>
+				<button type="button" class="gray multiple-buttons">Delete Task</button>
 				<button type="button" class="blue">Task Completed</button>
 			</div>
 		</div>			
@@ -88,13 +88,65 @@
 	</ul>
 </div>
 
-<div id="tasks" ng-show="active=='settings'">
-	
-		<li class="task" ng-click="toggleExpand(settings)" ng-controller="TaskController">
+<div id="settings" ng-show="active=='settings'" ng-controller="TasksController">
 
-			<span class="title">Hello</span>
-			<span class="amount">There</span>
+	<div id="categories"> 
+		<span class="category" ng-click="showComplete = false">Account</span>
+	</div>
+
+	<div class="columns"><ul class="col">
+		<li class="setting" ng-click="toggleExpand(task)">
+			<span class="title">First Name</span> &nbsp;
+			<span class="right-aligned-li">
+			<span class="status">Viraj</span>
 		</li>
+
+		<li class="setting" ng-click="toggleExpand(task)">
+			<span class="title">Last Name</span>&nbsp;
+			<span class="right-aligned-li">
+			<span class="status">Bindra</span>
+		</li>
+
+		<li class="setting" ng-click="toggleExpand(task)">
+			<span class="title">Email</span>&nbsp;
+			<span class="right-aligned-li">
+			<span class="status">viraj.s.bindra@gmail.com</span>
+		</li>
+	</ul></div>
+
+	<div id="categoriestwo"> 
+		<span class="category" ng-click="showComplete = false">Defaults</span>
+	</div>
+
+	<div class="columns"><ul class="col">
+		<li class="setting" ng-click="toggleExpand(task)">
+			<span class="title">Charity</span> &nbsp;
+			<span class="right-aligned-li">
+			<span class="status">Pencils of Promise</span>
+		</li>
+
+		<li class="setting" ng-click="toggleExpand(task)">
+			<span class="title">Stake</span>&nbsp;
+			<span class="right-aligned-li">
+			<span class="status">$0.50</span>
+		</li>
+
+		<li class="setting" ng-click="toggleExpand(task)">
+			<span class="title">Coach</span>&nbsp;
+			<span class="right-aligned-li">
+			<span class="status">goodfriend@gmail.com</span>
+		</li>
+
+		<li class="setting" ng-click="toggleExpand(task)">
+			<span class="title">Review Period</span>&nbsp;
+			<span class="right-aligned-li">
+			<span class="status">24 hours</span>
+		</li>
+	</ul></div>
+
+	<div class="logout">
+		<button type="button" class="gray solo-button" href="#" ng-class="{'task-filter': true, selected: showComplete}" onclick="onclicklogout()" ng-click="showComplete = true">Logout</button>
+	</div>
 
 </div>
 

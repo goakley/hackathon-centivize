@@ -54,9 +54,15 @@ nav li {
 	*zoom: 1;
 }
 
-nav a:hover, nav a:active{
-	opacity: 1;
+nav a:hover {
+	opacity: 1
 }
+
+nav a:active{
+	opacity: 0.8;
+}
+
+
 
 /* Splash */
 
@@ -87,6 +93,10 @@ div#tasks {
 div#filters {
 	padding-left: 24px;
 	padding-bottom: 10px;
+}
+
+.category {
+
 }
 
 .nav-link {
@@ -255,10 +265,15 @@ article {
 	font-weight: 500;
 	letter-spacing: 1px;
 	text-transform: uppercase;
-
 }
+.blue:hover {
+	background: #16acdc;
+}
+.blue:active {
+	background: #0a9ece;
+}
+
 .gray {
-	margin-right: 24px;
 	background: #3e4447;
 	opacity: 0.2;
 	border: 0px;
@@ -270,6 +285,21 @@ article {
 	font-weight: 500;
 	letter-spacing: 1px;
 	text-transform: uppercase;
+}
+
+.gray:hover {
+	opacity: 0.3;
+}
+.gray:active {
+	opacity: 0.5;
+}
+
+.multiple-buttons {
+	margin-right: 24px;
+}
+
+.solo-button {
+	margin-top: 40px;
 }
 
 .amount-alt {
@@ -291,6 +321,117 @@ article {
 	width: 12em;
 	text-align: right;
 	color: #999;
+}
+
+/* Settings */
+
+#settings ul {
+	padding: 0;
+	margin: 0;
+}
+
+div#settings {
+	padding-top: 28px;
+	margin: 10px;
+}
+
+div#categories {
+	padding-left: 24px;
+	padding-bottom: 10px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	font-size: 14px;
+	text-transform: uppercase;
+	display: inline-block;
+	margin-right: 20px;
+	letter-spacing: 2px;
+	color: #3e4447;
+	opacity: 0.2;
+}
+
+div#categoriestwo {
+	margin-top: 40px;
+	padding-left: 24px;
+	padding-bottom: 10px;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 600;
+	font-size: 14px;
+	text-transform: uppercase;
+	display: inline-block;
+	margin-right: 20px;
+	letter-spacing: 2px;
+	color: #3e4447;
+	opacity: 0.2;
+}
+
+.settings {
+	background-color: white;
+	box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
+	padding: 14px;
+	list-style-type: none;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.setting {
+	background-color: white;
+	box-shadow: 0px 1px 1px rgba(0,0,0,0.15);
+	padding: 14px;
+	list-style-type: none;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.setting:hover {
+	background-color: #fbfbfb;
+}
+.setting:active {
+	background-color: #f6f6f6;
+}
+
+.setting .title-alt {
+	font-weight: 700;
+	display: inline-block;
+	font-size: 18px;
+	padding-right: 18px;
+	opacity: 0.25;
+}
+
+.setting .title {
+	display: inline-block;
+	font-size: 18px;
+	color: #3e4447;
+	width:6.65em;
+}
+
+.setting .status {
+	padding-top: 2px;
+	font-weight: 600;
+	color: #21baea;
+	display: inline-block;
+	white-space: nowrap;
+	width: 13em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	text-align: right;
+}
+
+.logout {
+	float: right;
+}
+
+.columns {
+	-moz-column-count: 2;
+	-webkit-column-count: 2;
+	column-count: 2;
+}
+
+@media screen and (max-width: 920px) {
+	.columns {
+		-moz-column-count: 1;
+		-webkit-column-count: 1;
+		column-count: 1;
+	}
 }
 
 @media screen and (min-width: 601px) {
@@ -344,9 +485,6 @@ article {
 	}
 	div#tasks {
 		padding-top: 8px;
-	}
-	div#filters {
-		padding-bottom: 16px;
 	}
 	
 	.task .amount {
