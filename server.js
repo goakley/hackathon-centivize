@@ -278,6 +278,7 @@ function obtainMoney(tid, pin, callback) {
                     callback(500, err);
                     return;
                 }
+		console.log("task.value is " + task.value);
                 dwolla.send(token, pin, CONFIG.DWOLLA.RECV_ACCOUNT, task.value, function(err, data) {
                     if (err) {
                         callback(500, err);
