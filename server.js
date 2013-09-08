@@ -396,7 +396,7 @@ function sendCoachSuccessEmail(task, callback) {
 }
 
 function sendCoachFailEmail(task, callback) {
-    var email = fs.readFileSync("./templates/email_coach_.ejs");
+    var email = fs.readFileSync("./templates/email_coach_failed.ejs");
     var emailtext = ejs.render(file, {user:task.uid,
 				      task:task.name,
 				      description:task.description,
