@@ -425,11 +425,7 @@ function addTask(uid, task, pin, callback) {
 
 /* Successfully complete a task */
 function finishTask(tid, callback) {
-    releaseMoney(tid, function(status, err) {
-        if (status !== 200) {
-            callback(500, err);
-            return;
-        }
+    function destroyTask() {
 	redis.hget(key_task(tid), 'uid', function(err, uid){
 	    if (err) {
 		callback(500, err);
@@ -449,6 +445,19 @@ function finishTask(tid, callback) {
 	    });
 	    return;
 	});
+    }
+    redis.hget(key_task(tid), 'paid', function(err, paid) {
+	if (paid) {
+	    releaseMoney(tid, function(status, err) {
+		if (status !== 200) {
+		    callback(500, err);
+		    return;
+		}
+		destroyTask();
+		return;
+	    });
+	}
+	destroyTask();
     });
 }
 
