@@ -389,7 +389,6 @@ function getTasks(uid, callback) {
 
 function addTask(uid, task, pin, callback) {
     console.log("TASK!!!");
-    console.dir(task);
     var tid = guid();
     var taskkey = key_task(tid);
     var multi = redis.multi();
