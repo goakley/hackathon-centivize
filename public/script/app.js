@@ -22,6 +22,13 @@ app.factory("Task", function($resource) {
 	});
 });
 
+app.factory("User", function($resource) {
+	return $resource("/api/user", {}, {
+		get: {method: "GET"},
+		update: {method: "POST"}
+	});
+});
+
 function HomeController($scope) {
 	$scope.active = "tasks";
 
@@ -107,7 +114,33 @@ function TasksController($scope, Task) {
 
 }
 
-function SettingsController($scope) {
+var charities = [
+	/*
+	{name: 'CFY', domain: 'cfy.org'},
+	{name: 'charity: water', domain: 'charitywater.org'},
+	{name: 'DonorsChoose.org', domain: 'donorschoose.org'},
+	{name: 'Fuck Cancer', domain: 'letsfcancer.com'},
+	{name: 'Goods for Good', domain: 'goodsforgood.org'},
+	{name: 'hackNY', domain: 'hackny.org'},
+	{name: 'iMentor', domain: 'imentor.org'},
+	{name: 'Kiva', domain: 'kiva.org'},
+	{name: 'Pencils of Promise', domain: 'pencilsofpromise.org'},
+	{name: 'She\'s the First', domain: 'shesthefirst.org'},
+	{name: 'United Way of New York City', domain: 'unitedwaynyc.org'},
+	*/
+	{name: "Heart4Children Inc.", id: "812-573-9939"},
+	{name: "The Tor Project", id: "thetorproject"},
+	{name: "Cloudbase Foundation", id: "812-675-8638"},
+	{name: "Goodwill Industries of Arkansas", id: "goodwillar"}
+];
+//https://www.dwolla.com/avatars/:id/104
+
+function SettingsController($scope, User) {
+	$scope.charities = charities;
+
+	$scope.settings = User.get();
+
+	/*
 	$scope.settings = {
 		// user settings
 		email: 'viraj.s.bindra@gmail.com',
@@ -119,4 +152,5 @@ function SettingsController($scope) {
 		coach: 'goodfriend@gmail.com',
 		reviewHours: 24
 	};
+	*/
 }

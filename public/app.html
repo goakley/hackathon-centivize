@@ -39,6 +39,7 @@
 	</h1>
 	<a href="#" id="menu" ng-click="toggleMenu()"><img src="img/nav-icon.svg"></a>
 </nav>
+<div class="yellow-shit"></div>
 
 <article>
 
@@ -95,7 +96,8 @@
 			<div class="expanded-show" ng-show="newTask.isExpanded">
 
 				<div class="row"> 
-				<input class="text-entry first-margin full" placeholder="New Task" ng-model="newTask.name">
+
+				<input class="text-entry first-margin" placeholder="New Task" ng-model="newTask.name">
 				</div>
 				
 				<div class="columns">
@@ -106,25 +108,28 @@
 						</li>
 						<li class="label-entry">
 							<span class="label-entry-title">Dwolla Pin</span><br>
-							<input class="text-entry half" placeholder="****" ng-model="newTask.pin">
+							<input type="password" maxlength="4" class="text-entry half" placeholder="****" ng-model="newTask.pin">
 						</li>
 						<li class="label-entry">
-							<span class="label-entry-title">Date</span><br>
-							<input class="text-entry half" placeholder="MM/DD/YYYY" ng-model="newTask.date">
+							<span class="label-entry-title">Completion Date</span><br>
+							<input class="text-entry half" maxlength="10" placeholder="MM/DD/YYYY" ng-model="newTask.date">
 						</li>
 						<li class="label-entry">
-							<span class="label-entry-title">Stake</span><br>
-							<input class="text-entry half" placeholder="$0.00" ng-model="newTask.value">
+							<span class="label-entry-title">Your Stake (USD)</span><br>
+							<input class="text-entry half" placeholder="1.00" ng-model="newTask.value">
 						</li>
 
 					</ul>
 				</div>
 
-				<textarea rows="4" class="area-entry" placeholder="Description (optional)" ng-model="newTask.description"></textarea>
-
-				<div class="buttons">
-					<button type="submit" class="blue">Add Task</button>
+				<div class="row nudge-down">
+				<span class="label-entry-title">Description (Optional)</span><br>
+				<textarea rows="4" class="area-entry" ng-model="newTask.description"></textarea>
 				</div>
+
+				<button type="submit" class="blue bottom-right">Add Task</button>
+
+				<div class="fine-print">When you add a task, your account will automatically be debited the amount of your stake, which we'll store until you finish your task. If you get it done by your completion date, you'll get your money back! If not, we'll donate it to the charity you specified in SETTINGS. If you have any questions, please feel free to reach out to our support staff.</div>
 
 				<div class="error">{{newTask.error}}</div>
 
@@ -171,7 +176,7 @@
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Charity</span> &nbsp;
 			<span class="right-aligned-li">
-				<span class="status">{{settings.charity}}</span>
+				<select ng-model="settings.charity" ng-options="o.id as o.name for o in charities"></select>
 			</span>
 		</li>
 
