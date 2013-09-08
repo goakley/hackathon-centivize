@@ -37,22 +37,23 @@ function HomeController($scope) {
 	};
 }
 
+var defaultTask = {
+	name: 'New Task',
+	value: '1.00',
+	cid: '', // coach email address
+	date: '', // ms
+	pin: '',
+	description: ''
+};
+
+var tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+
 function TasksController($scope, Task) {
 	$scope.showComplete = false;
 
-	var tomorrow = new Date();
-	tomorrow.setDate(tomorrow.getDate() + 1);
-
-	$scope.newTask = {
-		name: 'New Task',
-		value: '1.00',
-		cid: '', // coach email address
-		date: '',
-		pin: '',
-		description: ''
-	};
-
 	$scope.tasks = Task.index();
+	$scope.newTask = angular.copy(defaultTask);
 
 	$scope.toggleExpand = function(task) {
 		task.isExpanded = !task.isExpanded;
@@ -65,17 +66,18 @@ function TasksController($scope, Task) {
 		}
 		task.error = "";
 		Task.save({}, task, function(resource) {
-			console.log("saved", resource);
-			$scope.tasks.push(resource);
-			task.error = "";
+			// success
+			task.tid = resource.tid;
+			$scope.tasks.push(task);
+			// reset the form
+			$scope.newTask = angular.copy(defaultTask);
 		}, function(response) {
 			task.error = "There was a problem creating your task.";
 		});
 	};
 
 	$scope.destroy = function(task) {
-		Task.destroy(task, function(resource) {
-			console.log("destroyed");
+		Task.destroy({tid: task.tid}, function(resource) {
 			task.error = "";
 			// kill it
 		}, function(response) {
@@ -84,6 +86,7 @@ function TasksController($scope, Task) {
 	};
 
 	$scope.complete = function(task) {
+		//api/task/:tid/complete
 		task.error = "Todo";
 	};
 
