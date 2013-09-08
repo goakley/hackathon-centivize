@@ -263,7 +263,6 @@ function obtainMoney(tid, pin, callback) {
         callback(400, "PIN is falsy");
         return;
     }
-    console.log("Pin is " + pin);
     redis.hgetall(key_task(tid), function(err, task) {
         if (err) {
             callback(500, err);
@@ -279,7 +278,6 @@ function obtainMoney(tid, pin, callback) {
                     callback(500, err);
                     return;
                 }
-		console.log("task.value is " + task.value);
                 dwolla.send(token, pin, CONFIG.DWOLLA.RECV_ACCOUNT, task.value, function(err, data) {
                     if (err) {
                         callback(500, err);
@@ -298,7 +296,6 @@ function releaseMoney(tid, callback) {
             callback(500, err);
             return;
         }
-        console.log(task);
         if (task.paid === '0') {
             callback(200);
             return;
