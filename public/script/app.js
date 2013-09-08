@@ -26,7 +26,7 @@ function TasksController($scope, Task) {
 
 	$scope.newTask = {
 		title: 'New Task',
-		amount: '$1.00',
+		amount: '1.00',
 		coach: '',
 		dueDate: '',
 		pin: '',
