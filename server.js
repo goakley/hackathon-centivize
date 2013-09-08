@@ -71,6 +71,7 @@ app.use(express.logger())
                             '&client_id=' + encodeURIComponent(CONFIG.DWOLLA.ID) +
                             '&redirect_uri=' + encodeURIComponent(CONFIG.DWOLLA.AUTH_CALLBACK) + 
                             '&scope=' + encodeURIComponent(CONFIG.DWOLLA.SCOPE);
+                    console.log("REDIRECTING TO THE AUTH URL");
                     res.redirect(authUrl);
                     return;
                 } else {
@@ -115,6 +116,7 @@ app.get("/verify/:tid/no", function(req, res) {
 
 /* Dwolla autentication callback - NOT CALLED DIRECTLY */
 app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
+    console.log("REDIRECTED FROM DWOLLA, NOW OBTAINING TOKEN THROUGH REQUEST...");
     restler.get("https://www.dwolla.com/oauth/v2/token", {
         query: {
             client_id: CONFIG.DWOLLA.ID,
@@ -124,6 +126,7 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
             code: req.query.code
         }
     }).on('complete', function(data) {
+        console.log("REQUEST COMPLETE, STORING");
         redis.set("user:" + req.session.email + ":dwollatoken", data.access_token);
         res.redirect('/');
     });
