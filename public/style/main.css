@@ -125,12 +125,12 @@ nav a:active{
 
 /* Tasks */
 
-div#tasks {
+#tasks {
 	padding-top: 28px;
 	margin: 10px;
 }
 
-div#filters {
+#filters {
 	padding-left: 24px;
 	padding-bottom: 10px;
 }
