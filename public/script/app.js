@@ -5,8 +5,20 @@ var app = angular.module("centivize", ["ngResource"]);
 app.factory("Task", function($resource) {
 	return $resource("/api/task/:tid", {}, {
 		index: {method: "GET", isArray: true},
-		destroy: { method: "DELETE" },
-		create: {method: "GET"}
+		destroy: {method: "DELETE"},
+		save: {
+			method: "POST",
+			transformRequest: function(d, headersGetter) {
+				return JSON.stringify({
+					name: d.name,
+					description: d.description,
+					date: new Date(d.date).getTime(),
+					value: Number(d.value.replace('$', '')),
+					coach: d.coach,
+					pin: d.pin
+				});
+			}
+		}
 	});
 });
 
@@ -26,7 +38,7 @@ function TasksController($scope, Task) {
 
 	$scope.newTask = {
 		name: 'New Task',
-		amount: '$1.00',
+		value: '$1.00',
 		coach: '',
 		date: '',
 		pin: '',
@@ -37,7 +49,7 @@ function TasksController($scope, Task) {
 		{
 			tid: 1,
 			name: 'Do big thing',
-			amount: 1.00,
+			value: 1.00,
 			coach: 'Greg',
 			date: new Date(2013, 9, 10),
 			description: 'Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Sed posuere consectetur est at lobortis. Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis vestibulum. Donec id elit non mi porta gravida at eget metus.'
@@ -45,7 +57,7 @@ function TasksController($scope, Task) {
 		{
 			tid: 2,
 			name: 'Finish the hack',
-			amount: 1.00,
+			value: 1.00,
 			coach: 'Viraj',
 			date: new Date(2013, 9, 14),
 			description: ''
@@ -53,7 +65,7 @@ function TasksController($scope, Task) {
 		{
 			tid: 3,
 			name: 'Do small thing',
-			amount: 0.50,
+			value: 0.50,
 			coach: 'Glen',
 			date: new Date(2013, 9, 7, 4, 41, 0),
 			description: ''
@@ -103,7 +115,7 @@ function SettingsController($scope) {
 		lastName: 'Bindra',
 		// default task settings
 		charity: 'Pencils of Promise',
-		amount: 0.50,
+		value: 0.50,
 		coach: 'goodfriend@gmail.com',
 		reviewHours: 24
 	};
