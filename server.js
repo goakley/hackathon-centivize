@@ -413,6 +413,7 @@ function addTask(uid, task, pin, callback) {
         console.log("WE ARE OKAY AFTER MULTI EXEC");
         obtainMoney(tid, pin, function(code, err) {
             if (code !== 200) {
+		console.log(err);
                 finishTask(tid, function(){});
                 callback(500, err);
             } else {
