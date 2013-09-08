@@ -318,7 +318,7 @@ article {
 
 .checkbox label {
 	cursor: pointer;
-	position: absolute;
+	position: relative;
 	width: 1.4em;
 	height: 1.4em;
 	top: 0;
@@ -330,7 +330,7 @@ article {
 .checkbox label:after {
 	opacity: 0;
 	content: '';
-	position: absolute;
+	position: relative;
 	width: 0.7em;
 	height: 0.4em;
 	background: transparent;
