@@ -148,7 +148,7 @@ app.get(url.parse(CONFIG.DWOLLA.AUTH_CALLBACK).pathname, function(req, res) {
 app.get("/api/task", function(req, res) {
     getTasks(req.session.email, function(status, tasks) {
         if (status !== 200) {
-            res.json({err:"ERROR"});
+            res.send(500);
         } else {
             res.json(tasks);
         }
@@ -242,6 +242,10 @@ function key_user_tids(uid) { return key_user(uid) + ":tids"; }
 /* PAYMENT HANDLING */
 
 function obtainMoney(tid, pin, callback) {
+    if (!pin) {
+        callback(400, "PIN is falsy");
+        return;
+    }
     redis.hgetall(key_task(tid), function(err, task) {
         if (err) {
             callback(500, err);
