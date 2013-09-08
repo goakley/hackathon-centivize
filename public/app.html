@@ -47,9 +47,15 @@
 
 <div id="tasks" ng-show="active=='tasks'" ng-controller="TasksController">
 
+	<div class="notifications">
+		<div class="notification" ng-repeat="notification in notifications">
+			<span class="notification-dismiss" ng-click="dismissNotification($index)">&times;</span>
+			{{notification}}
+		</div>
+	</div>
+
 	<div id="filters"> 
 		<a href="" class="task-filter selected">Current tasks</a>
-
 	</div>
 
 	<ul>
