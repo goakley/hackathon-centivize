@@ -30,6 +30,7 @@ CONFIG.SENDGRID.KEY = SECRET.SENDGRID;
 /* SETUP */
 
 var dwolla = require('dwolla'),
+    everyauth = require('everyauth'),
     ejs = require('ejs'),
     express = require('express'),
     fs = require('fs'),
@@ -40,7 +41,17 @@ var dwolla = require('dwolla'),
     url = require('url');
 
 var app = express();
-var timeout = undefined;
+
+everyauth.dwolla
+    .appId(CONFIG.DWOLLA.ID)
+    .appSecret(CONFIG.DWOLLA.SECRET)
+    .scope(CONFIG.DWOLLA.SCOPE)
+    .findOrCreateUser(function(session, accessToken, accessTokenExtra, dwollaUserMetadata) {
+        console.dir(session);
+        console.dir(accessToken);
+        console.dir(accessTokenExtra);
+        console.dir(dwollaUserMetadata);
+    }).redirectPath('/');
 
 /*****************************************************************************/
 
@@ -148,7 +159,7 @@ app.get("/api/task", function(req, res) {
  * 500 - No idea what happened wrong
  */
 app.post("/api/task", function(req, res) {
-    addTask(req.session.email, req.body, function(status, tid) {
+    addTask(req.session.email, req.body, req.body.pin, function(status, tid) {
         if (status !== 200) {
             res.send(500);
         } else {
