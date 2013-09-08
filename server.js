@@ -73,11 +73,9 @@ app.use(express.logger())
                             '&scope=' + encodeURIComponent(CONFIG.DWOLLA.SCOPE);
                     console.log("REDIRECTING TO THE AUTH URL");
                     res.redirect(authUrl);
-                    return;
                 } else {
                     if (pathname === '/' || pathname === '/index.html' || pathname === '') {
                         res.redirect(302, '/app.html');
-                        return;
                     }
                 }
             });
