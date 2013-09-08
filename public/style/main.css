@@ -512,6 +512,11 @@ div#categoriestwo {
 	float: right;
 }
 
+.charity-icon {
+	min-width: 1em;
+	min-height: 1em;
+}
+
 .columns {
 	-moz-column-count: 2;
 	-webkit-column-count: 2;

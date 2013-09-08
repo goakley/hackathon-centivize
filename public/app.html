@@ -149,21 +149,23 @@
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">First Name</span>
 			<span class="right-aligned-li">
-				<input ng-model="settings.firstName">
+				<input ng-show="isEditing" ng-model="settings.firstName">
+				<span ng-hide="isEditing" class="status">{{settings.firstName}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Last Name</span>
 			<span class="right-aligned-li">
-				<input ng-model="settings.lastName">
+				<input ng-show="isEditing" ng-model="settings.lastName">
+				<span ng-hide="isEditing" class="status">{{settings.lastName}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Email</span>
 			<span class="right-aligned-li">
-				<input ng-model="settings.email">
+				<span class="status">{{settings.email}}</span>
 			</span>
 		</li>
 	</ul></div>
@@ -176,29 +178,33 @@
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Charity</span> 
 			<span class="right-aligned-li">
-				<img src="https://www.dwolla.com/avatars/{{settings.charity}}/16">
-				<select ng-model="settings.charity" ng-options="o.id as o.name for o in charities"></select>
+				<img class="charity-icon" src="https://www.dwolla.com/avatars/{{settings.charity}}/16">
+				<select ng-show="isEditing" ng-model="settings.charity" ng-options="o.id as o.name for o in charities"></select>
+				<span ng-hide="isEditing" class="status">{{charityName()}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Stake (USD)</span>
 			<span class="right-aligned-li">
-				<input ng-model="settings.value">
+				<input ng-show="isEditing" ng-model="settings.value">
+				<span ng-hide="isEditing" class="status">{{settings.value}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Coach</span>
 			<span class="right-aligned-li">
-				<input ng-model="settings.cid">
+				<input type="email" ng-show="isEditing" ng-model="settings.cid">
+				<span ng-hide="isEditing" class="status">{{settings.cid}}</span>
 			</span>
 		</li>
 
 		<li class="setting" ng-click="toggleExpand(task)">
 			<span class="title">Review Period (hours)</span>
 			<span class="right-aligned-li">
-				<input ng-model="settings.reviewHours">
+				<input type="number" ng-show="isEditing" ng-model="settings.reviewHours">
+				<span ng-hide="isEditing" class="status">{{settings.reviewHours}}</span>
 			</span>
 		</li>
 	</ul></div>
@@ -207,7 +213,8 @@
 
 	<div class="settings-buttons">
 		<button class="gray solo-button" onclick="onclicklogout()">Logout</button>
-		<button class="blue solo-button" ng-click="save()">Save settings</button>
+		<button class="blue solo-button" ng-show="isEditing" ng-click="save()">Save settings</button>
+		<button class="blue solo-button" ng-hide="isEditing" ng-click="edit()">Edit settings</button>
 	</div>
 </div>
 

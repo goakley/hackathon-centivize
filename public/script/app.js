@@ -132,11 +132,25 @@ function SettingsController($scope, User) {
 	$scope.charities = charities;
 	$scope.settings = User.get();
 	$scope.error = "";
+	$scope.isEditing = false;
+
+	$scope.charityName = function() {
+		var charity = charities.filter(function(charity) {
+			return charity.id == $scope.settings.charity;
+		})[0];
+		return charity ? charity.name : "";
+	};
+
+	$scope.edit = function() {
+		console.log($scope);
+		$scope.isEditing = true;
+	};
 
 	$scope.save = function() {
 		User.update($scope.settings, function(resource) {
 			// success
 			$scope.error = "";
+			$scope.isEditing = false;
 		}, function(response) {
 			$scope.error = "There was a problem saving your settings.";
 		});
