@@ -427,19 +427,25 @@ function finishTask(tid, callback) {
             callback(500, err);
             return;
         }
-        var multi = redis.multi();
-        multi.srem(key_user_tids(tid['uid']), tid);
-        multi.del(key_task(tid));
-	multi.zrem("taskqueue", tid);
-	multi.zrem("pendingqueue", tid);
-        multi.exec(function(err, res) {
-            if (err) {
-                callback(500, err);
-                return;
-            }
-            callback(200);
-        });
-        return;
+	redis.hget(key_task(tid), 'uid', function(err, uid){
+	    if (err) {
+		callback(500, err);
+		return;
+	    }
+	    var multi = redis.multi();
+	    multi.srem(key_user_tids(uid), tid);
+	    multi.del(key_task(tid));
+	    multi.zrem("taskqueue", tid);
+	    multi.zrem("pendingqueue", tid);
+	    multi.exec(function(err, res) {
+		if (err) {
+		    callback(500, err);
+		    return;
+		}
+		callback(200);
+	    });
+	    return;
+	});
     });
 }
 
